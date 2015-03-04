@@ -1,0 +1,121 @@
+package pt.tecnico.ulisboa.essd.bubbledocs.domain;
+
+class Utilizador {
+	String username;
+	String password;
+	Boolean isRoot;
+	}
+
+class FolhadeCalculo{
+		String nomeFolha;
+		String dono;
+		Integer linhas;
+		Integer colunas;
+		LocalTime horaCriacao;
+		LocalDate dataCriacao;
+	}
+
+	
+class Celula{
+		Integer linha;
+		Integer coluna;
+	}
+	
+class Conteudo;
+
+class Argumento extends Conteudo;
+	
+class Literal extends Argumento{
+		Integer valor;
+	}
+
+class Referencia extends Argumento;
+
+class  Funcao extends Conteudo;
+
+class FuncaoIntervalo extends Funcao;
+
+class FuncaoBinaria extends Funcao;
+	
+class SUM extends FuncaoBinaria;
+
+class DIV extends FuncaoBinaria;
+
+class SUB extends FuncaoBinaria;
+
+class MUL extends FuncaoBinaria;
+
+
+
+
+
+relation DomainRootHasBubbleDocApplicationUtilizadores {
+  .pt.ist.fenixframework.DomainRoot playsRole root {
+    multiplicity 0..1;
+  }
+  Utilizador playsRole utilizadores {
+    multiplicity *;
+  }
+}
+
+relation DomainRootHasBubbleDocApplicationFolhas {
+  .pt.ist.fenixframework.DomainRoot playsRole root2 {
+    multiplicity 0..1;
+  }
+  FolhadeCalculo playsRole folhasdecalculo {
+    multiplicity *;
+  }
+}
+
+relation FolhadeCalculoContainsUtilizadoresE {
+	FolhadeCalculo playsRole folhadecalculoE; 
+	Utilizador playsRole utilizadores_e	{
+		multiplicity *;
+	}
+}
+
+relation FolhadeCalculoContainsUUtilizadoresL{
+	FolhadeCalculo playsRole folhadecalculoL; 
+	Utilizador playsRole utilizadores_l	{
+		multiplicity *;
+	}
+}
+
+relation FolhadeCalculoContainsCelula {
+	FolhadeCalculo playsRole folhadecalculoC; 
+	Celula playsRole celula	{
+		multiplicity *;
+	}
+}
+
+
+relation CelulaContainsConteudo {
+	Celula playsRole celula; 
+	Conteudo playsRole conteudo{
+		multiplicity *;
+	}
+}
+
+
+relation ReferenciaContainsCelula {
+	Referencia playsRole referencia; 
+	Celula playsRole celularef{
+		multiplicity *;
+	}
+}
+
+
+
+relation FuncaoBinariaContainsArgumento1 {
+	FuncaoBinaria playsRole funcaobinaria1;
+	Argumento playsRole argumento1{
+		multiplicity 0..1;
+	}
+}
+
+relation FuncaoBinariaContainsArgumento2 {
+	FuncaoBinaria playsRole funcaobinaria2;
+	Argumento playsRole argumento2{
+		multiplicity 0..1;
+	}
+}
