@@ -1,6 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 class Utilizador {
+	String nome;
 	String username;
 	String password;
 	Boolean isRoot;
@@ -31,7 +32,7 @@ class Literal extends Argumento{
 
 class Referencia extends Argumento;
 
-class  Funcao extends Conteudo;
+class Funcao extends Conteudo;
 
 class FuncaoIntervalo extends Funcao;
 
@@ -48,8 +49,7 @@ class MUL extends FuncaoBinaria;
 
 
 
-
-relation DomainRootHasBubbleDocApplicationUtilizadores {
+relation DomainRootHasBubbleApplicationUtilizadores {
   .pt.ist.fenixframework.DomainRoot playsRole root {
     multiplicity 0..1;
   }
@@ -58,7 +58,7 @@ relation DomainRootHasBubbleDocApplicationUtilizadores {
   }
 }
 
-relation DomainRootHasBubbleDocApplicationFolhas {
+relation DomainRootHasBubbleApplicationFolhas {
   .pt.ist.fenixframework.DomainRoot playsRole root2 {
     multiplicity 0..1;
   }
@@ -119,3 +119,11 @@ relation FuncaoBinariaContainsArgumento2 {
 		multiplicity 0..1;
 	}
 }
+
+relation UtilizadorContainsFolhas {
+	Utilizador playsRole utilizador;
+	FolhadeCalculo playsRole folhascriadas{
+		multiplicity *;
+	} 
+}
+
