@@ -22,13 +22,13 @@ class Celula{
 		Integer coluna;
 	}
 	
-class Conteudo;
+class Conteudo{
+		Integer valor;
+};
 
 class Argumento extends Conteudo;
 	
-class Literal extends Argumento{
-		Integer valor;
-	}
+class Literal extends Argumento;
 
 class Referencia extends Argumento;
 

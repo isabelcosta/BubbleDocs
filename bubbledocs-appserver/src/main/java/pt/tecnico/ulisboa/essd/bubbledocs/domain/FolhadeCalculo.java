@@ -10,6 +10,16 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	this.setColunas(colunas);
     }
     
+    //FOLHA
+    /* Apaga todas as associacoes ligadas a esta folha */
+    public void apagarFolha(){
+    	for (Celula toRemove : this.getCelulaSet()){
+    		toRemove.apagarConteudo();
+    		this.removeCelula(toRemove);
+    	}
+    		
+    }
+    
     // UTILIZADORES
     /* Verifica se um utilizador e dono da folha */
     public boolean isDono (String nome){
@@ -49,9 +59,11 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		}
     			
     	}
-    	Celula novaCelula = new Celula(linha, coluna, conteudo);
-    	if (this.verificaLimite(novaCelula))
+    	
+    	if (this.verificaLimite(linha,coluna)){
+    		Celula novaCelula = new Celula(linha, coluna, conteudo);
     		this.addCelula(novaCelula);
+    	}
     }
     
     /* Dependendo da string que recebe cria o conteudo correspondente */
@@ -67,8 +79,8 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 	}
 
 	/* Verifica se a celula respeita os limites da folha */
-    public boolean verificaLimite(Celula celula){
-    	if (celula.getLinha() > this.getLinhas() || celula.getColuna() > this.getColunas())
+    public boolean verificaLimite(int linha, int coluna){
+    	if (linha > this.getLinhas() || coluna > this.getColunas())
     			return false;
 
     	return true; 
@@ -84,7 +96,6 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
         } catch(NumberFormatException e) { 
             return false; 
         }
-        // only got here if we didn't return false
         return true;
     }
     
