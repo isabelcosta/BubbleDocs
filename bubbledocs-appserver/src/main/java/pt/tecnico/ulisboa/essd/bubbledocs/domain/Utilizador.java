@@ -28,12 +28,12 @@ public class Utilizador extends Utilizador_Base {
     	for(FolhadeCalculo folha : this.getFolhascriadasSet()){
     		if(folha.getNomeFolha().equals(nome)){
     			folha.apagarFolha();
-    			this.removeFolha(nome);	
+    			this.removeFolhascriadas(folha);
     		}	
     	}	
     }
     
-    //Inserir numa folha
+    //Inserir numa folha um conteudo
     
     public void insereCelula(String nomefolha, int linha, int coluna, String conteudo, String nomeUtilizador){
     	
@@ -44,11 +44,4 @@ public class Utilizador extends Utilizador_Base {
     		}
     	}	
     }
-    
-    //Adicionar utilizador - operação executada pela root
-    
-    public void adicionaUtilizador(String nomeUtilizador, String userName, String password){
-    	
-    		new Utilizador(nomeUtilizador, userName, password);
-    	}
 }
