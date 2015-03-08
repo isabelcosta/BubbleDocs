@@ -24,7 +24,7 @@ class Celula{
 	
 class Conteudo{
 		Integer valor;
-};
+	}
 
 class Argumento extends Conteudo;
 	

@@ -1,7 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
-import pt.ist.fenixframework.FenixFramework;
-
 public class Utilizador extends Utilizador_Base {
     
     public Utilizador(String nomeUtilizador, String userName, String password) {
@@ -23,7 +21,7 @@ public class Utilizador extends Utilizador_Base {
     
     //Remove uma folha 
     
-    public void removeFolha(String nome){
+   public void removeFolha(String nome){
     	
     	for(FolhadeCalculo folha : this.getFolhascriadasSet()){
     		if(folha.getNomeFolha().equals(nome)){
@@ -39,9 +37,9 @@ public class Utilizador extends Utilizador_Base {
     	
     	for(FolhadeCalculo folha : this.getFolhascriadasSet()){
     		if(folha.getNomeFolha().equals(nomefolha)){
-    			folha.criaCelula(linha, coluna, conteudo);
+    			folha.criarCelula(linha, coluna, conteudo);
    	
     		}
     	}	
-    }
+    } 
 }
