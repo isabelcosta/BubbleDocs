@@ -42,4 +42,15 @@ public class BubbleApplication {
 				}
 			}
 		}
+		static void populateDomain() {
+    	if (!pb.getPersonSet().isEmpty())
+    	    return;
+
+    	// setup the initial state if phonebook is empty
+
+    	Utilizador user1 = new Utilizador(Paul Door, pf, sub);
+    	Utilizador user2 = new Utilizador(Step Rabbit, ra, cor);
+    	FolhadeCalculo folha = new FolhadeCalculo(pf, Notas ES, 300, 20);
+
+    }
 	} */
