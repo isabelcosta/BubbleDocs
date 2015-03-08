@@ -9,13 +9,12 @@ public class Utilizador extends Utilizador_Base {
         setNome(nomeUtilizador);
 		setUsername(userName);
 		setPassword(password);
-        
     }
     
     
     //Cria uma folha
     
-    public void criaFolha( String criador, String nomeFolha, int linha , int coluna){
+    public void criaFolha(String criador, String nomeFolha, int linha , int coluna){
     	
     		FolhadeCalculo folha = new FolhadeCalculo(criador, nomeFolha, linha, coluna);
     		
@@ -28,11 +27,8 @@ public class Utilizador extends Utilizador_Base {
     	
     	for(FolhadeCalculo folha : this.getFolhascriadasSet()){
     		if(folha.getNomeFolha().equals(nome)){
-    			folha.
-    			
-    			//Terminar
-    			
-    			
+    			folha.apagarFolha();
+    			this.removeFolha(nome);	
     		}	
     	}	
     }
@@ -55,15 +51,4 @@ public class Utilizador extends Utilizador_Base {
     	
     		new Utilizador(nomeUtilizador, userName, password);
     	}
-    
-    
-    //Remove utilizador - operação executada pela root
-    
-	public void removeUtilizador(String username){
-		
-		
-		
-    		
-    	
-    }    
 }
