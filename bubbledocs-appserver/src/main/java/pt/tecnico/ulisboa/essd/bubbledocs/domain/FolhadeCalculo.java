@@ -7,6 +7,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	 super();
     }
     
+    
     //FOLHA
     /* Apaga todas as associacoes ligadas a esta folha */
     public void apagarFolha(){
@@ -44,6 +45,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	return false; 
     }
     
+    
     //CELULAS
 
     public void criarCelula(int linha, int coluna, String conteudoAcriar){
@@ -52,7 +54,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	//se a celula existir so vai alterar o conteudo
     	for (Celula existeCelula : this.getCelulaSet()){
     		if (existeCelula.getLinha() == linha && existeCelula.getColuna() == coluna){
-    		 // TODO
+    		 existeCelula.setConteudo(conteudo);
     		}
     			
     	}
@@ -65,14 +67,16 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     
     /* Dependendo da string que recebe cria o conteudo correspondente */
     private Conteudo criaConteudo(String conteudoAcriar) {
-    	Conteudo conteudo = null;
+    	Conteudo c = null;
     	
-    	if(this.isInteger(conteudoAcriar)){
-    		int i = Integer.parseInt(conteudoAcriar);
-    		conteudo = new Literal(i);
-    	}
+    	try {
+			 c= Parser.parseConteudo(this, conteudoAcriar);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
     	
-		return conteudo;
+    	return c;
+    
 	}
 
 	/* Verifica se a celula respeita os limites da folha */
@@ -81,19 +85,6 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     			return false;
 
     	return true; 
-    }
-    
-    
-    
-    //APOIOS
-    /* Verificar se a string e um inteiro */
-    private boolean isInteger(String s) {
-        try { 
-            Integer.parseInt(s); 
-        } catch(NumberFormatException e) { 
-            return false; 
-        }
-        return true;
     }
     
 }

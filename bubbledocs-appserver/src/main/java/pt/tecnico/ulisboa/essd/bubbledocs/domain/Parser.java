@@ -12,10 +12,10 @@ public class Parser {
 	
 		if (args.length > 1)
 		    cont = parseConteudo(folha, args[1]);
-		
-		folha.inserirNaFol(endereco[0], endereco[1], cont); // coloca conteudo cont na linha e coluna pretendidas da folha de calculo
     }
 
+    
+    
     public static int[] parseEndereco(String endereco, FolhadeCalculo folha) throws Exception{
 		String[] args = endereco.split(";");
 		
@@ -28,34 +28,46 @@ public class Parser {
 		return vec;
     }
 
+    
+    
     public static Conteudo parseConteudo(FolhadeCalculo folha, String conteudo) throws Exception {
 		
-    	if (conteudo.contains("(")) { // é uma função
-		    String funcao = conteudo.substring(1); // remove =
+    	if (conteudo.contains("(")) {                 // é uma função
+		    String funcao = conteudo.substring(1);    // remove =
 		    String nomeFuncao = parseNomeFuncao(funcao);
 		    String Operando = parseOperandoFuncao(funcao);
 	
 		    if (conteudo.contains(","))
 		    	return parseFuncaoBinaria(folha, nomeFuncao, Operando);
 		    
-		    else
-		    	return parseFuncaoIntervalo(folha, nomeFuncao, Operando);
+		    /*else
+		    	return parseFuncaoIntervalo(folha, nomeFuncao, Operando); */
 		    
-		} else if (conteudo.contains("=")) {  // é uma referencia 
+		} else if (conteudo.contains("=")) {           // é uma referencia 
 		    return parseReferencia(folha, conteudo.substring(1));
 		
 		} else
 		    return parseLiteral(conteudo);
+    	
+		return null;
     }
 
+    
+    
     private static String parseNomeFuncao(String funcao) {
     	return funcao.substring(0, funcao.indexOf("("));
     }
 
+    
+    
+    
     private static String parseOperandoFuncao(String funcao) {
     	return funcao.substring(funcao.indexOf("(") + 1, funcao.indexOf(")"));
     }
+    
+    
 
+    
     public static FuncaoBinaria parseFuncaoBinaria(FolhadeCalculo folha, String nomeFuncao, String Operando) throws Exception{
 		String[] Operandos = Operando.split(",");
 	
@@ -70,12 +82,13 @@ public class Parser {
 			case "SUB":
 			    return new SUB();
 			case "ADD":
-			    return new ADD();
+				return new ADD();
 			}
 		
 		return null;
     }
 
+    
    /* public static IntervaloFunction parseFuncaoIntervalo(FolhadeCalculo folha, String nomeFuncao, String Operando) throws Exception{
 		Intervalo intervalo = parseIntervalo(folha, Operando);
 	
@@ -99,10 +112,14 @@ public class Parser {
     }
 
 
+    
+    
     public static Literal parseLiteral(String literal) {
     	return new Literal(Integer.parseInt(literal));/* o Operando que representa o literal */
     }
 
+    
+    
     public static Referencia parseReferencia(FolhadeCalculo folha, String referencia) throws Exception{
 			return new Referencia();
     }

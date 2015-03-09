@@ -38,7 +38,7 @@ class FuncaoIntervalo extends Funcao;
 
 class FuncaoBinaria extends Funcao;
 	
-class SUM extends FuncaoBinaria;
+class ADD extends FuncaoBinaria;
 
 class DIV extends FuncaoBinaria;
 
@@ -92,7 +92,7 @@ relation FolhadeCalculoContainsCelula {
 relation CelulaContainsConteudo {
 	Celula playsRole celula; 
 	Conteudo playsRole conteudo{
-		multiplicity *;
+		multiplicity 1;
 	}
 }
 
@@ -120,10 +120,4 @@ relation FuncaoBinariaContainsArgumento2 {
 	}
 }
 
-relation UtilizadorContainsFolhas {
-	Utilizador playsRole utilizador;
-	FolhadeCalculo playsRole folhascriadas{
-		multiplicity *;
-	} 
-}
 

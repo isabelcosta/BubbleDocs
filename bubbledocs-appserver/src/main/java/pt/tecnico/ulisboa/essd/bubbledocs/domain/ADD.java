@@ -1,8 +1,8 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
-public class SUM extends SUM_Base {
+public class ADD extends ADD_Base {
     
-    public SUM() {
+    public ADD() {
         super();
     }
     
