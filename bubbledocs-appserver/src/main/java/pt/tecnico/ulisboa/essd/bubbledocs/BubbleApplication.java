@@ -1,4 +1,4 @@
-
+/*
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import java.util.Set;
@@ -45,9 +45,24 @@ public class BubbleApplication {
 			//Escrever a informacao sobre todos os utilizadores registados na aplicacao.
 			//--------------------------------------------------------------------------
 			
+			System.out.println("2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.");
 			
+			//FenixFramework.getDomainRoot().getUtilizadoresSet();
 			
+			//--------------------------------------------------------------------------
+			//Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.
+			//--------------------------------------------------------------------------
 			
+			System.out.println("3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.");
+			
+			//--------------------------------------------------------------------------
+			//Aceder as folhas de calculo do utilizador pf. 
+			//Utilizando a funcionalidade de exportacao,converte cada folha de calculo 
+			//para o formato XML e escreve no terminal o resultado ´
+			//desta conversao. 
+			//--------------------------------------------------------------------------
+			
+			System.out.println("4. Escreve no terminal o resultado da conversao das folhas de pf a partir da exportacaoXML.");
 			
 			
 			tm.commit();
@@ -85,16 +100,17 @@ public class BubbleApplication {
 		//-->Referencia para a celula (5, 6) na posicao (1, 1)
 //		Referencia conteudoReferencia = new Referencia(5,6);
 		Funcao conteudoReferencia = Parser.parseConteudo("=5;6");
-		folha.addCelula(new Celula(1,1, conteudoReferencia));
+		folha.modificarCelula(new Celula(1,1, conteudoReferencia));
 		
 		//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
 		Funcao conteudoAdd = Parser.parseConteudo("=ADD(2,3;4)");
-		folha.addCelula(new Celula(5,6,conteudoAdd));
+		folha.modificarCelula(new Celula(5,6,conteudoAdd));
 		
 		//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
 		Funcao conteudoDiv = Parser.parseConteudo("=DIV(1;1,3;4)");
-		folha.addCelula(new Celula(2,2,conteudoDiv));
+		folha.modificarCelula(new Celula(2,2,conteudoDiv));
 		
 		}
     
 	}
+*/
