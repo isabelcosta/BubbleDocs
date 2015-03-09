@@ -3,11 +3,8 @@ package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 public class FolhadeCalculo extends FolhadeCalculo_Base {
     
-    public FolhadeCalculo(String dono,String nome, int linhas, int colunas) {
-    	this.setDono(dono);
-    	this.setNomeFolha(nome);
-    	this.setLinhas(linhas);
-    	this.setColunas(colunas);
+    public FolhadeCalculo() {
+    	 super();
     }
     
     //FOLHA
