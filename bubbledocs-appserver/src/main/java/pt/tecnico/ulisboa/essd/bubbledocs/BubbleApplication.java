@@ -1,4 +1,4 @@
-/*
+
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import java.util.Set;
@@ -41,6 +41,15 @@ public class BubbleApplication {
 			for(Utilizador user : ){}
 
 
+			//--------------------------------------------------------------------------
+			//Escrever a informacao sobre todos os utilizadores registados na aplicacao.
+			//--------------------------------------------------------------------------
+			
+			
+			
+			
+			
+			
 			tm.commit();
 			committed = true;
 		}catchSystemException| NotSupportedException | RollbackException| HeuristicMixedException | HeuristicRollbackException ex) {
@@ -74,7 +83,8 @@ public class BubbleApplication {
 		folha.addCelula(new Celula(3, 4, conteudoLiteral));
 		
 		//-->Referencia para a celula (5, 6) na posicao (1, 1)
-		Referencia conteudoReferencia = new Referencia(5,6);
+//		Referencia conteudoReferencia = new Referencia(5,6);
+		Funcao conteudoReferencia = Parser.parseConteudo("=5;6");
 		folha.addCelula(new Celula(1,1, conteudoReferencia));
 		
 		//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
@@ -85,8 +95,6 @@ public class BubbleApplication {
 		Funcao conteudoDiv = Parser.parseConteudo("=DIV(1;1,3;4)");
 		folha.addCelula(new Celula(2,2,conteudoDiv));
 		
-    }
+		}
     
 	}
-
-*/
