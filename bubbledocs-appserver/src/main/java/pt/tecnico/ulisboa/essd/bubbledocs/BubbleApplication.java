@@ -23,8 +23,21 @@ public class BubbleApplication {
 		try {
 			tm.begin();
 
-			Utilizador utilizador = Utilizador
+		 FolhadeCalculo fc = FolhadeCalculo.getInstance();
+			 populateDomain(fc);
 
+	    	//remover folha1 do utilizador pf
+	    	if(folha1.isDono("pf"))
+	    		user1.removeFolha("Notas ES");
+	    	else
+	    		System.out.println("Não é o dono da folha!");
+	    	
+	    	//Escrever os nomes e ids todas as folhas de calculo do pf
+	    	System.out.println("Estas sao as minhas folhas:");
+	    	for(FolhadeCalculo folha : user1.getFolhascriadasSet()){
+	    		System.out.println("Nome:"+ folha.getNomeFolha()+ "Id:" + folha.getId());
+	    			   	
+	    	}
 			for(Utilizador user : ){}
 
 
