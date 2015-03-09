@@ -1,4 +1,4 @@
-/*
+
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import java.util.Set;
@@ -39,27 +39,55 @@ public class BubbleApplication {
 	    			   	
 	    	}
 			for(Utilizador user : ){}
-
-
+			
 			//--------------------------------------------------------------------------
-			//Escrever a informacao sobre todos os utilizadores registados na aplicacao.
+			//1. Inserir os dados relativos ao cenario de teste na base de dados caso o estado persistente ´
+			//   da aplicacao nao esteja inicializado.
+			//--------------------------------------------------------------------------
+	       	
+			Utilizador user1 = new Utilizador("Paul Door", "pf", "sub");
+	    	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
+	    	FolhadeCalculo folha = new FolhadeCalculo("pf", "Notas ES", 300, 20);
+	    	
+	    	//-->Literal 5 na posicao (3, 4)
+			Literal conteudoLiteral = new Literal(new Integer.parseInt(5));
+			folha.addCelula(new Celula(3, 4, conteudoLiteral));
+			
+			//-->Referencia para a celula (5, 6) na posicao (1, 1)
+//			Referencia conteudoReferencia = new Referencia(5,6);
+			Funcao conteudoReferencia = Parser.parseConteudo("=5;6");
+			folha.modificarCelula(new Celula(1,1, conteudoReferencia));
+			
+			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
+			Funcao conteudoAdd = Parser.parseConteudo("=ADD(2,3;4)");
+			folha.modificarCelula(new Celula(5,6,conteudoAdd));
+			
+			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
+			Funcao conteudoDiv = Parser.parseConteudo("=DIV(1;1,3;4)");
+			folha.modificarCelula(new Celula(2,2,conteudoDiv));
+			
+			//--------------------------------------------------------------------------
+			//2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.
+			//	 Mostro as passwords tambem???? <----  <-----  <-----  <------ <----- <----- <----- <---- <----- <-----
 			//--------------------------------------------------------------------------
 			
 			System.out.println("2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.");
 			
-			//FenixFramework.getDomainRoot().getUtilizadoresSet();
+			for (Utilizador user: FenixFramework.getDomainRoot().getUtilizadoresSet()){
+				System.out.println("Nome: " + user.getNome() + " ; Username: " + user.getUsername() + " ; Password: " + user.getPassword());
+			}
 			
 			//--------------------------------------------------------------------------
-			//Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.
+			//3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.
 			//--------------------------------------------------------------------------
 			
 			System.out.println("3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.");
 			
 			//--------------------------------------------------------------------------
-			//Aceder as folhas de calculo do utilizador pf. 
-			//Utilizando a funcionalidade de exportacao,converte cada folha de calculo 
-			//para o formato XML e escreve no terminal o resultado ´
-			//desta conversao. 
+			//4. Aceder as folhas de calculo do utilizador pf. 
+			//   Utilizando a funcionalidade de exportacao,converte cada folha de calculo 
+			//   para o formato XML e escreve no terminal o resultado ´
+			//   desta conversao. 
 			//--------------------------------------------------------------------------
 			
 			System.out.println("4. Escreve no terminal o resultado da conversao das folhas de pf a partir da exportacaoXML.");
@@ -113,4 +141,3 @@ public class BubbleApplication {
 		}
     
 	}
-*/
