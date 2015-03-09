@@ -15,11 +15,10 @@ public class BubbleApplication {
 
 	public static void main(String[] args) {
 
-		System.out.println("Welcome to Bubble application");
+		System.out.println("Welcome to Bubble application!!");
 
 		TransactionManager tm = FenixFramework.getTransactionManager();
 		boolean committed = false;
-
 
 		try {
 			tm.begin();
@@ -42,15 +41,39 @@ public class BubbleApplication {
 				}
 			}
 		}
+	
+		// inicia o estado persistente da aplicacao caso este nao esteja inicializado
+		// dados relativos ao cenario de teste
+	
 		static void populateDomain() {
-    	if (!pb.getPersonSet().isEmpty())
+    
+		if (!pb.getPersonSet().isEmpty())
     	    return;
 
-    	// setup the initial state if phonebook is empty
-
-    	Utilizador user1 = new Utilizador(Paul Door, pf, sub);
+       	Utilizador user1 = new Utilizador(Paul Door, pf, sub);
     	Utilizador user2 = new Utilizador(Step Rabbit, ra, cor);
     	FolhadeCalculo folha = new FolhadeCalculo(pf, Notas ES, 300, 20);
 
+    	//--------------Inserir conteudo na folha---------------
+    	
+    	//-->Literal 5 na posicao (3, 4)
+		Literal conteudoLiteral = new Literal(new Integer.parseInt(5));
+		folha.addCelula(new Celula(3, 4, conteudoLiteral));
+		
+		//-->Referencia para a celula (5, 6) na posicao (1, 1)
+		Referencia conteudoReferencia = new Referencia(5,6);
+		folha.addCelula(new Celula(1,1, conteudoReferencia));
+		
+		//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
+		Funcao conteudoAdd = Parser.parseConteudo("=ADD(2,3;4)");
+		folha.addCelula(new Celula(5,6,conteudoAdd));
+		
+		//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
+		Funcao conteudoDiv = Parser.parseConteudo("=DIV(1;1,3;4)");
+		folha.addCelula(new Celula(2,2,conteudoDiv));
+		
     }
-	} */
+    
+	}
+
+*/
