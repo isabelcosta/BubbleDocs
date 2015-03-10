@@ -20,6 +20,7 @@ public class DIV extends DIV_Base {
     	Element argumento2Element = new Element("arg2");				// |	.Arg2ExportedToXML
     	element.addContent(argumento2Element);							// |
     																	// ---------
+//    	System.out.println(getArgumento1(). + " ARG1");
     	argumento1Element.addContent(getArgumento1().exportToXML());	//
     	argumento2Element.addContent(getArgumento2().exportToXML());	//
     	

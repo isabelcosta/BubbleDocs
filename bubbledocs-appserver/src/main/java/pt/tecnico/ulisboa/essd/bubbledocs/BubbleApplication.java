@@ -1,6 +1,7 @@
 
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
+import java.text.Format;
 import java.util.Set;
 
 import javax.transaction.HeuristicMixedException;
@@ -10,6 +11,7 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 
 import org.apache.ojb.jdo.jdoql.ThisExpression;
+import org.jdom2.output.XMLOutputter;
 
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
@@ -54,6 +56,7 @@ public class BubbleApplication {
 			String conteudoLiteral = "5";
 			folha1.modificarCelula(3, 4, conteudoLiteral);
 			
+			/*
 			//-->Referencia para a celula (5, 6) na posicao (1, 1)
 			String conteudoReferencia = "=5;6";
 			folha1.modificarCelula(1,1, conteudoReferencia);
@@ -61,10 +64,9 @@ public class BubbleApplication {
 			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
 			String conteudoAdd = "=ADD(2,3;4)";
 			folha1.modificarCelula(5,6,conteudoAdd);
-			
 			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
 			String conteudoDiv = "=DIV(1;1,3;4)";
-			folha1.modificarCelula(2,2,conteudoDiv);
+			folha1.modificarCelula(2,2,conteudoDiv);*/
 			
 			//--------------------------------------------------------------------------
 			//2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.
@@ -116,7 +118,7 @@ public class BubbleApplication {
 			System.out.println("---------------------------------");
 			
 			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
-	    	
+	/*
 	    	//if(folha1.isDono("pf"))
 	    		//FolhadeCalculo folha = new FolhadeCalculo();
 	    		
@@ -134,7 +136,7 @@ public class BubbleApplication {
 	    	
 	    	else
 	    		System.out.println("Não é o dono da folha!");
-
+*/
 			//--------------------------------------------------------------------------
 			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
@@ -153,6 +155,11 @@ public class BubbleApplication {
 			//--------------------------------------------------------------------------------------------------------------
 
 			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
+			
+			org.jdom2.Document doc = convertToXML(folha1);
+
+			printDomainInXML(doc);
+			
 			
 			
 			//--------------------------------------------------------------------------
@@ -182,7 +189,24 @@ public class BubbleApplication {
 			}
 		}
 	
-	
+	@Atomic
+    public static org.jdom2.Document convertToXML(FolhadeCalculo folha) { 		//ALTERAR
+		
+		// FolhadeCalculo pb = FolhadeCalculo.getInstance();
+		
+		org.jdom2.Document jdomDoc = new org.jdom2.Document();
+
+		jdomDoc.setRootElement(folha.exportToXML());
+
+		return jdomDoc;
+    }
+
+    @Atomic
+    public static void printDomainInXML(org.jdom2.Document jdomDoc) {
+		XMLOutputter xml = new XMLOutputter();
+		xml.setFormat(org.jdom2.output.Format.getPrettyFormat());
+		System.out.println(xml.outputString(jdomDoc));
+    }
 	//Metodo que cria a  folha de calculo
 	
 	public void criaFolha(String criador, String nome, int linha, int coluna){

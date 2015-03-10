@@ -36,7 +36,10 @@ public class Parser {
 		    String funcao = conteudo.substring(1);    			// remove =
 		    String nomeFuncao = parseNomeFuncao(funcao);
 		    String Operando = parseOperandoFuncao(funcao);
-	
+//		    System.out.println(funcao + " funcao");
+//		    System.out.println(nomeFuncao + " Nomefuncao");
+//		    System.out.println(Operando + " operando");
+		    
 		    if (conteudo.contains(","))
 		    	return parseFuncaoBinaria(folha, nomeFuncao, Operando);
 		    

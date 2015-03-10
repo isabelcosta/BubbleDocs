@@ -1,5 +1,9 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+import org.jdom2.Element;
+
+import pt.ist.fenixframework.FenixFramework;
+
 
 public class FolhadeCalculo extends FolhadeCalculo_Base {
     
@@ -7,6 +11,34 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	 super();
     }
     
+    public Element exportToXML() {
+		Element element = new Element("folhadecalculo");
+	
+		element.setAttribute("dono", getDono());
+		element.setAttribute("nome", getNomeFolha());
+		element.setAttribute("linhas", Integer.toString(getLinhas()));
+		element.setAttribute("colunas", Integer.toString(getColunas()));
+		
+		
+		Element celulasElement = new Element("celulas");
+		element.addContent(celulasElement);
+	
+		for (Celula celula : getCelulaSet()) {
+			celulasElement.addContent(celula.exportToXML());
+		}
+		
+		return element;
+    }
+
+    public void importFromXML(Element folhadecalculoElement) {
+    	Element folhadecalculo = folhadecalculoElement.getChild("folhadecalculo");
+	
+    	for (Element celula : folhadecalculo.getChildren("celulas")) {
+    	    Celula c = new Celula(0, 0, null);
+    	    c.importFromXML(celula);
+    	    addCelula(c);
+    	}
+    }
     
     //FOLHA
     /* Apaga todas as associacoes ligadas a esta folha */
@@ -71,6 +103,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	
     	try {
 			 c= Parser.parseConteudo(this, conteudoAcriar);
+			 System.out.println(c.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -86,5 +119,13 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 
     	return true; 
     }
+
+//	public static FolhadeCalculo getInstance() {
+//		FolhadeCalculo pb = FenixFramework.getDomainRoot().getFolhasdecalculo();
+//	if (pb == null)
+//	    pb = new FolhadeCalculo();
+//
+//	return pb;
+//    }
     
 }
