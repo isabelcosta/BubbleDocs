@@ -9,6 +9,8 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 
+import org.apache.ojb.jdo.jdoql.ThisExpression;
+
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
@@ -190,7 +192,7 @@ public class BubbleApplication {
 		
 		FenixFramework.getDomainRoot().addFolhasdecalculo(folha);
 		
-	}
+		}
 	
 	//Metodo que remove uma folha 
 
