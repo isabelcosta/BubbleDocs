@@ -51,6 +51,13 @@ public class BubbleApplication {
 	    	folha1.setLinhas(300);
 	    	folha1.setColunas(20);
 	    	FenixFramework.getDomainRoot().addFolhasdecalculo(folha1);
+
+	    	FolhadeCalculo folha2 = new FolhadeCalculo();
+	    	folha2.setDono("pf");
+	    	folha2.setNomeFolha("Folha Teste");
+	    	folha2.setLinhas(300);
+	    	folha2.setColunas(20);
+	    	FenixFramework.getDomainRoot().addFolhasdecalculo(folha2);	    	
 	    	
 	    	//-->Literal 5 na posicao (3, 4)
 			String conteudoLiteral = "5";
@@ -70,7 +77,6 @@ public class BubbleApplication {
 			
 			//--------------------------------------------------------------------------
 			//2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.
-			//	 Mostro as passwords tambem???? <----  <-----  <-----  <------ <----- <----- <----- <---- <----- <-----
 			//--------------------------------------------------------------------------
 			
 			System.out.println("---------------------------------");
@@ -122,6 +128,8 @@ public class BubbleApplication {
 	    	//if(folha1.isDono("pf"))
 	    		//FolhadeCalculo folha = new FolhadeCalculo();
 	    		
+=======
+>>>>>>> abec183 delete celula DONE!
 
 	    		if(folha1.getDono().equals("pf")){
 
@@ -141,12 +149,14 @@ public class BubbleApplication {
 			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
 	    	
+	    	System.out.println("---------------------------------");	
+	    		
 	    	System.out.println("6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
 
 	    	System.out.println("Estas sao as minhas folhas:");
 	    	for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
-	    		if(folha.getDono().equals(user1))
-	    			System.out.println("Nome:"+ folha.getNomeFolha()+ "Id:" + folha.getID());
+	    		if(folha.getDono().equals("pf"))
+	    			System.out.println("Nome: " + folha.getNomeFolha() + " Id: " + folha.getID());
 	    	}
 	    	
 			//--------------------------------------------------------------------------------------------------------------

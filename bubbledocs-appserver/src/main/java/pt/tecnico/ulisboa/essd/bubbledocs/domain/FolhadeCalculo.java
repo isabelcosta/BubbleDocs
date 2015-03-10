@@ -44,8 +44,8 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     /* Apaga todas as associacoes ligadas a esta folha */
     public void apagarFolha(){
     	for (Celula toRemove : this.getCelulaSet()){
-    		toRemove.apagarConteudo();
-    		this.removeCelula(toRemove);
+    		toRemove.delete();
+    		//this.removeCelula(toRemove);
     	}
     		
     }

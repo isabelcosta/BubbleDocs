@@ -13,8 +13,12 @@ public class Celula extends Celula_Base {
 		this.setConteudo(conteudo);
 	}
 
-	public void apagarConteudo() {
-		// TODO Auto-generated method stub
+	public void delete() {
+		
+		getConteudo().delete();
+		setConteudo(null);
+		setFolhadecalculoC(null);
+		deleteDomainObject();
 		
 	}
 
