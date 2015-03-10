@@ -165,6 +165,7 @@ public class BubbleApplication {
 	
 	public void criaFolha(String criador, String nome, int linha, int coluna){
 		
+		
 		FolhadeCalculo folha = new FolhadeCalculo();
 		
 		FenixFramework.getDomainRoot().addFolhasdecalculo(folha);
@@ -172,9 +173,20 @@ public class BubbleApplication {
 	}
 	
 	//Metodo que remove uma folha 
-	
-	
-	
 
-    
+	public void removeFolha(String nome, String username){
+
+		FolhadeCalculo folhas = new FolhadeCalculo();
+
+		if(folhas.getNomeFolha().equals(username) || username.equals("root")){
+
+			for (FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+				if(folha.getNomeFolha().equals(nome)){
+					folha.apagarFolha();
+					FenixFramework.getDomainRoot().removeFolhasdecalculo(folha);
+
+				}
+			}	
+		}
 	}
+}
