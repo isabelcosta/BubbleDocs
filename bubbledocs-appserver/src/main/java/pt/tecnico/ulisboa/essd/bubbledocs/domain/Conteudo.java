@@ -7,7 +7,27 @@ public class Conteudo extends Conteudo_Base {
     public Conteudo() {
         super();
     }
-    
+<<<<<<< HEAD
+
+	public Element exportToXML() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void importToXML() {
+		// TODO Auto-generated method stub
+		
+	}
+
+    /*
+     * 
+     * tirei os metodos import e export
+     * 
+     * para ele chamar directamente nas classes filhas
+     * 
+     * */
+=======
+>>>>>>> delete celula DONE!
     public void delete() {
     	setCelula(null);
     	deleteDomainObject();

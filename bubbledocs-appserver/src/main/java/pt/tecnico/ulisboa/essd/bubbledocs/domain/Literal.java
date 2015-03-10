@@ -17,7 +17,11 @@ public class Literal extends Literal_Base {
 		
 		Element element = new Element("literal");
 		
+<<<<<<< Upstream, based on origin/master
 		element.setAttribute("valor", Integer.toString(getLiteral()));
+=======
+		element.setAttribute("valor", Integer.toString(getValor()));
+>>>>>>> 0c33ff7 erro
 		
 		return element;
 		

@@ -124,12 +124,22 @@ public class BubbleApplication {
 			System.out.println("---------------------------------");
 			
 			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
+<<<<<<< Upstream, based on origin/master
 	/*
 	    	//if(folha1.isDono("pf"))
 	    		//FolhadeCalculo folha = new FolhadeCalculo();
 	    		
 =======
 >>>>>>> abec183 delete celula DONE!
+=======
+<<<<<<< HEAD
+	/*
+	    	//if(folha1.isDono("pf"))
+	    		//FolhadeCalculo folha = new FolhadeCalculo();
+	    		
+=======
+>>>>>>> delete celula DONE!
+>>>>>>> 0c33ff7 erro
 
 	    		if(folha1.getDono().equals("pf")){
 
