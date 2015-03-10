@@ -28,7 +28,10 @@ public class BubbleApplication {
 			//1. Inserir os dados relativos ao cenario de teste na base de dados caso o estado persistente ´
 			//   da aplicacao nao esteja inicializado.
 			//--------------------------------------------------------------------------
-	       	
+			System.out.println("---------------------------------");
+			
+			System.out.println("1. Inserir dados relativos ao cenario de teste na base de dados.");
+			
 			Utilizador user1 = new Utilizador("Paul Door", "pf", "sub");
 	    	FenixFramework.getDomainRoot().addUtilizadores(user1);
 	    	
@@ -39,26 +42,27 @@ public class BubbleApplication {
 	    	FenixFramework.getDomainRoot().addFolhasdecalculo(folha1);
 	    	
 	    	//-->Literal 5 na posicao (3, 4)
-			Literal conteudoLiteral = new Literal(new Integer.parseInt(5));
-			folha.addCelula(new Celula(3, 4, conteudoLiteral));
+			String conteudoLiteral = "5";
+			folha1.criarCelula(3, 4, conteudoLiteral);
 			
 			//-->Referencia para a celula (5, 6) na posicao (1, 1)
-//			Referencia conteudoReferencia = new Referencia(5,6);
-			Funcao conteudoReferencia = Parser.parseConteudo("=5;6");
-			folha.modificarCelula(new Celula(1,1, conteudoReferencia));
+			String conteudoReferencia = "=5;6";
+			folha1.criarCelula(1,1, conteudoReferencia);
 			
 			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
-			Funcao conteudoAdd = Parser.parseConteudo("=ADD(2,3;4)");
-			folha.modificarCelula(new Celula(5,6,conteudoAdd));
+			String conteudoAdd = "=ADD(2,3;4)";
+			folha1.criarCelula(5,6,conteudoAdd);
 			
 			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
-			Funcao conteudoDiv = Parser.parseConteudo("=DIV(1;1,3;4)");
-			folha.modificarCelula(new Celula(2,2,conteudoDiv));
+			String conteudoDiv = "=DIV(1;1,3;4)";
+			folha1.criarCelula(2,2,conteudoDiv);
 			
 			//--------------------------------------------------------------------------
 			//2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.
 			//	 Mostro as passwords tambem???? <----  <-----  <-----  <------ <----- <----- <----- <---- <----- <-----
 			//--------------------------------------------------------------------------
+			
+			System.out.println("---------------------------------");
 			
 			System.out.println("2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.");
 			
@@ -69,20 +73,39 @@ public class BubbleApplication {
 			//--------------------------------------------------------------------------
 			//3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.
 			//--------------------------------------------------------------------------
+			System.out.println("---------------------------------");
 			
 			System.out.println("3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.");
 			
+			System.out.println("Nomes das folhas de calculo de pf:");
+			
+	    	for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+	    		if(folha.getDono().equals("pf"))
+	    			System.out.println("Nome: " + folha.getNomeFolha());
+	    	}
+	    	
+			System.out.println("Nomes das folhas de calculo de ra:");
+			
+	    	for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+	    		if(folha.getDono().equals("ra"))
+	    			System.out.println("Nome: " + folha.getNomeFolha());
+	    	}	
+	    	
 			//--------------------------------------------------------------------------
-			//4.Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
+			//4. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
 			//--------------------------------------------------------------------------
+			
+			System.out.println("---------------------------------");
 			
 			System.out.println("4.Aceder as folhas de calculo do utilizador pf. ");
 		
 			
 			//--------------------------------------------------------------------------
-			//5.Remover a folha de calculo Notas ES do utilizador pf.
+			//5. Remover a folha de calculo Notas ES do utilizador pf.
 			//--------------------------------------------------------------------------
-	    	
+			
+			System.out.println("---------------------------------");
+			
 			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
 	    	
 	    	if(folha1.isDono("pf"))
@@ -91,7 +114,7 @@ public class BubbleApplication {
 	    		System.out.println("Não é o dono da folha!");
 
 			//--------------------------------------------------------------------------
-			//6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
+			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
 	    	
 	    	System.out.println("6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
@@ -103,22 +126,22 @@ public class BubbleApplication {
 	    	}
 	    	
 			//--------------------------------------------------------------------------------------------------------------
-			//7.Utilizar a funcionalidade de importacao para criar uma folha de calculo semelhante a exportada anteriormente
-	    	//	e removida agora.
+			//7. Utilizar a funcionalidade de importacao para criar uma folha de calculo semelhante a exportada anteriormente
+	    	//	 e removida agora.
 			//--------------------------------------------------------------------------------------------------------------
 
 			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
 			
 			
 			//--------------------------------------------------------------------------
-			//8.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
+			//8. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
 	    	
 	    	System.out.println("8.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
 			
 	    	
 	    	//--------------------------------------------------------------------------
-			//9.Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
+			//9. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
 			//--------------------------------------------------------------------------
 			
 			System.out.println("9.Aceder as folhas de calculo do utilizador pf. ");
