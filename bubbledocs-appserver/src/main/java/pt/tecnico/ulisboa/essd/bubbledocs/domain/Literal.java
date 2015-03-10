@@ -6,8 +6,8 @@ public class Literal extends Literal_Base {
         super();
     }
     
-    /* public Literal(Integer literal) {
-		this.setliteral(literal);
-	} */
+     public Literal(Integer literal) {
+		this.setLiteral(literal);
+	} 
 
 }

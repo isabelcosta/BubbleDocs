@@ -32,8 +32,8 @@ public class Parser {
     
     public static Conteudo parseConteudo(FolhadeCalculo folha, String conteudo) throws Exception {
 		
-    	if (conteudo.contains("(")) {                 // é uma função
-		    String funcao = conteudo.substring(1);    // remove =
+    	if (conteudo.contains("(")) {                 			// é uma função
+		    String funcao = conteudo.substring(1);    			// remove =
 		    String nomeFuncao = parseNomeFuncao(funcao);
 		    String Operando = parseOperandoFuncao(funcao);
 	
@@ -43,7 +43,7 @@ public class Parser {
 		    /*else
 		    	return parseFuncaoIntervalo(folha, nomeFuncao, Operando); */
 		    
-		} else if (conteudo.contains("=")) {           // é uma referencia 
+		} else if (conteudo.contains("=")) {          			 // é uma referencia 
 		    return parseReferencia(folha, conteudo.substring(1));
 		
 		} else
@@ -102,6 +102,7 @@ public class Parser {
 		return null;
     } */
 
+    
     public static Argumento parseOperando(FolhadeCalculo folha, String Operando) throws Exception {
 		if (Operando.contains(";")) {
 		    return parseReferencia(folha, Operando);
@@ -115,13 +116,20 @@ public class Parser {
     
     
     public static Literal parseLiteral(String literal) {
-    	return new Literal(/*Integer.parseInt(literal)*/);  	// o Operando que representa o literal 
+    	return new Literal(Integer.parseInt(literal));  	 // o Operando que representa o literal 
     }
 
     
     
     public static Referencia parseReferencia(FolhadeCalculo folha, String referencia) throws Exception{
-			return new Referencia();
+    		int[] i = parseEndereco(referencia,folha);
+    		
+    		for (Celula c : folha.getCelulaSet()){
+    			if (c.getLinha() == i[0] && c.getColuna() == i[1]);
+    				return new Referencia(c);
+    		}
+    		
+    		return new Referencia(null);
     }
     
 
