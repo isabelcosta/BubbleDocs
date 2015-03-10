@@ -48,7 +48,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     
     //CELULAS
 
-    public void criarCelula(int linha, int coluna, String conteudoAcriar){
+    public void modificarCelula(int linha, int coluna, String conteudoAcriar){
     	Conteudo conteudo = this.criaConteudo(conteudoAcriar);
     	
     	//se a celula existir so vai alterar o conteudo

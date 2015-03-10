@@ -115,7 +115,7 @@ public class Parser {
     
     
     public static Literal parseLiteral(String literal) {
-    	return new Literal(Integer.parseInt(literal));/* o Operando que representa o literal */
+    	return new Literal();  // o Operando que representa o literal 
     }
 
     
@@ -123,4 +123,6 @@ public class Parser {
     public static Referencia parseReferencia(FolhadeCalculo folha, String referencia) throws Exception{
 			return new Referencia();
     }
+    
+
 }
