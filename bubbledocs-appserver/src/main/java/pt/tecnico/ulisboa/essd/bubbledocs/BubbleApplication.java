@@ -50,19 +50,19 @@ public class BubbleApplication {
 	    	
 	    	//-->Literal 5 na posicao (3, 4)
 			String conteudoLiteral = "5";
-			folha1.criarCelula(3, 4, conteudoLiteral);
+			folha1.modificarCelula(3, 4, conteudoLiteral);
 			
 			//-->Referencia para a celula (5, 6) na posicao (1, 1)
 			String conteudoReferencia = "=5;6";
-			folha1.criarCelula(1,1, conteudoReferencia);
+			folha1.modificarCelula(1,1, conteudoReferencia);
 			
 			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
 			String conteudoAdd = "=ADD(2,3;4)";
-			folha1.criarCelula(5,6,conteudoAdd);
+			folha1.modificarCelula(5,6,conteudoAdd);
 			
 			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
 			String conteudoDiv = "=DIV(1;1,3;4)";
-			folha1.criarCelula(2,2,conteudoDiv);
+			folha1.modificarCelula(2,2,conteudoDiv);
 			
 			//--------------------------------------------------------------------------
 			//2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.
