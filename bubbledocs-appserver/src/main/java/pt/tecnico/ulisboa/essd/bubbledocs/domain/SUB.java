@@ -12,7 +12,7 @@ public class SUB extends SUB_Base {
     @Override
     public Element exportToXML() {
     	
-    	Element element = new Element("DIV");							// SUB
+    	Element element = new Element("SUB");							// SUB
     																	// --------
     	Element argumento1Element = new Element("arg1");				// |arg1
     	element.addContent(argumento1Element);							// |	.Arg1ExportedToXML

@@ -1,5 +1,8 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+import java.util.List;
+
+import org.jdom2.Attribute;
 import org.jdom2.Element;
 
 public class Celula extends Celula_Base {
@@ -30,9 +33,33 @@ public class Celula extends Celula_Base {
 
 	public void importFromXML(Element celula) {
 		// TODO Auto-generated method stub
+		/*
+		List<Element> c1 = celula.getChild("celula").getChild("conteudo").getChildren();   // lista de children pode ter: "integral", "referencia" ou "div" ou "sum" etc
 		
-//		this.getConteudo().exportToXML();
+		if (c1.get(0).getValue().equals("literal")) {
+			Literal conteudo = new Literal(c1.get(0).getAttribute("literal").getIntValue());
+		}else if(c1.get(0).equals("referencia")){
+			Referencia conteudo = new Referencia()
+		}else{
+			switch(c1.get(0).getValue()) { // nao sei se vem em string
+				case "MUL":
+				    MUL conteudo = new MUL(arg1,arg2);
+				case "DIV":
+					DIV conteudo = new DIV(arg1,arg2);
+				case "SUB":
+					SUB conteudo = new SUB(arg1,arg2);
+				case "ADD":
+					ADD conteudo = new ADD(arg1,arg2);
+				}
+			
+		}
+		
+		Celula c = new Celula(celula.getChild("celula").getAttribute("linha").getIntValue(),
+				  celula.getChild("celula").getAttribute("coluna").getIntValue(), 
+				  conteudo);
+		
 		this.getConteudo().importToXML();
+		 */
 	}
 	
     

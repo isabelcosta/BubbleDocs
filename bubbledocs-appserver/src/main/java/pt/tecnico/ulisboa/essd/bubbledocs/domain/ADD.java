@@ -11,7 +11,7 @@ public class ADD extends ADD_Base {
     @Override
     public Element exportToXML() {
     	
-    	Element element = new Element("DIV");							// ADD
+    	Element element = new Element("ADD");							// ADD
     																	// --------
     	Element argumento1Element = new Element("arg1");				// |arg1
     	element.addContent(argumento1Element);							// |	.Arg1ExportedToXML

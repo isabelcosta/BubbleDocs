@@ -13,7 +13,7 @@ public class MUL extends MUL_Base {
     @Override
     public Element exportToXML() {
     	
-    	Element element = new Element("DIV");							// MUL
+    	Element element = new Element("MUL");							// MUL
     																	// --------
     	Element argumento1Element = new Element("arg1");				// |arg1
     	element.addContent(argumento1Element);							// |	.Arg1ExportedToXML
