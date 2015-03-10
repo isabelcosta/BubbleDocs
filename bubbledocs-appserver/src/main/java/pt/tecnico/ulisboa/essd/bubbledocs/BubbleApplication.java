@@ -160,6 +160,21 @@ public class BubbleApplication {
 			}
 		}
 	
+	
+	//Metodo que cria a  folha de calculo
+	
+	public void criaFolha(String criador, String nome, int linha, int coluna){
+		
+		FolhadeCalculo folha = new FolhadeCalculo();
+		
+		FenixFramework.getDomainRoot().addFolhasdecalculo(folha);
+		
+	}
+	
+	//Metodo que remove uma folha 
+	
+	
+	
 
     
 	}
