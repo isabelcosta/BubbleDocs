@@ -17,7 +17,7 @@ public class Literal extends Literal_Base {
 		
 		Element element = new Element("literal");
 		
-		element.setAttribute("valor", Integer.toString(getValor()));
+		element.setAttribute("valor", Integer.toString(getLiteral()));
 		
 		return element;
 		

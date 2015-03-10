@@ -61,13 +61,11 @@ relation DomainRootHasBubbleApplicationUtilizadores {
   }
 }
 
-relation DomainRootHasBubbleApplicationFolhas {
-  .pt.ist.fenixframework.DomainRoot playsRole root2 {
-    multiplicity 0..1;
-  }
-  FolhadeCalculo playsRole folhasdecalculo {
-    multiplicity *;
-  }
+relation UtilizadorContainsFolhadeCalculo{
+	Utilizador playsRole utilizador;
+	FolhadeCalculo playsRole folhascriadas {
+		multiplicity *;
+	}
 }
 
 relation FolhadeCalculoContainsUtilizadoresE {
