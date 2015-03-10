@@ -23,7 +23,6 @@ public class BubbleApplication {
 		try {
 			tm.begin();
 
-			
 			//--------------------------------------------------------------------------
 			//1. Inserir os dados relativos ao cenario de teste na base de dados caso o estado persistente ´
 			//   da aplicacao nao esteja inicializado.
