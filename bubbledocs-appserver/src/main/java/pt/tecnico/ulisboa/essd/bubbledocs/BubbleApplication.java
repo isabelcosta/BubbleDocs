@@ -23,22 +23,6 @@ public class BubbleApplication {
 		try {
 			tm.begin();
 
-		 FolhadeCalculo fc = FolhadeCalculo.getInstance();
-			 populateDomain(fc);
-
-	    	//remover folha1 do utilizador pf
-	    	if(folha1.isDono("pf"))
-	    		user1.removeFolha("Notas ES");
-	    	else
-	    		System.out.println("Não é o dono da folha!");
-	    	
-	    	//Escrever os nomes e ids todas as folhas de calculo do pf
-	    	System.out.println("Estas sao as minhas folhas:");
-	    	for(FolhadeCalculo folha : user1.getFolhascriadasSet()){
-	    		System.out.println("Nome:"+ folha.getNomeFolha()+ "Id:" + folha.getId());
-	    			   	
-	    	}
-			for(Utilizador user : ){}
 			
 			//--------------------------------------------------------------------------
 			//1. Inserir os dados relativos ao cenario de teste na base de dados caso o estado persistente ´
@@ -46,8 +30,13 @@ public class BubbleApplication {
 			//--------------------------------------------------------------------------
 	       	
 			Utilizador user1 = new Utilizador("Paul Door", "pf", "sub");
+	    	FenixFramework.getDomainRoot().addUtilizadores(user1);
+	    	
 	    	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
-	    	FolhadeCalculo folha = new FolhadeCalculo("pf", "Notas ES", 300, 20);
+	    	FenixFramework.getDomainRoot().addUtilizadores(user2);
+	    	
+	    	FolhadeCalculo folha1 = new FolhadeCalculo("pf", "Notas ES", 300, 20);
+	    	FenixFramework.getDomainRoot().addFolhasdecalculo(folha1);
 	    	
 	    	//-->Literal 5 na posicao (3, 4)
 			Literal conteudoLiteral = new Literal(new Integer.parseInt(5));
@@ -84,14 +73,55 @@ public class BubbleApplication {
 			System.out.println("3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.");
 			
 			//--------------------------------------------------------------------------
-			//4. Aceder as folhas de calculo do utilizador pf. 
-			//   Utilizando a funcionalidade de exportacao,converte cada folha de calculo 
-			//   para o formato XML e escreve no terminal o resultado ´
-			//   desta conversao. 
+			//4.Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
 			//--------------------------------------------------------------------------
 			
-			System.out.println("4. Escreve no terminal o resultado da conversao das folhas de pf a partir da exportacaoXML.");
+			System.out.println("4.Aceder as folhas de calculo do utilizador pf. ");
+		
 			
+			//--------------------------------------------------------------------------
+			//5.Remover a folha de calculo Notas ES do utilizador pf.
+			//--------------------------------------------------------------------------
+	    	
+			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
+	    	
+	    	if(folha1.isDono("pf"))
+	    		user1.removeFolha("Notas ES");
+	    	else
+	    		System.out.println("Não é o dono da folha!");
+
+			//--------------------------------------------------------------------------
+			//6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
+			//--------------------------------------------------------------------------
+	    	
+	    	System.out.println("6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
+
+	    	System.out.println("Estas sao as minhas folhas:");
+	    	for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+	    		if(folha.getDono().equals(user1))
+	    			System.out.println("Nome:"+ folha.getNomeFolha()+ "Id:" + folha.getID());
+	    	}
+	    	
+			//--------------------------------------------------------------------------------------------------------------
+			//7.Utilizar a funcionalidade de importacao para criar uma folha de calculo semelhante a exportada anteriormente
+	    	//	e removida agora.
+			//--------------------------------------------------------------------------------------------------------------
+
+			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
+			
+			
+			//--------------------------------------------------------------------------
+			//8.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
+			//--------------------------------------------------------------------------
+	    	
+	    	System.out.println("8.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
+			
+	    	
+	    	//--------------------------------------------------------------------------
+			//9.Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
+			//--------------------------------------------------------------------------
+			
+			System.out.println("9.Aceder as folhas de calculo do utilizador pf. ");
 			
 			tm.commit();
 			committed = true;
@@ -107,37 +137,6 @@ public class BubbleApplication {
 			}
 		}
 	
-		// inicia o estado persistente da aplicacao caso este nao esteja inicializado
-		// dados relativos ao cenario de teste
-	
-		static void populateDomain() {
-    
-		if (!pb.getPersonSet().isEmpty())
-    	    return;
 
-       	Utilizador user1 = new Utilizador(Paul Door, pf, sub);
-    	Utilizador user2 = new Utilizador(Step Rabbit, ra, cor);
-    	FolhadeCalculo folha = new FolhadeCalculo(pf, Notas ES, 300, 20);
-
-    	//--------------Inserir conteudo na folha---------------
-    	
-    	//-->Literal 5 na posicao (3, 4)
-		Literal conteudoLiteral = new Literal(new Integer.parseInt(5));
-		folha.addCelula(new Celula(3, 4, conteudoLiteral));
-		
-		//-->Referencia para a celula (5, 6) na posicao (1, 1)
-//		Referencia conteudoReferencia = new Referencia(5,6);
-		Funcao conteudoReferencia = Parser.parseConteudo("=5;6");
-		folha.modificarCelula(new Celula(1,1, conteudoReferencia));
-		
-		//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
-		Funcao conteudoAdd = Parser.parseConteudo("=ADD(2,3;4)");
-		folha.modificarCelula(new Celula(5,6,conteudoAdd));
-		
-		//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
-		Funcao conteudoDiv = Parser.parseConteudo("=DIV(1;1,3;4)");
-		folha.modificarCelula(new Celula(2,2,conteudoDiv));
-		
-		}
     
 	}
