@@ -3,6 +3,10 @@ package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import java.util.Set;
 
+import javax.transaction.HeuristicMixedException;
+import javax.transaction.HeuristicRollbackException;
+import javax.transaction.NotSupportedException;
+import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 
 import pt.ist.fenixframework.Atomic;
@@ -37,7 +41,11 @@ public class BubbleApplication {
 	    	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
 	    	FenixFramework.getDomainRoot().addUtilizadores(user2);
 	    	
-	    	FolhadeCalculo folha1 = new FolhadeCalculo("pf", "Notas ES", 300, 20);
+	    	FolhadeCalculo folha1 = new FolhadeCalculo();
+	    	folha1.setDono("pf");
+	    	folha1.setNomeFolha("Notas ES");
+	    	folha1.setLinhas(300);
+	    	folha1.setColunas(20);
 	    	FenixFramework.getDomainRoot().addFolhasdecalculo(folha1);
 	    	
 	    	//-->Literal 5 na posicao (3, 4)
@@ -107,8 +115,21 @@ public class BubbleApplication {
 			
 			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
 	    	
-	    	if(folha1.isDono("pf"))
-	    		user1.removeFolha("Notas ES");
+	    	//if(folha1.isDono("pf"))
+	    		//FolhadeCalculo folha = new FolhadeCalculo();
+	    		
+
+	    		if(folha1.getDono().equals("pf")){
+
+	    			for (FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+	    				if(folha.getNomeFolha().equals("Notas ES")){
+	    					folha.apagarFolha();
+	    					FenixFramework.getDomainRoot().removeFolhasdecalculo(folha);
+
+	    				}
+	    			}	
+	    		}
+	    	
 	    	else
 	    		System.out.println("Não é o dono da folha!");
 
@@ -147,7 +168,7 @@ public class BubbleApplication {
 			
 			tm.commit();
 			committed = true;
-		}catchSystemException| NotSupportedException | RollbackException| HeuristicMixedException | HeuristicRollbackException ex) {
+		}catch (SystemException| NotSupportedException | RollbackException| HeuristicMixedException | HeuristicRollbackException ex) {
 			System.err.println("Error in execution of transaction: " + ex);
 		} finally {
 			if (!committed) 
@@ -173,7 +194,7 @@ public class BubbleApplication {
 	
 	//Metodo que remove uma folha 
 
-	public void removeFolha(String nome, String username){
+	/*public void removeFolha(String nome, String username){
 
 		FolhadeCalculo folhas = new FolhadeCalculo();
 
@@ -187,5 +208,5 @@ public class BubbleApplication {
 				}
 			}	
 		}
-	}
+	}*/
 }
