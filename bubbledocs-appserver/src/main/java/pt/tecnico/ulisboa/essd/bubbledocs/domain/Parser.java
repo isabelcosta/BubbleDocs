@@ -76,13 +76,13 @@ public class Parser {
 	
 		switch(nomeFuncao) {
 			case "MUL":
-			    return new MUL();
+			    return new MUL(arg1,arg2);
 			case "DIV":
-			    return new DIV();
+			    return new DIV(arg1,arg2);
 			case "SUB":
-			    return new SUB();
+			    return new SUB(arg1,arg2);
 			case "ADD":
-				return new ADD();
+				return new ADD(arg1,arg2);
 			}
 		
 		return null;
@@ -115,7 +115,7 @@ public class Parser {
     
     
     public static Literal parseLiteral(String literal) {
-    	return new Literal();  // o Operando que representa o literal 
+    	return new Literal(/*Integer.parseInt(literal)*/);  	// o Operando que representa o literal 
     }
 
     
