@@ -21,10 +21,14 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.*;
 
 public class BubbleApplication {
 
+	private int counter = 0;
+	
 	public static void main(String[] args) {
 
 		System.out.println("Welcome to Bubble application!!");
-
+		
+		
+		
 		TransactionManager tm = FenixFramework.getTransactionManager();
 		boolean committed = false;
 
@@ -50,14 +54,7 @@ public class BubbleApplication {
 	    	folha1.setNomeFolha("Notas ES");
 	    	folha1.setLinhas(300);
 	    	folha1.setColunas(20);
-	    	FenixFramework.getDomainRoot().addFolhasdecalculo(folha1);
-
-	    	FolhadeCalculo folha2 = new FolhadeCalculo();
-	    	folha2.setDono("pf");
-	    	folha2.setNomeFolha("Folha Teste");
-	    	folha2.setLinhas(300);
-	    	folha2.setColunas(20);
-	    	FenixFramework.getDomainRoot().addFolhasdecalculo(folha2);	    	
+	    	
 	    	
 	    	//-->Literal 5 na posicao (3, 4)
 			String conteudoLiteral = "5";
@@ -77,6 +74,7 @@ public class BubbleApplication {
 			
 			//--------------------------------------------------------------------------
 			//2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.
+			//	 Mostro as passwords tambem???? <----  <-----  <-----  <------ <----- <----- <----- <---- <----- <-----
 			//--------------------------------------------------------------------------
 			
 			System.out.println("---------------------------------");
@@ -96,17 +94,17 @@ public class BubbleApplication {
 			
 			System.out.println("Nomes das folhas de calculo de pf:");
 			
-	    	for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+	    	/*for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
 	    		if(folha.getDono().equals("pf"))
 	    			System.out.println("Nome: " + folha.getNomeFolha());
-	    	}
+	    	}*/
 	    	
 			System.out.println("Nomes das folhas de calculo de ra:");
 			
-	    	for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+	    	/*for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
 	    		if(folha.getDono().equals("ra"))
 	    			System.out.println("Nome: " + folha.getNomeFolha());
-	    	}	
+	    	}	*/
 	    	
 			//--------------------------------------------------------------------------
 			//4. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
@@ -124,22 +122,10 @@ public class BubbleApplication {
 			System.out.println("---------------------------------");
 			
 			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
-<<<<<<< Upstream, based on origin/master
 	/*
 	    	//if(folha1.isDono("pf"))
 	    		//FolhadeCalculo folha = new FolhadeCalculo();
 	    		
-=======
->>>>>>> abec183 delete celula DONE!
-=======
-<<<<<<< HEAD
-	/*
-	    	//if(folha1.isDono("pf"))
-	    		//FolhadeCalculo folha = new FolhadeCalculo();
-	    		
-=======
->>>>>>> delete celula DONE!
->>>>>>> 0c33ff7 erro
 
 	    		if(folha1.getDono().equals("pf")){
 
@@ -159,15 +145,13 @@ public class BubbleApplication {
 			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
 	    	
-	    	System.out.println("---------------------------------");	
-	    		
 	    	System.out.println("6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
 
 	    	System.out.println("Estas sao as minhas folhas:");
-	    	for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
-	    		if(folha.getDono().equals("pf"))
-	    			System.out.println("Nome: " + folha.getNomeFolha() + " Id: " + folha.getID());
-	    	}
+	    	/*for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+	    		if(folha.getDono().equals(user1))
+	    			System.out.println("Nome:"+ folha.getNomeFolha()+ "Id:" + folha.getID());
+	    	}*/
 	    	
 			//--------------------------------------------------------------------------------------------------------------
 			//7. Utilizar a funcionalidade de importacao para criar uma folha de calculo semelhante a exportada anteriormente
@@ -227,39 +211,34 @@ public class BubbleApplication {
 		xml.setFormat(org.jdom2.output.Format.getPrettyFormat());
 		System.out.println(xml.outputString(jdomDoc));
     }
+    
+    /*
+    
 	//Metodo que cria a  folha de calculo
-	
-	public void criaFolha(String criador, String nome, int linha, int coluna){
+	public void criaFolha(String criador, String nome, int linhas, int colunas){
+		
+		for(Utilizador u : FenixFramework.getDomainRoot().getUtilizadoresSet())
+			if (u.getNome().equals(criador)){
+				u.criaFolha(nome, linhas, colunas , counter);
+				counter++;
+			}
 		
 		
-		FolhadeCalculo folha = new FolhadeCalculo();
-		
-		FenixFramework.getDomainRoot().addFolhasdecalculo(folha);
 		
 		}
+	
 	
 	//Metodo que remove uma folha 
+	public void removeFolha(String criador, String nome){
 
-
-	public void removeFolha(String nome, String userName){
-
-
-		FolhadeCalculo folhas = new FolhadeCalculo();
-
-		if(folhas.getDono().equals(userName) || userName.equals("root")){
-
-			for (FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
-				if(folha.getNomeFolha().equals(nome)){
-					folha.apagarFolha();
-					FenixFramework.getDomainRoot().removeFolhasdecalculo(folha);
-
-				}
-			}	
-		}
+		for(Utilizador u : FenixFramework.getDomainRoot().getUtilizadoresSet())
+			if (u.getNome().equals(criador))
+				u.removeFolha(nome);
+				
+		
 	}
 	
 	//Metodo que cria um cliente 
-	
 	public void criaUtilizador(String nomeUtilizador,String userName, String password){
 		
 		Utilizador utilizador = new Utilizador(nomeUtilizador, userName, password);
@@ -269,24 +248,19 @@ public class BubbleApplication {
 
 	
 	//Metodo que remove um Utilizador e todas as folhas que ele contêm
-
+	
 	public void removeUtilizador(String userName){
 
 		if(userName.equals("root")){
 			
 			for (Utilizador utilizador : FenixFramework.getDomainRoot().getUtilizadoresSet()){
 				if(utilizador.getNome().equals(userName)){
+					utilizador.apagaFolhas();
 					FenixFramework.getDomainRoot().removeUtilizadores(utilizador);
 				
 				}
 			}
 			
-			for (FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
-				if(folha.getDono().equals(userName)){
-					folha.apagarFolha();
-					FenixFramework.getDomainRoot().removeFolhasdecalculo(folha);
-				}
-			}
 		}
-	}
+	} */
 }
