@@ -194,11 +194,13 @@ public class BubbleApplication {
 	
 	//Metodo que remove uma folha 
 
-	/*public void removeFolha(String nome, String username){
+
+	public void removeFolha(String nome, String userName){
+
 
 		FolhadeCalculo folhas = new FolhadeCalculo();
 
-		if(folhas.getNomeFolha().equals(username) || username.equals("root")){
+		if(folhas.getDono().equals(userName) || userName.equals("root")){
 
 			for (FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
 				if(folha.getNomeFolha().equals(nome)){
@@ -208,5 +210,37 @@ public class BubbleApplication {
 				}
 			}	
 		}
-	}*/
+	}
+	
+	//Metodo que cria um cliente 
+	
+	public void criaUtilizador(String nomeUtilizador,String userName, String password){
+		
+		Utilizador utilizador = new Utilizador(nomeUtilizador, userName, password);
+		
+		FenixFramework.getDomainRoot().addUtilizadores(utilizador);
+		}
+
+	
+	//Metodo que remove um Utilizador e todas as folhas que ele contêm
+
+	public void removeUtilizador(String userName){
+
+		if(userName.equals("root")){
+			
+			for (Utilizador utilizador : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+				if(utilizador.getNome().equals(userName)){
+					FenixFramework.getDomainRoot().removeUtilizadores(utilizador);
+				
+				}
+			}
+			
+			for (FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+				if(folha.getDono().equals(userName)){
+					folha.apagarFolha();
+					FenixFramework.getDomainRoot().removeFolhasdecalculo(folha);
+				}
+			}
+		}
+	}
 }
