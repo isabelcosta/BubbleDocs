@@ -17,7 +17,7 @@ public class Celula extends Celula_Base {
 
 	public void delete() {
 		
-		getConteudo().delete();
+//		getConteudo().delete();
 		setConteudo(null);
 		setFolhadecalculoC(null);
 		setReferencia(null);
