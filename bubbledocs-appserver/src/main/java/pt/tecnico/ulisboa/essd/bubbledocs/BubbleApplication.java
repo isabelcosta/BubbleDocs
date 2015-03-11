@@ -85,16 +85,16 @@ public class BubbleApplication {
 	    			String conteudoLiteral = "5";
 	    			folhaIter.modificarCelula(3, 4, conteudoLiteral);
 	    			
-	    			//-->Referencia para a celula (5, 6) na posicao (1, 1)
-	    			String conteudoReferencia = "=5;6";
-	    			folhaIter.modificarCelula(1,1, conteudoReferencia);
-	    			
 	    			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
 	    			String conteudoAdd = "=ADD(2,3;4)";
 	    			folhaIter.modificarCelula(5,6,conteudoAdd);
 	    			
+	    			//-->Referencia para a celula (5, 6) na posicao (1, 1)
+	    			String conteudoReferencia = "=5;6";
+	    			folhaIter.modificarCelula(1,1, conteudoReferencia);
+	    			
 	    			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
-	    			String conteudoDiv = "=DIV(1;1,3;4)";
+	    			String conteudoDiv = "=DIV(1;1,2)";
 	    			folhaIter.modificarCelula(2,2,conteudoDiv);
 	    			
 	    			break;
