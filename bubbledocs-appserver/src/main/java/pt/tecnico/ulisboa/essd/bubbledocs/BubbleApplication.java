@@ -66,7 +66,18 @@ public class BubbleApplication {
 				}				
 			}
 			
-	    	user1.criaFolha("Notas ES","pf",300, 20, 1);
+			boolean found = false;
+	    	for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet()){
+	    		if(folhaIter.getNomeFolha().equals("Notas ES") && folhaIter.getDono().equals("pf")){
+	    			found = true;
+	    			break;
+	    		}
+	    	}
+	    	
+	    	if(found == false){
+	    		user1.criaFolha("Notas ES","pf",300, 20, 1);
+	    	}
+	    	
 	    	
 	    	for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet()){
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
@@ -139,7 +150,19 @@ public class BubbleApplication {
 			System.out.println("---------------------------------------------------------------------------------");
 			
 			System.out.println("4.Aceder as folhas de calculo do utilizador pf. ");
-		
+
+
+			for(Utilizador userIter : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+				
+			    	for(FolhadeCalculo folhaIter : userIter.getFolhascriadasSet()){
+			    		
+						System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
+						System.out.println("-----------------------------------INIT--------------------------------");
+			    		org.jdom2.Document doc = convertToXML(folhaIter);
+						printDomainInXML(doc);
+						System.out.println("-----------------------------------END--------------------------------");
+			    	}
+			}
 			
 			//--------------------------------------------------------------------------
 			//5. Remover a folha de calculo Notas ES do utilizador pf.
@@ -149,11 +172,11 @@ public class BubbleApplication {
 			
 			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
 			
-	    	for(Utilizador user : FenixFramework.getDomainRoot().getUtilizadoresSet()){
-	    		if(user.getUsername().equals("pf")){
-	    			for(FolhadeCalculo folha : user.getFolhascriadasSet()){
+	    	for(Utilizador userTeste : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+	    		if(userTeste.getUsername().equals("pf")){
+	    			for(FolhadeCalculo folha : userTeste.getFolhascriadasSet()){
 	    				if(folha.getNomeFolha().equals("Notas ES")){
-	    					user.removeFolha("Notas ES");
+	    					userTeste.removeFolha("Notas ES");
 	    					System.out.println(" A folha foi removida! ");
 	    					break;
 	    				}
