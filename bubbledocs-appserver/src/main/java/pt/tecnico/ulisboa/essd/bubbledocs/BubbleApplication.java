@@ -49,11 +49,7 @@ public class BubbleApplication {
 	    	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
 	    	FenixFramework.getDomainRoot().addUtilizadores(user2);
 	    	
-	    	FolhadeCalculo folha1 = new FolhadeCalculo();
-	    	folha1.setDono("pf");
-	    	folha1.setNomeFolha("Notas ES");
-	    	folha1.setLinhas(300);
-	    	folha1.setColunas(20);
+	    	user1.criaFolha("pf","Notas ES", 300, 20, 1);
 	    	
 	    	for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet()){
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
@@ -135,36 +131,39 @@ public class BubbleApplication {
 			System.out.println("---------------------------------");
 			
 			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
-	/*
-	    	//if(folha1.isDono("pf"))
-	    		//FolhadeCalculo folha = new FolhadeCalculo();
-	    		
-
-	    		if(folha1.getDono().equals("pf")){
-
-	    			for (FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
+			
+	    	for(Utilizador user : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+	    		if(user.getUsername().equals("pf")){
+	    			for(FolhadeCalculo folha : user.getFolhascriadasSet()){
 	    				if(folha.getNomeFolha().equals("Notas ES")){
-	    					folha.apagarFolha();
-	    					FenixFramework.getDomainRoot().removeFolhasdecalculo(folha);
-
+	    					user.removeFolha("Notas ES");
+	    					System.out.println(" A folha foi removida! ");
+	    					break;
 	    				}
-	    			}	
+	    			}
 	    		}
+			}
 	    	
-	    	else
-	    		System.out.println("Não é o dono da folha!");
-*/
+	    	
 			//--------------------------------------------------------------------------
 			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
 	    	
+	    	System.out.println("---------------------------------");
+	    	
 	    	System.out.println("6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
 
 	    	System.out.println("Estas sao as minhas folhas:");
-	    	/*for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
-	    		if(folha.getDono().equals(user1))
-	    			System.out.println("Nome:"+ folha.getNomeFolha()+ "Id:" + folha.getID());
-	    	}*/
+	    	
+	    	for(Utilizador user : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+	    		if(user.getUsername().equals("pf")){
+	    			for(FolhadeCalculo folha : user.getFolhascriadasSet()){
+	    				if(folha.getNomeFolha().equals("Notas ES"))
+	    					System.out.println(" Nome: " + folha.getNomeFolha()+ " Id: " + folha.getID());
+	    			}
+	    			
+	    		}
+	    	}
 	    	
 			//--------------------------------------------------------------------------------------------------------------
 			//7. Utilizar a funcionalidade de importacao para criar uma folha de calculo semelhante a exportada anteriormente
@@ -173,9 +172,9 @@ public class BubbleApplication {
 
 			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
 			
-			org.jdom2.Document doc = convertToXML(folha1);
+			//org.jdom2.Document doc = convertToXML(folha1);
 
-			printDomainInXML(doc);
+			//printDomainInXML(doc);
 			
 			
 			
@@ -183,14 +182,30 @@ public class BubbleApplication {
 			//8. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
 	    	
+			System.out.println("---------------------------------");
+	    	
 	    	System.out.println("8.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
-			
+
+	    	System.out.println("Estas sao as minhas folhas:");
+	    	
+	    	for(Utilizador user : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+	    		if(user.getUsername().equals("pf")){
+	    			for(FolhadeCalculo folha : user.getFolhascriadasSet()){
+	    				if(folha.getNomeFolha().equals("Notas ES"))
+	    					System.out.println(" Nome: " + folha.getNomeFolha()+ " Id: " + folha.getID());
+	    			}
+	    			
+	    		}
+	    	}
 	    	
 	    	//--------------------------------------------------------------------------
 			//9. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
 			//--------------------------------------------------------------------------
 			
+	    	System.out.println("---------------------------------");
+	    	
 			System.out.println("9.Aceder as folhas de calculo do utilizador pf. ");
+			
 			
 			tm.commit();
 			committed = true;
