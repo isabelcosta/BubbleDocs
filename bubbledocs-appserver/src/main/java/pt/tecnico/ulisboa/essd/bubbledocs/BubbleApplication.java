@@ -1,5 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.Format;
 import java.util.Set;
 
@@ -21,7 +23,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.*;
 
 public class BubbleApplication {
 
-	private int counter = 0;
 	
 	public static void main(String[] args) {
 
@@ -158,7 +159,7 @@ public class BubbleApplication {
 						System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
 						System.out.println("-----------------------------------INIT--------------------------------");
 			    		org.jdom2.Document doc = convertToXML(folhaIter);
-						printDomainInXML(doc);
+			    		printDomainInXML(doc);
 						System.out.println("-----------------------------------END--------------------------------");
 			    	}
 			}
@@ -197,7 +198,6 @@ public class BubbleApplication {
 	    	for(Utilizador user : FenixFramework.getDomainRoot().getUtilizadoresSet()){
 	    		if(user.getUsername().equals("pf")){
 	    			for(FolhadeCalculo folha : user.getFolhascriadasSet()){
-	    				if(folha.getNomeFolha().equals("Notas ES"))
 	    					System.out.println(" Nome: " + folha.getNomeFolha()+ " Id: " + folha.getID());
 	    			}
 	    			
@@ -210,10 +210,18 @@ public class BubbleApplication {
 			//--------------------------------------------------------------------------------------------------------------
 
 			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
-			
-			//org.jdom2.Document doc = convertToXML(folha1);
 
-			//printDomainInXML(doc);
+		/*	org.jdom2.Document doc2 = convertToXML();
+
+			printDomainInXML(doc2);
+
+			recoverFromBackup(doc);
+
+			doc2 = convertToXML();
+
+			printDomainInXML(doc2);
+			}
+*/
 			
 			
 			
@@ -230,7 +238,6 @@ public class BubbleApplication {
 	    	for(Utilizador user : FenixFramework.getDomainRoot().getUtilizadoresSet()){
 	    		if(user.getUsername().equals("pf")){
 	    			for(FolhadeCalculo folha : user.getFolhascriadasSet()){
-	    				if(folha.getNomeFolha().equals("Notas ES"))
 	    					System.out.println(" Nome: " + folha.getNomeFolha()+ " Id: " + folha.getID());
 	    			}
 	    			
@@ -241,10 +248,25 @@ public class BubbleApplication {
 			//9. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
 			//--------------------------------------------------------------------------
 			
-	    	System.out.println("---------------------------------");
-	    	
-			System.out.println("9.Aceder as folhas de calculo do utilizador pf. ");
+	    	System.out.println("---------------------------------------------------------------------------------");
 			
+			System.out.println("9.Aceder as folhas de calculo do utilizador pf. ");
+
+
+			for(Utilizador userIter : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+				
+			    	for(FolhadeCalculo folhaIter : userIter.getFolhascriadasSet()){
+			    		
+						System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
+						System.out.println("-----------------------------------INIT--------------------------------");
+			    		org.jdom2.Document doc = convertToXML(folhaIter);
+			    		
+
+			    		
+						printDomainInXML(doc);
+						System.out.println("-----------------------------------END--------------------------------");
+			    	}
+			}
 			
 			tm.commit();
 			committed = true;
@@ -259,6 +281,7 @@ public class BubbleApplication {
 				}
 			}
 		}
+	
 	
 	@Atomic
     public static org.jdom2.Document convertToXML(FolhadeCalculo folha) { 		//ALTERAR
@@ -279,52 +302,11 @@ public class BubbleApplication {
 		System.out.println(xml.outputString(jdomDoc));
     }
     
-    /*
+    @Atomic
+    private static void recoverFromBackup(org.jdom2.Document jdomDoc) {
+    FolhadeCalculo folha = new FolhadeCalculo();
+
+	folha.importFromXML(jdomDoc.getRootElement());
+    }
     
-	//Metodo que cria a  folha de calculo
-	public void criaFolha(String criador, String nome, int linhas, int colunas){
-		
-		for(Utilizador u : FenixFramework.getDomainRoot().getUtilizadoresSet())
-			if (u.getNome().equals(criador)){
-				u.criaFolha(nome, linhas, colunas , counter);
-				counter++;
-			}
-		
-		
-		
-		}
-	
-	
-	//Metodo que remove uma folha 
-	public void removeFolha(String criador, String nome){
-		for(Utilizador u : FenixFramework.getDomainRoot().getUtilizadoresSet())
-			if (u.getNome().equals(criador))
-				u.removeFolha(nome);
-				
-		
-	}
-	
-	//Metodo que cria um cliente 
-	public void criaUtilizador(String nomeUtilizador,String userName, String password){
-		
-		Utilizador utilizador = new Utilizador(nomeUtilizador, userName, password);
-		
-		FenixFramework.getDomainRoot().addUtilizadores(utilizador);
-		}
-	
-	//Metodo que remove um Utilizador e todas as folhas que ele contêm
-	
-	public void removeUtilizador(String userName){
-		if(userName.equals("root")){
-			
-			for (Utilizador utilizador : FenixFramework.getDomainRoot().getUtilizadoresSet()){
-				if(utilizador.getNome().equals(userName)){
-					utilizador.apagaFolhas();
-					FenixFramework.getDomainRoot().removeUtilizadores(utilizador);
-				
-				}
-			}
-			
-		}
-	} */
 }
