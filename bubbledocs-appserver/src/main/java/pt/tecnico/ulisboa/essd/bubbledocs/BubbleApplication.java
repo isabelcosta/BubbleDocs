@@ -39,7 +39,7 @@ public class BubbleApplication {
 			//1. Inserir os dados relativos ao cenario de teste na base de dados caso o estado persistente ´
 			//   da aplicacao nao esteja inicializado.
 			//--------------------------------------------------------------------------
-			System.out.println("---------------------------------");
+			System.out.println("---------------------------------------------------------------------------------");
 			
 			System.out.println("1. Inserir dados relativos ao cenario de teste na base de dados.");
 			
@@ -55,29 +55,34 @@ public class BubbleApplication {
 	    	folha1.setLinhas(300);
 	    	folha1.setColunas(20);
 	    	
-	    	
-	    	//-->Literal 5 na posicao (3, 4)
-			String conteudoLiteral = "5";
-			folha1.modificarCelula(3, 4, conteudoLiteral);
-			
-			/*
-			//-->Referencia para a celula (5, 6) na posicao (1, 1)
-			String conteudoReferencia = "=5;6";
-			folha1.modificarCelula(1,1, conteudoReferencia);
-			
-			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
-			String conteudoAdd = "=ADD(2,3;4)";
-			folha1.modificarCelula(5,6,conteudoAdd);
-			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
-			String conteudoDiv = "=DIV(1;1,3;4)";
-			folha1.modificarCelula(2,2,conteudoDiv);*/
+	    	for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet()){
+	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
+	    			
+	    			//-->Literal 5 na posicao (3, 4)
+	    			String conteudoLiteral = "5";
+	    			folhaIter.modificarCelula(3, 4, conteudoLiteral);
+	    			
+	    			//-->Referencia para a celula (5, 6) na posicao (1, 1)
+	    			String conteudoReferencia = "=5;6";
+	    			folhaIter.modificarCelula(1,1, conteudoReferencia);
+	    			
+	    			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
+	    			String conteudoAdd = "=ADD(2,3;4)";
+	    			folhaIter.modificarCelula(5,6,conteudoAdd);
+	    			
+	    			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
+	    			String conteudoDiv = "=DIV(1;1,3;4)";
+	    			folhaIter.modificarCelula(2,2,conteudoDiv);
+	    			
+	    			break;
+	    		}
+	    	}	
 			
 			//--------------------------------------------------------------------------
 			//2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.
-			//	 Mostro as passwords tambem???? <----  <-----  <-----  <------ <----- <----- <----- <---- <----- <-----
 			//--------------------------------------------------------------------------
 			
-			System.out.println("---------------------------------");
+			System.out.println("---------------------------------------------------------------------------------------");
 			
 			System.out.println("2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.");
 			
@@ -88,23 +93,31 @@ public class BubbleApplication {
 			//--------------------------------------------------------------------------
 			//3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.
 			//--------------------------------------------------------------------------
-			System.out.println("---------------------------------");
+			System.out.println("----------------------------------------------------------------------------------------");
 			
 			System.out.println("3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.");
 			
 			System.out.println("Nomes das folhas de calculo de pf:");
 			
-	    	/*for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
-	    		if(folha.getDono().equals("pf"))
-	    			System.out.println("Nome: " + folha.getNomeFolha());
-	    	}*/
-	    	
+			for(Utilizador userIter : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+				if(userIter.getNome().equals("pf")){
+			    	for(FolhadeCalculo folhaIter : userIter.getFolhascriadasSet()){
+			    		System.out.println("Nome: " + folhaIter.getNomeFolha());
+			    	}
+			    	break;
+				}
+			}
+
 			System.out.println("Nomes das folhas de calculo de ra:");
 			
-	    	/*for(FolhadeCalculo folha : FenixFramework.getDomainRoot().getFolhasdecalculoSet()){
-	    		if(folha.getDono().equals("ra"))
-	    			System.out.println("Nome: " + folha.getNomeFolha());
-	    	}	*/
+			for(Utilizador userIter : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+				if(userIter.getNome().equals("ra")){
+			    	for(FolhadeCalculo folhaIter : userIter.getFolhascriadasSet()){
+			    		System.out.println("Nome: " + folhaIter.getNomeFolha());
+			    	}
+			    	break;
+				}
+			}
 	    	
 			//--------------------------------------------------------------------------
 			//4. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
