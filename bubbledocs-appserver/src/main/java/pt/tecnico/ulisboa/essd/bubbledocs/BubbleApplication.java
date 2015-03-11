@@ -1,4 +1,3 @@
-
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import java.text.Format;
@@ -298,7 +297,6 @@ public class BubbleApplication {
 	
 	//Metodo que remove uma folha 
 	public void removeFolha(String criador, String nome){
-
 		for(Utilizador u : FenixFramework.getDomainRoot().getUtilizadoresSet())
 			if (u.getNome().equals(criador))
 				u.removeFolha(nome);
@@ -313,12 +311,10 @@ public class BubbleApplication {
 		
 		FenixFramework.getDomainRoot().addUtilizadores(utilizador);
 		}
-
 	
 	//Metodo que remove um Utilizador e todas as folhas que ele contêm
 	
 	public void removeUtilizador(String userName){
-
 		if(userName.equals("root")){
 			
 			for (Utilizador utilizador : FenixFramework.getDomainRoot().getUtilizadoresSet()){

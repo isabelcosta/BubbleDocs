@@ -9,11 +9,16 @@ public class Referencia extends Referencia_Base {
     }
     
     public Element exportToXML() {
-    	
-    	return getCelula().exportToXML();
+    	Element element = new Element("celula");
+		
+		element.setAttribute("linha", Integer.toString(getCelula().getLinha()));
+		element.setAttribute("coluna", Integer.toString(getCelula().getColuna()));
+    	return element;
 		
 	}
-
+    
+    
+    
 	public void importToXML() {
 		// TODO Auto-generated method stub
 		

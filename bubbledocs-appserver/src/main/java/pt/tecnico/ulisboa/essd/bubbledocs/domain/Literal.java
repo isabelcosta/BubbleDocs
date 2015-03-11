@@ -11,7 +11,11 @@ public class Literal extends Literal_Base {
      public Literal(Integer literal) {
 		this.setLiteral(literal);
 	} 
-
+    
+    
+    public Integer getValor(){
+    	return getLiteral();
+    }
 	
 	public Element exportToXML() {
 		

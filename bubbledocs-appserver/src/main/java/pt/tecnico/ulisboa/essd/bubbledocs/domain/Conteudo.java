@@ -23,11 +23,5 @@ public class Conteudo extends Conteudo_Base {
 		
 	}
 
-    /*
-     * 
-     * tirei os metodos import e export
-     * 
-     * para ele chamar directamente nas classes filhas
-     * 
-     * */
+   
 }

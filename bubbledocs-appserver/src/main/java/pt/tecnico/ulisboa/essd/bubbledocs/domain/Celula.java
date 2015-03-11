@@ -28,10 +28,10 @@ public class Celula extends Celula_Base {
 		element.setAttribute("linha", Integer.toString(getLinha()));
 		element.setAttribute("coluna", Integer.toString(getColuna()));
 		
+		System.out.println(getConteudo() + " dasdfasd");
 		Element conteudoElement = new Element("conteudo");
 		element.addContent(conteudoElement);
-		conteudoElement.addContent(this.getConteudo().exportToXML());
-		
+		conteudoElement.addContent(getConteudo().exportToXML());
 		return element;
 	}
 
