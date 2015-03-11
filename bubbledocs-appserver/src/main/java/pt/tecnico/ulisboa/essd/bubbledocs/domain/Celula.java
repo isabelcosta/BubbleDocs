@@ -2,7 +2,6 @@ package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import java.util.List;
 
-import org.jdom2.Attribute;
 import org.jdom2.Element;
 
 import pt.ist.fenixframework.FenixFramework;
@@ -17,7 +16,7 @@ public class Celula extends Celula_Base {
 
 	public void delete() {
 		
-//		getConteudo().delete();
+		getConteudo().delete();
 		setConteudo(null);
 		setFolhadecalculoC(null);
 		setReferencia(null);
@@ -41,7 +40,7 @@ public class Celula extends Celula_Base {
 	public void importFromXML(Element celula) {
 		// TODO Auto-generated method stub
 		
-		List<Element> c1 = celula.getChild("conteudo").getChildren();   // lista de children pode ter: "integral", "referencia" ou "div" ou "sum" etc
+		List<Element> c1 = celula.getChild("conteudo").getChildren();   // lista de children pode ter: "literal", "referencia" ou "div" ou "sum" etc
 		FolhadeCalculo folha = getFolhadecalculoC();
 		Utilizador user1 = null;
 		Conteudo conteudo = null;
@@ -56,8 +55,6 @@ public class Celula extends Celula_Base {
 				user1 = user;
 				break;
 			}
-    		
-		
 		
 		
 		if (c1.get(0).getName().equals("literal")) {
@@ -66,8 +63,6 @@ public class Celula extends Celula_Base {
 			Integer linhaRef = Integer.parseInt(c1.get(0).getAttributeValue("linha"));
 			Integer colunaRef = Integer.parseInt(c1.get(0).getAttributeValue("coluna"));
 			
-//			System.out.println(linha + " linhAA");
-//			System.out.println(coluna + " colunAA");
 			
 			for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet())
 				if(folhaIter.getNomeFolha().equals("Notas ES")) {
@@ -86,7 +81,8 @@ public class Celula extends Celula_Base {
 			Integer linhaRef = Integer.parseInt(c1.get(0).getAttributeValue("linha"));
 			Integer colunaRef = Integer.parseInt(c1.get(0).getAttributeValue("coluna"));
 			
-			if (c1.get(0).getChild("arg1").getName().equals("referencia")) {
+	
+			if (c1.get(0).getChild("arg1").getName().equals("celula") || c1.get(0).getChild("arg2").getName().equals("celula")) {
 				for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet())
 					if(folhaIter.getNomeFolha().equals("Notas ES")) {
 						for (Celula cel : folhaIter.getCelulaSet()){
@@ -95,9 +91,10 @@ public class Celula extends Celula_Base {
 							}
 						}
 					}
-			}else if(c1.get(0).getChild("arg1").getName().equals("Literal")) {
+				
+			}else if(c1.get(0).getChild("arg1").getName().equals("Literal") || c1.get(0).getChild("arg1").getName().equals("Literal")) {
 				setConteudo(new Literal(Integer.parseInt(c1.get(0).getChild("arg1").getAttributeValue("valor"))));
-			arg1 = new Referencia(new Celula(linhaRef,colunaRef,null));
+				arg1 = new Referencia(new Celula(linhaRef,colunaRef,null));
 				switch(c1.get(0).getName()) {
 				case "MUL":
 					setConteudo(new MUL(arg1,arg2));

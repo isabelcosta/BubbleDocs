@@ -1,9 +1,8 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.Format;
-import java.util.Set;
 
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -11,14 +10,16 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 
-import org.apache.ojb.jdo.jdoql.ThisExpression;
-import org.hamcrest.core.IsEqual;
+import org.jdom2.Document;
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.*;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 
 
 public class BubbleApplication {
@@ -160,6 +161,22 @@ public class BubbleApplication {
 						System.out.println("-----------------------------------INIT--------------------------------");
 			    		org.jdom2.Document doc = convertToXML(folhaIter);
 			    		printDomainInXML(doc);
+			    		
+			    		// new XMLOutputter().output(doc, System.out);
+			    		XMLOutputter xmlOutput = new XMLOutputter();
+			     
+			    		// display nice nice
+			    		xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
+			    		try {
+							xmlOutput.output(doc, new FileWriter(folhaIter.getNomeFolha()));
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+			     
+			    		
+			    		
+			    		
 						System.out.println("-----------------------------------END--------------------------------");
 			    	}
 			}
@@ -204,26 +221,33 @@ public class BubbleApplication {
 	    		}
 	    	}
 	    	
+	    	System.out.println("--------------------------------------------------------------------------------");
+	    	
 			//--------------------------------------------------------------------------------------------------------------
 			//7. Utilizar a funcionalidade de importacao para criar uma folha de calculo semelhante a exportada anteriormente
 	    	//	 e removida agora.
 			//--------------------------------------------------------------------------------------------------------------
 
 			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
-
-		/*	org.jdom2.Document doc2 = convertToXML();
-
-			printDomainInXML(doc2);
-
-			recoverFromBackup(doc);
-
-			doc2 = convertToXML();
-
-			printDomainInXML(doc2);
+			
+			String aux = "Notas ES";
+			
+			SAXBuilder builder = new SAXBuilder();
+			File xmlFile = new File(aux);
+		 
+			Document document;
+			try {
+				document = (Document) builder.build(xmlFile);
+				printDomainInXML(document);
+				//recoverFromBackup(document);
+			} catch (JDOMException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-*/
-			
-			
+				
 			
 			//--------------------------------------------------------------------------
 			//8. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.

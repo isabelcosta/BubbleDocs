@@ -138,3 +138,6 @@ local.properties
 
 # TeXlipse plugin
 .texlipse
+
+# XML
+*.xml
