@@ -20,23 +20,27 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 		element.setAttribute("colunas", Integer.toString(getColunas()));
 		
 		
-		Element celulasElement = new Element("celulas");
-		element.addContent(celulasElement);
-	
-		for (Celula celula : getCelulaSet()) {
-			celulasElement.addContent(celula.exportToXML());
+		if (!getCelulaSet().isEmpty()){
+			Element celulasElement = new Element("celulas");
+			element.addContent(celulasElement);
+			for (Celula celula : getCelulaSet())
+				celulasElement.addContent(celula.exportToXML());
 		}
-		
 		return element;
     }
 
     public void importFromXML(Element folhadecalculoElement) {
-    	Element folhadecalculo = folhadecalculoElement.getChild("folhadecalculo");
-	
-    	for (Element celula : folhadecalculo.getChildren("celulas")) {
+    	Element folhadecalculo = folhadecalculoElement.getChild("celulas");
+    	
+    	System.out.println(folhadecalculoElement.getChild("celulas") + " ASDASDASDASD");
+    	
+    	for (Element celula : folhadecalculo.getChildren("celula")) {
+    		
     	    Celula c = new Celula(0, 0, null);
     	    c.importFromXML(celula);
     	    addCelula(c);
+    	    System.out.println(c.getColuna() +" c");
+    	    System.out.println(c.getLinha() +" l");
     	}
     }
     

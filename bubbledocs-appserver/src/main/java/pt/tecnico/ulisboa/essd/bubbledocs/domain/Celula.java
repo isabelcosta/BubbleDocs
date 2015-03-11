@@ -5,6 +5,8 @@ import java.util.List;
 import org.jdom2.Attribute;
 import org.jdom2.Element;
 
+import pt.ist.fenixframework.FenixFramework;
+
 public class Celula extends Celula_Base {
     
 	public Celula(int linha, int coluna, Conteudo conteudo) {
@@ -37,34 +39,76 @@ public class Celula extends Celula_Base {
 
 	public void importFromXML(Element celula) {
 		// TODO Auto-generated method stub
-		/*
-		List<Element> c1 = celula.getChild("celula").getChild("conteudo").getChildren();   // lista de children pode ter: "integral", "referencia" ou "div" ou "sum" etc
 		
-		if (c1.get(0).getValue().equals("literal")) {
-			Literal conteudo = new Literal(c1.get(0).getAttribute("literal").getIntValue());
-		}else if(c1.get(0).equals("referencia")){
-			Referencia conteudo = new Referencia()
+		List<Element> c1 = celula.getChild("conteudo").getChildren();   // lista de children pode ter: "integral", "referencia" ou "div" ou "sum" etc
+		FolhadeCalculo folha = getFolhadecalculoC();
+		Utilizador user1 = null;
+		Conteudo conteudo = null;
+		Integer linha = Integer.parseInt(celula.getAttributeValue("linha"));
+		Integer coluna = Integer.parseInt(celula.getAttributeValue("coluna"));
+		setColuna(coluna);
+		setLinha(linha);
+		
+		
+		for (Utilizador user: FenixFramework.getDomainRoot().getUtilizadoresSet())
+			if(user.getUsername().equals("pf")){
+				user1 = user;
+				break;
+			}
+    		
+		
+		
+		
+		if (c1.get(0).getName().equals("literal")) {
+			setConteudo(new Literal(Integer.parseInt(c1.get(0).getAttributeValue("valor"))));
+		}else if(c1.get(0).getName().equals("referencia")){
+			Integer linhaRef = Integer.parseInt(c1.get(0).getAttributeValue("linha"));
+			Integer colunaRef = Integer.parseInt(c1.get(0).getAttributeValue("coluna"));
+			
+//			System.out.println(linha + " linhAA");
+//			System.out.println(coluna + " colunAA");
+			
+			for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet())
+				if(folhaIter.getNomeFolha().equals("Notas ES")) {
+					for (Celula cel : folhaIter.getCelulaSet()){
+						if (cel.getColuna().equals(linhaRef) && cel.getLinha().equals(colunaRef)){
+							setConteudo(new Referencia(cel));
+							return;
+						}
+					}
+				}
+			setConteudo(new Referencia(new Celula(linhaRef,colunaRef,null)));
+			
 		}else{
-			switch(c1.get(0).getValue()) { // nao sei se vem em string
+			Argumento arg1 = null;
+			Argumento arg2 = null;
+			Integer linhaRef = Integer.parseInt(c1.get(0).getAttributeValue("linha"));
+			Integer colunaRef = Integer.parseInt(c1.get(0).getAttributeValue("coluna"));
+			
+			if (c1.get(0).getChild("arg1").getName().equals("referencia")) {
+				for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet())
+					if(folhaIter.getNomeFolha().equals("Notas ES")) {
+						for (Celula cel : folhaIter.getCelulaSet()){
+							if (cel.getColuna().equals(linhaRef) && cel.getLinha().equals(colunaRef)){
+								arg1 = new Referencia(cel);
+							}
+						}
+					}
+			}else if(c1.get(0).getChild("arg1").getName().equals("Literal")) {
+				setConteudo(new Literal(Integer.parseInt(c1.get(0).getChild("arg1").getAttributeValue("valor"))));
+			arg1 = new Referencia(new Celula(linhaRef,colunaRef,null));
+				switch(c1.get(0).getName()) {
 				case "MUL":
-				    MUL conteudo = new MUL(arg1,arg2);
+					setConteudo(new MUL(arg1,arg2));
 				case "DIV":
-					DIV conteudo = new DIV(arg1,arg2);
+					setConteudo(new DIV(arg1,arg2));
 				case "SUB":
-					SUB conteudo = new SUB(arg1,arg2);
+					setConteudo(new SUB(arg1,arg2));
 				case "ADD":
-					ADD conteudo = new ADD(arg1,arg2);
+					setConteudo(new ADD(arg1,arg2));
 				}
 			
+			}
 		}
-		
-		Celula c = new Celula(celula.getChild("celula").getAttribute("linha").getIntValue(),
-				  celula.getChild("celula").getAttribute("coluna").getIntValue(), 
-				  conteudo);
-		
-		this.getConteudo().importToXML();
-		 */
 	}
-	
-    
 }

@@ -26,7 +26,13 @@ public class MUL extends MUL_Base {
     	
 		return element;
 	}
-
+    public void delete() {
+    	setCelula(null);
+    	setArgumento1(null);
+    	setArgumento2(null);
+    	deleteDomainObject();
+    	
+    }
 	public void importToXML() {
 		// TODO Auto-generated method stub
 		

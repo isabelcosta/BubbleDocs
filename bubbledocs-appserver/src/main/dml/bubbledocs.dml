@@ -101,7 +101,7 @@ relation CelulaContainsConteudo {
 relation ReferenciaContainsCelula {
 	Referencia playsRole referencia; 
 	Celula playsRole celularef{
-		multiplicity *;
+		multiplicity 1;
 	}
 }
 
