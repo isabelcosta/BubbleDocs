@@ -11,6 +11,7 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 
 import org.apache.ojb.jdo.jdoql.ThisExpression;
+import org.hamcrest.core.IsEqual;
 import org.jdom2.output.XMLOutputter;
 
 import pt.ist.fenixframework.Atomic;
@@ -43,13 +44,29 @@ public class BubbleApplication {
 			
 			System.out.println("1. Inserir dados relativos ao cenario de teste na base de dados.");
 			
-			Utilizador user1 = new Utilizador("Paul Door", "pf", "sub");
-	    	FenixFramework.getDomainRoot().addUtilizadores(user1);
-	    	
-	    	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
-	    	FenixFramework.getDomainRoot().addUtilizadores(user2);
-	    	
-	    	user1.criaFolha("pf","Notas ES", 300, 20, 1);
+			Utilizador user1 = null;
+			Utilizador user2 = null;
+			
+			if(FenixFramework.getDomainRoot().getUtilizadoresSet().isEmpty()){
+				
+				user1 = new Utilizador("Paul Door", "pf", "sub");
+		    	FenixFramework.getDomainRoot().addUtilizadores(user1);
+		    	
+		    	user2 = new Utilizador("Step Rabbit", "ra", "cor");
+		    	FenixFramework.getDomainRoot().addUtilizadores(user2);
+		    	
+			} else {
+				
+				for (Utilizador user: FenixFramework.getDomainRoot().getUtilizadoresSet()){
+					if(user.getUsername().equals("pf")){
+						user1 = user;
+					} else if (user.getUsername().equals("ra")){
+						user2 = user;
+					}
+				}				
+			}
+			
+	    	user1.criaFolha("Notas ES","pf",300, 20, 1);
 	    	
 	    	for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet()){
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
@@ -96,7 +113,7 @@ public class BubbleApplication {
 			System.out.println("Nomes das folhas de calculo de pf:");
 			
 			for(Utilizador userIter : FenixFramework.getDomainRoot().getUtilizadoresSet()){
-				if(userIter.getNome().equals("pf")){
+				if(userIter.getUsername().equals("pf")){
 			    	for(FolhadeCalculo folhaIter : userIter.getFolhascriadasSet()){
 			    		System.out.println("Nome: " + folhaIter.getNomeFolha());
 			    	}
@@ -107,7 +124,7 @@ public class BubbleApplication {
 			System.out.println("Nomes das folhas de calculo de ra:");
 			
 			for(Utilizador userIter : FenixFramework.getDomainRoot().getUtilizadoresSet()){
-				if(userIter.getNome().equals("ra")){
+				if(userIter.getUsername().equals("ra")){
 			    	for(FolhadeCalculo folhaIter : userIter.getFolhascriadasSet()){
 			    		System.out.println("Nome: " + folhaIter.getNomeFolha());
 			    	}
@@ -119,7 +136,7 @@ public class BubbleApplication {
 			//4. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
 			//--------------------------------------------------------------------------
 			
-			System.out.println("---------------------------------");
+			System.out.println("---------------------------------------------------------------------------------");
 			
 			System.out.println("4.Aceder as folhas de calculo do utilizador pf. ");
 		
@@ -128,7 +145,7 @@ public class BubbleApplication {
 			//5. Remover a folha de calculo Notas ES do utilizador pf.
 			//--------------------------------------------------------------------------
 			
-			System.out.println("---------------------------------");
+			System.out.println("---------------------------------------------------------------------------------");
 			
 			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
 			
@@ -149,7 +166,7 @@ public class BubbleApplication {
 			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
 	    	
-	    	System.out.println("---------------------------------");
+	    	System.out.println("--------------------------------------------------------------------------------");
 	    	
 	    	System.out.println("6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
 
