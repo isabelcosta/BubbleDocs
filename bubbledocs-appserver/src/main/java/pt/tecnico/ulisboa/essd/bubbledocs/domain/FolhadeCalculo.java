@@ -2,7 +2,8 @@ package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import org.jdom2.Element;
 
-import pt.ist.fenixframework.FenixFramework;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 
 
 public class FolhadeCalculo extends FolhadeCalculo_Base {
@@ -19,15 +20,16 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 		element.setAttribute("linhas", Integer.toString(getLinhas()));
 		element.setAttribute("colunas", Integer.toString(getColunas()));
 		
-		int i=0;
 		if (!getCelulaSet().isEmpty()){
 			Element celulasElement = new Element("celulas");
 			element.addContent(celulasElement);
 			for (Celula celula : getCelulaSet()){		// passa pelas mesmas celulas varias vezes
-				i++;
+				
 //				System.out.println(i + " coluna: " + celula.getColuna());
 //				System.out.println("referencia: " + celula.getReferencia());
 //				System.out.println("");
+				
+				
 				if( celula.getConteudo()!=null)
 					celulasElement.addContent(celula.exportToXML());
 			}
@@ -59,9 +61,9 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		
     }
     
-    // UTILIZADORES
+    // EXCEPCOES-UTILIZADORES
     /* Verifica se um utilizador e dono da folha */
-    public boolean isDono (String nome){
+    public boolean isDono (String nome) {
     	if (this.getDono().equals(nome))
     		return true;
     	else
@@ -69,21 +71,20 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     }
     
     /* Verifica se o utilizador pode escrever nesta folha */
-    public boolean podeEscrever (String nome){
+    public void podeEscrever (String nome) throws DontHavePermissionException{
     	for (Utilizador existeUtilizador : this.getUtilizadores_eSet()){
     		if (existeUtilizador.getNome().equals(nome))
-    			return true;
+    			throw new DontHavePermissionException(nome);
     	}
-    	return false; 
     }
     
     /* Verifica se o utilizador pode ler nesta folha */
-    public boolean podeLer (String nome){
+    public void podeLer (String nome) throws DontHavePermissionException{
     	for (Utilizador existeUtilizador : this.getUtilizadores_lSet()){
     		if (existeUtilizador.getNome().equals(nome))
-    			return true;
-    	}
-    	return false; 
+    	  		throw new DontHavePermissionException(nome);
+        }
+        
     }
     
     
@@ -96,14 +97,12 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	for (Celula existeCelula : this.getCelulaSet()){
     		if (existeCelula.getLinha() == linha && existeCelula.getColuna() == coluna){
     		 existeCelula.setConteudo(conteudo);
-    		}
-    			
+    		}		
     	}
     	
-    	if (this.verificaLimite(linha,coluna)){
     		Celula novaCelula = new Celula(linha, coluna, conteudo);
     		this.addCelula(novaCelula);
-    	}
+
     }
     
     /* Dependendo da string que recebe cria o conteudo correspondente */
@@ -120,21 +119,15 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	return c;
     
 	}
-
+    
+    
+    // EXCEPCAO-CELULA
 	/* Verifica se a celula respeita os limites da folha */
-    public boolean verificaLimite(int linha, int coluna){
+    public void verificaLimite(int linha, int coluna) throws OutOfBoundsException{
     	if (linha > this.getLinhas() || coluna > this.getColunas())
-    			return false;
+    		throw new OutOfBoundsException(linha, coluna);
 
-    	return true; 
     }
 
-//	public static FolhadeCalculo getInstance() {
-//		FolhadeCalculo pb = FenixFramework.getDomainRoot().getFolhasdecalculo();
-//	if (pb == null)
-//	    pb = new FolhadeCalculo();
-//
-//	return pb;
-//    }
     
 }
