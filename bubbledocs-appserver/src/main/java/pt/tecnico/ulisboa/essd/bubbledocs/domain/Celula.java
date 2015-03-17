@@ -19,7 +19,10 @@ public class Celula extends Celula_Base {
 		getConteudo().delete();
 		setConteudo(null);
 		setFolhadecalculoC(null);
-//		setReferencia(null);
+		
+		for(Referencia ref : getReferenciaSet()){
+			this.removeReferencia(ref);
+		}
 		deleteDomainObject();
 		
 	}
