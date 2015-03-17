@@ -12,7 +12,7 @@ public class Literal extends Literal_Base {
 		this.setLiteral(literal);
 	} 
     
-    
+    @Override
     public Integer getValor(){
     	return getLiteral();
     }

@@ -126,10 +126,13 @@ public class Parser {
     		int[] i = parseEndereco(referencia,folha);
     		
     		for (Celula c : folha.getCelulaSet()){
-    			if (c.getLinha() == i[0] && c.getColuna() == i[1]);
-    				return new Referencia(c);
-    		}
-    		
+    			if (c.getLinha() == i[0] && c.getColuna() == i[1]){
+//    				System.out.println("|| Va " + c.getConteudo().getValor()+ " ||");
+//    				System.out.println("|| c " + c.getColuna()+ " ||");
+//    				System.out.println("entrou no if");
+    					return new Referencia(c);
+    				}
+    			}
     		return new Referencia(null);
     }
     

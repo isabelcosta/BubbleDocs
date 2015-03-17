@@ -18,7 +18,10 @@ import org.jdom2.output.XMLOutputter;
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.FuncaoBinaria;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Referencia;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 
 
@@ -92,17 +95,31 @@ public class BubbleApplication {
 	    			folhaIter.modificarCelula(5,6,conteudoAdd);
 	    			
 	    			//-->Referencia para a celula (5, 6) na posicao (1, 1)
-	    			String conteudoReferencia = "=5;6";
-	    			folhaIter.modificarCelula(1,1, conteudoReferencia);
+	    			String conteudoReferencia = "2"; //"=5;6";
+	    			folhaIter.modificarCelula(7,7, conteudoReferencia);
 	    			
 	    			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
-	    			String conteudoDiv = "=DIV(1;1,2)";
+	    			String conteudoDiv = "=DIV(3;4,7;7)";
 	    			folhaIter.modificarCelula(2,2,conteudoDiv);
 	    			
-	    			break;
+	    			
 	    		}
 	    	}	
 			
+	    	for (FolhadeCalculo folhaIter : user1.getFolhascriadasSet()) {
+	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
+	    			for (Celula cel : folhaIter.getCelulaSet())
+	    			{
+	    				System.out.println("Coluna: " + cel.getColuna() + " conteudo " + cel.getConteudo());
+	    				if (cel.getColuna().equals(2)) {
+	    					FuncaoBinaria fb = (FuncaoBinaria) cel.getConteudo();
+	    					Referencia arg1 = (Referencia) fb.getArgumento1();
+	    					System.out.println("arg1 conteudo " + arg1.getCelularef().getLinha());
+						}
+	    			}
+	    				
+	    		}
+			}
 			//--------------------------------------------------------------------------
 			//2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.
 			//--------------------------------------------------------------------------

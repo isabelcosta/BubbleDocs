@@ -21,6 +21,7 @@ class FolhadeCalculo{
 class Celula{
 		Integer linha;
 		Integer coluna;
+		Boolean protegida;
 	}
 	
 class Conteudo{
@@ -99,7 +100,10 @@ relation CelulaContainsConteudo {
 
 
 relation ReferenciaContainsCelula {
-	Referencia playsRole referencia; 
+	Referencia playsRole referencia{
+		multiplicity *;
+	} 
+	
 	Celula playsRole celularef{
 		multiplicity 1;
 	}

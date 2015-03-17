@@ -19,13 +19,17 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 		element.setAttribute("linhas", Integer.toString(getLinhas()));
 		element.setAttribute("colunas", Integer.toString(getColunas()));
 		
-		
+		int i=0;
 		if (!getCelulaSet().isEmpty()){
 			Element celulasElement = new Element("celulas");
 			element.addContent(celulasElement);
 			for (Celula celula : getCelulaSet()){		// passa pelas mesmas celulas varias vezes
+				i++;
+//				System.out.println(i + " coluna: " + celula.getColuna());
+//				System.out.println("referencia: " + celula.getReferencia());
+//				System.out.println("");
 				if( celula.getConteudo()!=null)
-				celulasElement.addContent(celula.exportToXML());
+					celulasElement.addContent(celula.exportToXML());
 			}
 		}
 		return element;

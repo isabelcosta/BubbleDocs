@@ -19,7 +19,7 @@ public class Celula extends Celula_Base {
 		getConteudo().delete();
 		setConteudo(null);
 		setFolhadecalculoC(null);
-		setReferencia(null);
+//		setReferencia(null);
 		deleteDomainObject();
 		
 	}
@@ -30,7 +30,7 @@ public class Celula extends Celula_Base {
 		element.setAttribute("linha", Integer.toString(getLinha()));
 		element.setAttribute("coluna", Integer.toString(getColuna()));
 		
-		System.out.println(getConteudo() + " conteudo");
+//		System.out.println(getConteudo() + " conteudo");
 		Element conteudoElement = new Element("conteudo");
 		element.addContent(conteudoElement);
 		conteudoElement.addContent(getConteudo().exportToXML());
