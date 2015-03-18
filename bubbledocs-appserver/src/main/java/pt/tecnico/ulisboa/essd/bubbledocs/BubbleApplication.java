@@ -39,6 +39,17 @@ public class BubbleApplication {
 
 		try {
 			tm.begin();
+			
+//			//-------TRYING TO DELETE DATABASE--------
+//			
+//			for (Utilizador user : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+//				user.apagaFolhas();
+//				FenixFramework.getDomainRoot().removeUtilizadores(user);
+//			}
+//			System.out.println("SUPOSTAMENTE APAGUEI ME");
+//			
+//			//---------------------------------------------------
+//			
 
 			//--------------------------------------------------------------------------
 			//1. Inserir os dados relativos ao cenario de teste na base de dados caso o estado persistente ´
