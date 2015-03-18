@@ -5,6 +5,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.service.dtos.User;
+import pt.tecnico.ulisboa.essd.bubbledocs.service.exception.DuplicateUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.service.exception.EmptyUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.service.exception.UnauthorizedOperationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.service.exception.UserNotInSessionException;
 
 // add needed import declarations
 
