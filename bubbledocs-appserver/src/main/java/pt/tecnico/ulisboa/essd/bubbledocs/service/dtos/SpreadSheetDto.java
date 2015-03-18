@@ -5,8 +5,7 @@ public class SpreadSheetDto implements java.io.Serializable{
 	
 	private int linhas;
     private int colunas;
-    private String nomeFolha;
-    
+    private String nomeFolha;    
     public SpreadSheetDto(int linhas, int colunas, String nomeFolha){
     	
     	this.linhas = linhas;
