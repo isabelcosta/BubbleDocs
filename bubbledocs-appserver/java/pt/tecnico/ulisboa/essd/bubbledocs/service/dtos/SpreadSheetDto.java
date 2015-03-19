@@ -2,6 +2,8 @@ package pt.tecnico.ulisboa.essd.bubbledocs.service.dtos;
 
 public class SpreadSheetDto implements java.io.Serializable{
 	
+
+	private static final long serialVersionUID = 1L;
 	
 	private int linhas;
     private int colunas;
