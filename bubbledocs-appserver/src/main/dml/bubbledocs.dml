@@ -1,5 +1,9 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+class Bubbledocs{
+	int proxID;
+}
+
 class Utilizador {
 	String nome;
 	String username;
@@ -53,21 +57,29 @@ class MUL extends FuncaoBinaria;
 
 
 
-relation DomainRootHasBubbleApplicationUtilizadores {
+relation DomainRootHasBubbleApplication {
   .pt.ist.fenixframework.DomainRoot playsRole root {
     multiplicity 0..1;
   }
-  Utilizador playsRole utilizadores {
-    multiplicity *;
+  Bubbledocs playsRole bubbledocs {
+    multiplicity 0..1;
   }
 }
 
-relation UtilizadorContainsFolhadeCalculo{
-	Utilizador playsRole utilizador;
-	FolhadeCalculo playsRole folhascriadas {
+relation BubbleDocsContainsFolhadeCalculo{
+	Bubbledocs playsRole bubbledocs;
+	FolhadeCalculo playsRole folhas {
 		multiplicity *;
 	}
 }
+
+relation BubbleDocsContainsUtilizadores{
+	Bubbledocs playsRole bubbledocs;
+	Utilizador playsRole utilizadores {
+		multiplicity *;
+	}
+}
+
 
 relation FolhadeCalculoContainsUtilizadoresE {
 	FolhadeCalculo playsRole folhadecalculoE; 
@@ -94,7 +106,7 @@ relation FolhadeCalculoContainsCelula {
 relation CelulaContainsConteudo {
 	Celula playsRole celula; 
 	Conteudo playsRole conteudo{
-		multiplicity 1;
+		multiplicity 0..1;
 	}
 }
 
@@ -103,9 +115,8 @@ relation ReferenciaContainsCelula {
 	Referencia playsRole referencia{
 		multiplicity *;
 	} 
-	
 	Celula playsRole celularef{
-		multiplicity 1;
+		multiplicity 0..1;
 	}
 }
 
@@ -114,14 +125,14 @@ relation ReferenciaContainsCelula {
 relation FuncaoBinariaContainsArgumento1 {
 	FuncaoBinaria playsRole funcaobinaria1;
 	Argumento playsRole argumento1{
-		multiplicity 0..1;
+		multiplicity 1;
 	}
 }
 
 relation FuncaoBinariaContainsArgumento2 {
 	FuncaoBinaria playsRole funcaobinaria2;
 	Argumento playsRole argumento2{
-		multiplicity 0..1;
+		multiplicity 1;
 	}
 }
 
