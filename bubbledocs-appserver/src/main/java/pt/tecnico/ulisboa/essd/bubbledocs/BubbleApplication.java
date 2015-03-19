@@ -19,10 +19,7 @@ import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.FuncaoBinaria;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Referencia;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 
 
@@ -52,7 +49,7 @@ public class BubbleApplication {
 //				user.apagaFolhas();
 //				bd.removeUtilizadores(user);
 //			}
-//			System.out.println("SUPOSTAMENTE APAGUEI ME");
+
 //			
 //			//---------------------------------------------------
 //			
@@ -187,7 +184,7 @@ public class BubbleApplication {
 
 
 			for(Utilizador userIter : bd.getUtilizadoresSet()){
-				if(userIter.getNome().equals("pf")){
+				if(userIter.getUsername().equals("pf")){
 			    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
 			    		
 							System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
