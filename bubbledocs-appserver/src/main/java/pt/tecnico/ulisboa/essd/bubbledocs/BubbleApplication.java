@@ -198,7 +198,7 @@ public class BubbleApplication {
 				    		// display nice nice
 				    		xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
 				    		try {
-								xmlOutput.output(doc, new FileWriter(folhaIter.getNomeFolha()));
+								xmlOutput.output(doc, new FileWriter(folhaIter.getNomeFolha() + ".xml"));
 							} catch (IOException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -260,7 +260,7 @@ public class BubbleApplication {
 
 			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
 			
-			String aux = "Notas ES";
+			String aux = "Notas ES.xml";
 			
 			SAXBuilder builder = new SAXBuilder();
 			File xmlFile = new File(aux);
