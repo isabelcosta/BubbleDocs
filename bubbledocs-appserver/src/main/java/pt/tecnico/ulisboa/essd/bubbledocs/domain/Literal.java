@@ -39,4 +39,5 @@ public class Literal extends Literal_Base {
     	setValor(null);
     	deleteDomainObject();
     }
+	
 }

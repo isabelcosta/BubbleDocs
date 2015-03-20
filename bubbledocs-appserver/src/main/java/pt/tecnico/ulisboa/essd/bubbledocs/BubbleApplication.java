@@ -22,6 +22,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
 
 
 public class BubbleApplication {
@@ -66,10 +67,12 @@ public class BubbleApplication {
 	    	
 	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
+	    			System.out.println(folhaIter.getID() + " identificador");
 	    			for (Celula cel : folhaIter.getCelulaSet()) {
 	    				System.out.println(cel.getLinha() + " linha");
 	    				System.out.println(cel.getColuna() + " coluna");
 	    				System.out.println(cel.getConteudo() + " conteudo");
+	    				
 						
 					}
 	    		
@@ -131,7 +134,31 @@ public class BubbleApplication {
 			    	}
 				}
 			}
-	    	
+//	    	//****************************************************************************************
+//			System.out.println("TA NA HORA DO MEU TESTEEEEEEEEEEEEEEEEEEEEE ISABEL");
+//	    	
+//			Integer result = null;
+//			
+//	    	for( FolhadeCalculo folhaIter : bd.getFolhasSet()  ){
+//	    		if(folhaIter.getID() == 6){
+//	    			System.out.println("folha folha0:      " + folhaIter.toString());
+//	    			for(Celula cell: folhaIter.getCelulaSet()){
+//	    	    		if(cell.getLinha() == 3 && cell.getColuna() == 4){
+//	    	    			result = cell.getConteudo().getValor();
+//	    	    			System.out.println("folha folha0:      " + folhaIter.toString());
+//	    	    		}
+//	    	    	}	
+//	    		}
+//	    	}
+//
+//	    	
+//			System.out.println("Na celula 3;4 estava o valor:      " + result);
+//	    	
+//	        AssignLiteralCellService service = new AssignLiteralCellService( "dfgsdv", 6, "3;4", "3");
+//	        service.execute();
+//	        
+//			System.out.println("Na celula 3;4 esta o valor:      " + service.getResult());
+	        
 			//--------------------------------------------------------------------------
 			//4. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
 			//--------------------------------------------------------------------------
@@ -365,15 +392,7 @@ public class BubbleApplication {
     	bd.addUtilizadores(user1);
     	
     	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
-    	bd.addUtilizadores(user2);
-    	
-		for (Utilizador user: bd.getUtilizadoresSet()){
-			if(user.getUsername().equals("pf")){
-				user1 = user;
-			} else if (user.getUsername().equals("ra")){
-				user2 = user;
-			}
-		}				
+    	bd.addUtilizadores(user2);			
 
 
 		bd.criaFolha("Notas ES","pf",300, 20);

@@ -37,16 +37,18 @@ public class AssignLiteralCellService extends BubbleDocsService {
     	int[] linhaColuna = null;
 		try {
 			linhaColuna = Parser.parseEndereco(cellToFill, folha);
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     	
+		
     	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
     	
     	for(Celula cell: folha.getCelulaSet()){
     		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
-    			result = cell.getConteudo().toString();
+    			result = cell.getConteudo().getValor().toString();
     		}
     	}
     	
