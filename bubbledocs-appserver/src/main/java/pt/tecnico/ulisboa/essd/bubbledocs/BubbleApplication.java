@@ -19,6 +19,7 @@ import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 
@@ -29,8 +30,7 @@ public class BubbleApplication {
 	public static void main(String[] args) {
 
 		System.out.println("Welcome to Bubble application!!");
-		
-		
+		org.jdom2.Document doc=null;
 		
 		TransactionManager tm = FenixFramework.getTransactionManager();
 		boolean committed = false;
@@ -118,6 +118,19 @@ public class BubbleApplication {
 	    			
 	    		}
 	    	}	
+	    	
+	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
+	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
+	    			for (Celula cel : folhaIter.getCelulaSet()) {
+	    				System.out.println(cel.getLinha() + " linha");
+	    				System.out.println(cel.getColuna() + " coluna");
+	    				System.out.println(cel.getConteudo() + " conteudo");
+						
+					}
+	    		
+	    		}
+	    	}
+	    	
 			/*
 	    	for (FolhadeCalculo folhaIter : user1.getFolhascriadasSet()) {
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
@@ -189,7 +202,7 @@ public class BubbleApplication {
 			    		
 							System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
 							System.out.println("-----------------------------------INIT--------------------------------");
-				    		org.jdom2.Document doc = convertToXML(folhaIter);
+							doc= convertToXML(folhaIter);
 				    		printDomainInXML(doc);
 				    		
 				    		// new XMLOutputter().output(doc, System.out);
@@ -223,6 +236,7 @@ public class BubbleApplication {
 	    	for(Utilizador userTeste : bd.getUtilizadoresSet()){
 	    		if(userTeste.getUsername().equals("pf")){
 	    			for(FolhadeCalculo folha : bd.getFolhasSet()){
+	    				System.out.println("asdf");
 	    				if(folha.getNomeFolha().equals("Notas ES")){
 	    					bd.eliminaFolha("Notas ES");
 	    					System.out.println(" A folha foi removida! ");
@@ -230,8 +244,9 @@ public class BubbleApplication {
 	    			}
 	    		}
 			}
-	    	
-	    	
+	    	System.out.println("Verificar se esta vazia");
+	    	printDomainInXML(doc);
+	    	System.out.println("fim da verificacao");
 			//--------------------------------------------------------------------------
 			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
@@ -259,6 +274,10 @@ public class BubbleApplication {
 			//--------------------------------------------------------------------------------------------------------------
 
 			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
+			/*		
+	 		
+			--------Inicio do import a partir do ficheiro
+
 			
 			String aux = "Notas ES.xml";
 			
@@ -277,7 +296,14 @@ public class BubbleApplication {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-				
+			
+			--------Fim do import a partir do ficheiro
+					
+			System.out.println(doc + " doc");
+			printDomainInXML(doc);
+			System.out.println(doc + " doc");
+			 */
+			recoverFromBackup(doc, bd);	
 			
 			//--------------------------------------------------------------------------
 			//8. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
@@ -313,7 +339,7 @@ public class BubbleApplication {
 			    		
 						System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
 						System.out.println("-----------------------------------INIT--------------------------------");
-			    		org.jdom2.Document doc = convertToXML(folhaIter);
+			    		doc = convertToXML(folhaIter);
 			    		
 
 			    		
@@ -357,10 +383,25 @@ public class BubbleApplication {
     }
     
     @Atomic
-    private static void recoverFromBackup(org.jdom2.Document jdomDoc) {
-    FolhadeCalculo folha = new FolhadeCalculo();
-
-	//folha.importFromXML(jdomDoc.getRootElement());
+    private static void recoverFromBackup(org.jdom2.Document jdomDoc, Bubbledocs bd) {
+    	String donoFolha = jdomDoc.getRootElement().getAttributeValue("dono");
+    	String nomeFolha = jdomDoc.getRootElement().getAttributeValue("nome");
+    	int linhas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("linhas"));
+    	int colunas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("colunas"));
+    	
+    	for(FolhadeCalculo folha : bd.getFolhasSet())
+	    	if(folha.getNomeFolha().equals(nomeFolha)) {
+	    		folha.importFromXML(jdomDoc.getRootElement());
+	    		return;
+	    	}
+    	
+    	//caso nao tenha encontrado a folha cria uma nova
+    	bd.criaFolha(nomeFolha, donoFolha, linhas, colunas);
+    	for (FolhadeCalculo folha : bd.getFolhasSet())
+    		if(folha.getNomeFolha().equals(nomeFolha))
+	    		folha.importFromXML(jdomDoc.getRootElement());
+    	
+    	
     }
     
 }

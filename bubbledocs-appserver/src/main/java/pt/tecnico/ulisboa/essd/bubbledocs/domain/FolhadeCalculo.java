@@ -37,25 +37,26 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 		return element;
     }
 
-   /*    VICENTE ALTERA  
     public void importFromXML(Element folhadecalculoElement) {
     	Element folhadecalculo = folhadecalculoElement.getChild("celulas");
     	
-//    	System.out.println(folhadecalculoElement.getChild("celulas") + " ASDASDASDASD");
+
     	
     	for (Element celula : folhadecalculo.getChildren("celula")) {
     		
     	    Celula c = new Celula(0, 0, null);
-    	    c.importFromXML(celula);
     	    addCelula(c);
-//    	    System.out.println(c.getColuna() +" c");
-//    	    System.out.println(c.getLinha() +" l");
+    	    c.importFromXML(celula, folhadecalculoElement);
+    	    
+
+    	
     	}
-    } */
+    }
     
     //FOLHA
     /* Apaga todas as associacoes ligadas a esta folha */
     public void delete(){
+    	System.out.println(getCelulaSet().size());
     	for (Celula toRemove : getCelulaSet()){
     		toRemove.delete();
     	}
@@ -100,7 +101,8 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	//se a celula existir so vai alterar o conteudo
     	for (Celula existeCelula : this.getCelulaSet()){
     		if (existeCelula.getLinha() == linha && existeCelula.getColuna() == coluna){
-    		 existeCelula.setConteudo(conteudo);
+    			existeCelula.setConteudo(conteudo);
+    			return;
     		}		
     	}
     	

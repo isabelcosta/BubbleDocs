@@ -15,7 +15,7 @@ public class Celula extends Celula_Base {
 	}
 
 	public void delete() {
-		
+		System.out.println(getConteudo() + " " + getLinha() + " " + this);
 		getConteudo().delete();
 		setConteudo(null);
 		setFolhadecalculoC(null);
@@ -40,25 +40,24 @@ public class Celula extends Celula_Base {
 		return element;
 	}
 	
-	/*      VICENTE ALTERA XD     
-	public void importFromXML(Element celula) {
-		// TODO Auto-generated method stub
+public void importFromXML(Element celula, Element base) {
 		
 		List<Element> c1 = celula.getChild("conteudo").getChildren();   // lista de children pode ter: "literal", "referencia" ou "div" ou "sum" etc
-		FolhadeCalculo folha = getFolhadecalculoC();
-		Utilizador user1 = null;
-		Conteudo conteudo = null;
 		Integer linha = Integer.parseInt(celula.getAttributeValue("linha"));
+		System.out.println(Integer.parseInt(celula.getAttributeValue("linha")) + " linha");
 		Integer coluna = Integer.parseInt(celula.getAttributeValue("coluna"));
+		System.out.println(Integer.parseInt(celula.getAttributeValue("coluna")) + " coluna");
 		setColuna(coluna);
 		setLinha(linha);
+//		getConteudo().importToXML(celula.getChild("conteudo"));
 		
+//		String donoFolha = base.getAttributeValue("dono");
+//    	String nomeFolha = base.getAttributeValue("nome");
+    	
+    	
+    	//ir buscar o 
+		 
 		
-		for (Utilizador user: FenixFramework.getDomainRoot().getUtilizadoresSet())
-			if(user.getUsername().equals("pf")){
-				user1 = user;
-				break;
-			}
 		
 		
 		if (c1.get(0).getName().equals("literal")) {
@@ -66,40 +65,79 @@ public class Celula extends Celula_Base {
 		}else if(c1.get(0).getName().equals("referencia")){
 			Integer linhaRef = Integer.parseInt(c1.get(0).getAttributeValue("linha"));
 			Integer colunaRef = Integer.parseInt(c1.get(0).getAttributeValue("coluna"));
-			
-			
-			for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet())
-				if(folhaIter.getNomeFolha().equals("Notas ES")) {
-					for (Celula cel : folhaIter.getCelulaSet()){
-						if (cel.getColuna().equals(linhaRef) && cel.getLinha().equals(colunaRef)){
-							setConteudo(new Referencia(cel));
-							return;
-						}
-					}
+			for (Celula cel : getFolhadecalculoC().getCelulaSet()){
+				if (cel.getColuna().equals(linhaRef) && cel.getLinha().equals(colunaRef)){
+					setConteudo(new Referencia(cel));
+					return;
 				}
+			}
 			setConteudo(new Referencia(new Celula(linhaRef,colunaRef,null)));
 			
 		}else{
 			Argumento arg1 = null;
 			Argumento arg2 = null;
-			Integer linhaRef = Integer.parseInt(c1.get(0).getAttributeValue("linha"));
-			Integer colunaRef = Integer.parseInt(c1.get(0).getAttributeValue("coluna"));
+			int isRefArg1 = 0; // 1 para referencia, 0 para literal
+			int isRefArg2 = 0;
 			
-	
-			if (c1.get(0).getChild("arg1").getName().equals("celula") || c1.get(0).getChild("arg2").getName().equals("celula")) {
-				for(FolhadeCalculo folhaIter : user1.getFolhascriadasSet())
-					if(folhaIter.getNomeFolha().equals("Notas ES")) {
-						for (Celula cel : folhaIter.getCelulaSet()){
-							if (cel.getColuna().equals(linhaRef) && cel.getLinha().equals(colunaRef)){
-								arg1 = new Referencia(cel);
+			System.out.println(c1.get(0).getChild("arg1").getChildren().get(0).getName()+ "linha");
+			
+			Integer linhaRefArg1 = null;
+			Integer colunaRefArg1 = null;
+
+			Integer linhaRefArg2 = null;
+			Integer colunaRefArg2 = null;
+			
+			Integer literalArg1 = null;
+			Integer literalArg2 = null;
+
+			int encCelArg1 = 0; //  verificar se encontrou celula para a referencia
+			int encCelArg2 = 0;
+			
+			
+			if (c1.get(0).getChild("arg1").getChildren().get(0).getName().equals("celula")) {
+				
+				linhaRefArg1 = Integer.parseInt(c1.get(0).getChild("arg1").getChildren().get(0).getAttributeValue("linha"));
+				colunaRefArg1 = Integer.parseInt(c1.get(0).getChild("arg1").getChildren().get(0).getAttributeValue("coluna"));
+				isRefArg1= 1;
+				
+			}else {
+				literalArg1 = Integer.parseInt(c1.get(0).getChild("arg1").getChild("literal").getAttributeValue("valor"));
+				arg1 = new Literal(literalArg1);
+			}
+			
+			if (c1.get(0).getChild("arg2").getChildren().get(0).getName().equals("celula")) {
+				
+				linhaRefArg2 = Integer.parseInt(c1.get(0).getChild("arg2").getChildren().get(0).getAttributeValue("linha"));
+				colunaRefArg2 = Integer.parseInt(c1.get(0).getChild("arg2").getChildren().get(0).getAttributeValue("coluna"));
+				isRefArg2= 1;
+				
+			}else{
+				literalArg2 = Integer.parseInt(c1.get(0).getChild("arg2").getChild("literal").getAttributeValue("valor"));
+				arg2 = new Literal(literalArg2);
+			}
+			
+			if (isRefArg1==1) 
+			{
+				for (Celula cel : getFolhadecalculoC().getCelulaSet()){
+					if (cel.getColuna().equals(linhaRefArg1) && cel.getLinha().equals(colunaRefArg1)){
+						arg1 = new Referencia(cel);																// se celula nao existir, cria
+						encCelArg1 = 1;
+					}
+				}
+				if(encCelArg1==0)
+					arg1 = new Referencia(new Celula(linhaRefArg1,colunaRefArg1,null));		//watch out
+			}
+			if (isRefArg2==1)
+			{
+				for (Celula cel : getFolhadecalculoC().getCelulaSet()){
+					if (cel.getColuna().equals(linhaRefArg2) && cel.getLinha().equals(colunaRefArg2)){
+								arg2 = new Referencia(cel);																// se celula nao existir, cria
 							}
 						}
-					}
-				
-			}else if(c1.get(0).getChild("arg1").getName().equals("Literal") || c1.get(0).getChild("arg1").getName().equals("Literal")) {
-				setConteudo(new Literal(Integer.parseInt(c1.get(0).getChild("arg1").getAttributeValue("valor"))));
-				arg1 = new Referencia(new Celula(linhaRef,colunaRef,null));
-				switch(c1.get(0).getName()) {
+				if(encCelArg2==0)
+					arg2 = new Referencia(new Celula(linhaRefArg2,colunaRefArg2,null));		//watch out
+			}
+			switch(c1.get(0).getName()) {
 				case "MUL":
 					setConteudo(new MUL(arg1,arg2));
 				case "DIV":
@@ -110,7 +148,6 @@ public class Celula extends Celula_Base {
 					setConteudo(new ADD(arg1,arg2));
 				}
 			
-			}
 		}
-	}*/
+	}
 }
