@@ -25,8 +25,9 @@ public class ADD extends ADD_Base {
 		return element;
 	}
     
-	public void importToXML() {
-		// TODO Auto-generated method stub
+    public String toString(){
+		String res = "=" + "ADD" + "(" + getArgumento1().toString() + "," + getArgumento2().toString() + ")";
 		
-	}
+		return res;
+    }
 }

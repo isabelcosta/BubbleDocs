@@ -26,5 +26,11 @@ public class DIV extends DIV_Base {
     	
 		return element;
 	}
+    
+    public String toString(){
+		String res = "=" + "DIV" + "(" + getArgumento1().toString() + "," + getArgumento2().toString() + ")";
+		
+		return res;
+    }
    
 }

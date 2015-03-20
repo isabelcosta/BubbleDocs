@@ -15,7 +15,6 @@ public class Celula extends Celula_Base {
 	}
 
 	public void delete() {
-		System.out.println(getConteudo() + " " + getLinha() + " " + this);
 		getConteudo().delete();
 		setConteudo(null);
 		setFolhadecalculoC(null);
@@ -44,9 +43,7 @@ public void importFromXML(Element celula, Element base) {
 		
 		List<Element> c1 = celula.getChild("conteudo").getChildren();   // lista de children pode ter: "literal", "referencia" ou "div" ou "sum" etc
 		Integer linha = Integer.parseInt(celula.getAttributeValue("linha"));
-		System.out.println(Integer.parseInt(celula.getAttributeValue("linha")) + " linha");
 		Integer coluna = Integer.parseInt(celula.getAttributeValue("coluna"));
-		System.out.println(Integer.parseInt(celula.getAttributeValue("coluna")) + " coluna");
 		setColuna(coluna);
 		setLinha(linha);
 //		getConteudo().importToXML(celula.getChild("conteudo"));
@@ -79,7 +76,6 @@ public void importFromXML(Element celula, Element base) {
 			int isRefArg1 = 0; // 1 para referencia, 0 para literal
 			int isRefArg2 = 0;
 			
-			System.out.println(c1.get(0).getChild("arg1").getChildren().get(0).getName()+ "linha");
 			
 			Integer linhaRefArg1 = null;
 			Integer colunaRefArg1 = null;

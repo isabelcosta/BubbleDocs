@@ -25,4 +25,10 @@ public class SUB extends SUB_Base {
     	
 		return element;
 	}
+    
+    public String toString(){
+		String res = "=" + "SUB" + "(" + getArgumento1().toString() + "," + getArgumento2().toString() + ")";
+		
+		return res;
+    }
 }

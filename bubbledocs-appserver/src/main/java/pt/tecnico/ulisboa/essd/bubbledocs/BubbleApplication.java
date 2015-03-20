@@ -1,6 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -10,19 +9,15 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 
-import org.jdom2.Document;
-import org.jdom2.JDOMException;
-import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.XMLOutputter;
 
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
+
 
 
 public class BubbleApplication {
@@ -65,6 +60,7 @@ public class BubbleApplication {
 			
 			populateBubbleDocs(bd);
 	    	
+			/*
 	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
 	    			System.out.println(folhaIter.getID() + " identificador");
@@ -79,7 +75,6 @@ public class BubbleApplication {
 	    		}
 	    	}
 	    	
-			/*
 	    	for (FolhadeCalculo folhaIter : user1.getFolhascriadasSet()) {
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
 	    			for (Celula cel : folhaIter.getCelulaSet())
@@ -217,7 +212,18 @@ public class BubbleApplication {
 	    		}
 			}
 	    	System.out.println("Verificar se esta vazia");
-	    	printDomainInXML(doc);
+	    	for(Utilizador userIter : bd.getUtilizadoresSet()){
+				if(userIter.getUsername().equals("pf")){
+			    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
+			    		
+							
+							doc= convertToXML(folhaIter);
+				    		printDomainInXML(doc);
+				    		
+			    	}
+				}
+			 }
+	    
 	    	System.out.println("fim da verificacao");
 			//--------------------------------------------------------------------------
 			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
@@ -378,7 +384,7 @@ public class BubbleApplication {
     
     @Atomic
     private static boolean isInicialized(Bubbledocs bd) {
-        return !bd.getUtilizadoresSet().isEmpty();
+        return !(bd.getUtilizadoresSet().isEmpty() && bd.getFolhasSet().isEmpty());
     }
     
     //Populates BubbleDocs with the initial test cenario

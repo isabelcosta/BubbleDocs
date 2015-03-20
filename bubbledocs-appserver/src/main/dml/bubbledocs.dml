@@ -4,6 +4,12 @@ class Bubbledocs{
 	int proxID;
 }
 
+class Token{
+	String token;
+	String username;
+	LocalTime time;
+}
+
 class Utilizador {
 	String nome;
 	String username;
@@ -133,6 +139,13 @@ relation FuncaoBinariaContainsArgumento2 {
 	FuncaoBinaria playsRole funcaobinaria2;
 	Argumento playsRole argumento2{
 		multiplicity 1;
+	}
+}
+
+relation BubbleDocsContainsTokens {
+	Bubbledocs playsRole bubbledocs;
+	Token playsRole tokens {
+		multiplicity *;
 	}
 }
 
