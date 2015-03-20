@@ -1,10 +1,11 @@
-/*package pt.tecnico.ulisboa.essd.bubbledocs.test;
+/*package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
 
 // add needed import declarations
 
@@ -18,23 +19,27 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     private static final String PASSWORD = "ars";
     private static final String ROOT_USERNAME = "root";
     private static final String USERNAME_DOES_NOT_EXIST = "no-one";
-    private static final String NOT_LITERAL = "noLiteral";
-    private static final String LITERAL = "94";
+    private static final String NOT_REFERENCE = "noReference";
+    private static final String REFERENCE = "=5;6";
+    private static final String USER_TOKEN = "ars8";
+    private static final int DOC_ID = 3;
+    private static final String CELL_ID = "5;6";
     private static final String SPREADSHEET_NAME = "folha1";
     
     @Override
     public void populate4Test() {
-		//-->Referencia para a celula (5, 6) na posicao (1, 1)
+		
+    	//-->Referencia para a celula (5, 6) na posicao (1, 1)
 		String conteudoReferencia = "=5;6";
 		//folhaIter.modificarCelula(7,7, conteudoReferencia);
-        root = addUserToSession("root");
+       
+		root = addUserToSession("root");
         ars = addUserToSession("ars");
     }
 
     @Test
     public void success() {
-        AssignReferenceCell service = new AssignReferenceCell(/*root, USERNAME_DOES_NOT_EXIST, "jose",
-                "José Ferreira");
+        AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, DOC_ID, CELL_ID, REFERENCE);
         service.execute();
 
 	// User is the domain class that represents a User

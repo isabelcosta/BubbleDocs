@@ -1,4 +1,4 @@
-/*package pt.tecnico.ulisboa.essd.bubbledocs.services;
+package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
 import java.util.Random;
 
@@ -8,6 +8,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 //import javax.servlet.http.HttpSessionEvent;
 //import javax.servlet.http.HttpSessionListener;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongCredencialsException;
  
 
 // add needed import declarations
@@ -17,21 +18,27 @@ public class LoginUser extends BubbleDocsService {
     private String userToken;
     
 
-    public LoginUser(String username, String password) {
+    public LoginUser(String username, String password) throws WrongCredencialsException {
 	// add code here
-    	
+    	boolean existe = false;
     	//verifica se o utilizador e pass sao validos
     	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
-    		if(!user.getUsername().equals(username)){
-    			//throw new WrongCredentialsException("O utilizador nao existe")
-    		}else if(!user.getPassword().equals(password)){
-    			//throw new WrongCredentialsException("A password nao esta correcta")
-    		}else{
-    			//inicia sessao
-    			getUserToken(user);
-    		}
+    		if(user.getUsername().equals(username)){
+    			existe = true;
+    			if(!user.getPassword().equals(password)){
+    				//throw new WrongCredencialsException("Password incorrecta");
+    			} else {
+        			//inicia sessao
+        			getUserToken(user);
+    			}
+    		} 
     	}
+        
+    	if(existe = false){
+        	//throw new WrongCredencialsException("Utilizador nao existe");
+        }
     }
+        
         
     	//quando expira a sessao no fim das duas horas 
     	
@@ -48,12 +55,12 @@ public class LoginUser extends BubbleDocsService {
     		System.out.println("==== Session is destroyed ====");
     	}
     }*/
-    	
+    
     	  /*@Override
     	    public void onStartup(ServletContext servletContext) throws ServletException {
     	        super.onStartup(servletContext);
     	        servletContext.addListener(new SessionListener());
-    	    }
+    	    }*/
     	
     @Override
     protected void dispatch() throws BubbleDocsException {
@@ -77,4 +84,4 @@ public class LoginUser extends BubbleDocsService {
         return intToken;
     }
     
-}*/
+}
