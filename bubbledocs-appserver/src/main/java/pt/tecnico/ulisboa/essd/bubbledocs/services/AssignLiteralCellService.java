@@ -1,6 +1,11 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
-// add needed import declarations
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
+
 
 public class AssignLiteralCellService extends BubbleDocsService {
     private String result;
@@ -9,8 +14,10 @@ public class AssignLiteralCellService extends BubbleDocsService {
     private int folhaId;
     private String tokenUserLogged;
 
+    //SO FALATA A QUESTAO DO USER LOGADO----------------------------------------
+    
     public AssignLiteralCellService(String tokenUser, int docId, String cellId, String literal) {
-	// add code here	
+	
     	this.literalToAssign = literal;
         this.cellToFill = cellId;
         this.folhaId = docId;
@@ -19,19 +26,30 @@ public class AssignLiteralCellService extends BubbleDocsService {
 
     @Override
     protected void dispatch() throws BubbleDocsException {
-	// add code here
+	
     	FolhadeCalculo folha = null;
-    	for( FolhadeCalculo folhaIter : getBubbleDocs().getFolhasCriadasSet()  ){
-    		if(folhaIter.getId() == folhaId){
+    	for( FolhadeCalculo folhaIter : Bubbledocs.getInstance().getFolhasSet()  ){
+    		if(folhaIter.getID() == folhaId){
     			folha = folhaIter;
     		}
     	}
     	    	
-    	int[] linhaColuna = parseEndereco(cellToFill, folha);
+    	int[] linhaColuna = null;
+		try {
+			linhaColuna = Parser.parseEndereco(cellToFill, folha);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	
     	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
     	
-    	result = folha.getCelula().getConteudo().toString();
+    	for(Celula cell: folha.getCelulaSet()){
+    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
+    			result = cell.getConteudo().toString();
+    		}
+    	}
+    	
     }
 
     public String getResult() {

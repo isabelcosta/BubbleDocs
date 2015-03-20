@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
 
 // add needed import declarations
@@ -26,12 +28,12 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     private static final int DOC_ID = 2;
     private static final String USER_TOKEN = "JonhyBravo234";
     
-    @Override
-    public void populate4Test() {
-        createUser(USERNAME, PASSWORD, "Ant�nio Rito Silva");
-        root = addUserToSession("root");
-        ars = addUserToSession("ars");
-    }
+//    @Override
+//    public void populate4Test() {
+//        createUser(USERNAME, PASSWORD, "Ant�nio Rito Silva");
+//        root = addUserToSession("root");
+//        ars = addUserToSession("ars");
+//    }
 
     @Test
     public void success() {
@@ -46,7 +48,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
         assertEquals("Jos� Ferreira", user.getName());
     }
 
-    @Test(expected = LineNotInSpreadSheetException.class) // <--- tenho de arranjar excepcao
+    @Test(expected = OutOfBoundsException.class) // <--- tenho de arranjar excepcao
     public void LineNotInSpreadSheet() {
     	
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, "235;2", LITERAL);
@@ -60,14 +62,14 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	 service.execute();
     }
 
-    @Test(expected = ColumnNotInSpreadSheetException.class) // <--- tenho de arranjar excepcao
+    @Test(expected = OutOfBoundsException.class) // <--- tenho de arranjar excepcao
     public void ColumnNotInSpreadSheet() {
     	
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, "4;345", LITERAL);
          service.execute();
     }
 
-    @Test(expected = UnauthorizedUserException.class) // <--- tenho de arranjar excepcao
+    @Test(expected = DontHavePermissionException.class) // <--- tenho de arranjar excepcao
     public void unauthorizedUser() {
     	
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
