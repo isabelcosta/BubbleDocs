@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
 
@@ -22,16 +24,20 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     private static final String NOT_REFERENCE = "noReference";
     private static final String REFERENCE = "=5;6";
     private static final String USER_TOKEN = "ars8";
-    private static final int DOC_ID = 3;
+    private static final int FOLHA_ID = 3;
     private static final String CELL_ID = "5;6";
     private static final String SPREADSHEET_NAME = "folha1";
     
     @Override
     public void populate4Test() {
+    	
+    	//ter permissoes tem que procurar o token porque o serviço so recebe o token para ver se tem permissao ou nao.
+		
+    	FolhadeCalculo folha = new FolhadeCalculo();
 		
     	//-->Referencia para a celula (5, 6) na posicao (1, 1)
-		String conteudoReferencia = "=5;6";
-		//folhaIter.modificarCelula(7,7, conteudoReferencia);
+		//String conteudoReferencia = "=5;6";
+		folha.modificarCelula(1,1, REFERENCE);
        
 		root = addUserToSession("root");
         ars = addUserToSession("ars");
@@ -39,15 +45,25 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
     @Test
     public void success() {
-        AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, DOC_ID, CELL_ID, REFERENCE);
+        
+    	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, CELL_ID, REFERENCE);
         service.execute();
+        
+       // for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
+        //	if(user.getusertoken())
+        //}
 
-	// User is the domain class that represents a User
-        User user = getUserFromUsername(USERNAME_DOES_NOT_EXIST);
-
-        assertEquals(USERNAME_DOES_NOT_EXIST, user.getUsername());
-        assertEquals("jose", user.getPassword());
-        assertEquals("José Ferreira", user.getName());
+        assertEquals(USER_TOKEN, user.getToken());
+        
+        FolhadeCalculo folha= null;
+        
+        for(FolhadeCalculo folhaIter : Bubbledocs.getInstance().getFolhasSet()){
+        	if(folhaIter.getID() == FOLHA_ID)
+        		folha = 
+        }
+        	        	
+        assertEquals(FOLHA_ID, folha.getID());
+        assertEquals(CELL_ID, user.getName());
     }
 
     @Test(expected = DuplicateUsernameException.class) // <--- tenho de arranjar excepcao

@@ -1,4 +1,4 @@
-/*package pt.tecnico.ulisboa.essd.bubbledocs.tests;
+package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;

@@ -4,6 +4,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
 // add needed import declarations
@@ -29,7 +30,16 @@ public class AssignReferenceCellService extends BubbleDocsService {
 
     @Override
     protected void dispatch() throws BubbleDocsException {
-	// add code here
+
+    	//falta verificar o token
+    	
+    	
+    	/*for(Utilizador user : user.getListTokens()){
+    		if(user.getToken().equals(tokenDoUser)){
+    			//tem permissoes para alterar a celula
+    		}
+    	}*/
+    		
 
     	FolhadeCalculo folha = null;
     	int[] linhaEcoluna = null;
