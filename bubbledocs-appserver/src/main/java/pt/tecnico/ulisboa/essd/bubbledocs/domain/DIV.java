@@ -26,11 +26,5 @@ public class DIV extends DIV_Base {
     	
 		return element;
 	}
-    public void delete() {
-    	setCelula(null);
-    	setArgumento1(null);
-    	setArgumento2(null);
-    	deleteDomainObject();
-    	
-    }
+   
 }
