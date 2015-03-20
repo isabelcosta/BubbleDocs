@@ -19,4 +19,12 @@ public class FuncaoBinaria extends FuncaoBinaria_Base {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	 public void delete() {
+		 setArgumento1(null);
+		 setArgumento2(null);
+		 setCelula(null);
+		 deleteDomainObject();
+		 
+	 }
 }
