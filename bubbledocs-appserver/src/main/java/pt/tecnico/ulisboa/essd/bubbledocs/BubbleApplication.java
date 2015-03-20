@@ -62,62 +62,7 @@ public class BubbleApplication {
 			
 			System.out.println("1. Inserir dados relativos ao cenario de teste na base de dados.");
 			
-			Utilizador user1 = null;
-			Utilizador user2 = null;
-			
-			if(bd.getUtilizadoresSet().isEmpty()){
-				
-				user1 = new Utilizador("Paul Door", "pf", "sub");
-		    	bd.addUtilizadores(user1);
-		    	
-		    	user2 = new Utilizador("Step Rabbit", "ra", "cor");
-		    	bd.addUtilizadores(user2);
-		    	
-			} else {
-				
-				for (Utilizador user: bd.getUtilizadoresSet()){
-					if(user.getUsername().equals("pf")){
-						user1 = user;
-					} else if (user.getUsername().equals("ra")){
-						user2 = user;
-					}
-				}				
-			}
-			
-			boolean found = false;
-	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-	    		if(folhaIter.getNomeFolha().equals("Notas ES") && folhaIter.getDono().equals("pf")){
-	    			found = true;
-	    		}
-	    	}
-	    	
-	    	if(found == false){
-	    		bd.criaFolha("Notas ES","pf",300, 20);
-	    	}
-	    	
-	    	
-	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
-	    			
-	    			//-->Literal 5 na posicao (3, 4)
-	    			String conteudoLiteral = "5";
-	    			folhaIter.modificarCelula(3, 4, conteudoLiteral);
-	    			
-	    			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
-	    			String conteudoAdd = "=ADD(2,3;4)";
-	    			folhaIter.modificarCelula(5,6,conteudoAdd);
-	    			
-	    			//-->Referencia para a celula (5, 6) na posicao (1, 1)
-	    			String conteudoReferencia = "2"; //"=5;6";
-	    			folhaIter.modificarCelula(7,7, conteudoReferencia);
-	    			
-	    			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
-	    			String conteudoDiv = "=DIV(3;4,7;7)";
-	    			folhaIter.modificarCelula(2,2,conteudoDiv);
-	    			
-	    			
-	    		}
-	    	}	
+			populateBubbleDocs(bd);
 	    	
 	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
@@ -402,6 +347,60 @@ public class BubbleApplication {
 	    		folha.importFromXML(jdomDoc.getRootElement());
     	
     	
+    }
+    
+    @Atomic
+    private static boolean isInicialized(Bubbledocs bd) {
+        return !bd.getUtilizadoresSet().isEmpty();
+    }
+    
+    //Populates BubbleDocs with the initial test cenario
+    static void populateBubbleDocs(Bubbledocs bd) {
+        if (isInicialized(bd))
+            return;
+
+        // setup the initial state if bubbledocs is empty
+			
+		Utilizador user1 = new Utilizador("Paul Door", "pf", "sub");
+    	bd.addUtilizadores(user1);
+    	
+    	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
+    	bd.addUtilizadores(user2);
+    	
+		for (Utilizador user: bd.getUtilizadoresSet()){
+			if(user.getUsername().equals("pf")){
+				user1 = user;
+			} else if (user.getUsername().equals("ra")){
+				user2 = user;
+			}
+		}				
+
+
+		bd.criaFolha("Notas ES","pf",300, 20);
+    
+    	
+    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
+    		if(folhaIter.getNomeFolha().equals("Notas ES")){
+    			
+    			//-->Literal 5 na posicao (3, 4)
+    			String conteudoLiteral = "5";
+    			folhaIter.modificarCelula(3, 4, conteudoLiteral);
+    			
+    			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
+    			String conteudoAdd = "=ADD(2,3;4)";
+    			folhaIter.modificarCelula(5,6,conteudoAdd);
+    			
+    			//-->Referencia para a celula (5, 6) na posicao (1, 1)
+    			String conteudoReferencia = "2"; //"=5;6"; ???? Porque da excepcao com referencia?
+    			folhaIter.modificarCelula(1,1, conteudoReferencia);
+    			
+    			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
+    			String conteudoDiv = "=DIV(1;1,3;4)";
+    			folhaIter.modificarCelula(2,2,conteudoDiv);
+    			
+    			
+    		}
+    	}
     }
     
 }
