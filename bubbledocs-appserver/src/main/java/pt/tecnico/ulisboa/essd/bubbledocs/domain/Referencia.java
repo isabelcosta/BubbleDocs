@@ -24,8 +24,8 @@ public class Referencia extends Referencia_Base {
 	}
     
     public void delete() {
-    	setCelula(null);
     	setCelularef(null);
+    	setCelula(null);
     	deleteDomainObject();
     }
     
