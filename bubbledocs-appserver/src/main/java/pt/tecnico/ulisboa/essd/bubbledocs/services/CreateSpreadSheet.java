@@ -1,10 +1,11 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
 import pt.ist.fenixframework.FenixFramework;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.service.dtos.SpreadSheetDto;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.dtos.SpreadSheetDto;
 
 
 
@@ -35,6 +36,7 @@ public class CreateSpreadSheet extends BubbleDocsService {
     protected void dispatch() throws BubbleDocsException {
     	
     	//obter username a partir do token
+    	//obter o LOgin
     	
     	FolhadeCalculo folha = new FolhadeCalculo();
     	
@@ -43,15 +45,7 @@ public class CreateSpreadSheet extends BubbleDocsService {
     	folha.setColunas(columns);
     	folha.setNomeFolha(name);
     	
-    	
-    	for(Utilizador user : FenixFramework.getDomainRoot().getUtilizadoresSet()){
+    	Bubbledocs.getInstance().addFolhas(folha);
     		
-    		if(user.getUsername().equals(userToken)){
-    			
-    			user.addFolhascriadas(folha);
-    			
-    		
-    		}	
-    	}	
     }
 }
