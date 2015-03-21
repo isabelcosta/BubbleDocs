@@ -6,7 +6,7 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongCredencialsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongPasswordException;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
  
 
@@ -17,15 +17,17 @@ public class LoginUser extends BubbleDocsService {
     private String userToken;
     
 
-    public LoginUser(String username, String password) throws WrongCredencialsException {
+    public LoginUser(String username, String password) throws WrongPasswordException {
 	// add code here
+    	
     	boolean existe = false;
+    	
     	//verifica se o utilizador e pass sao validos
     	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
     		if(user.getUsername().equals(username)){
     			existe = true;
     			if(!user.getPassword().equals(password)){
-    				//throw new WrongCredencialsException("Password incorrecta");
+    				throw new WrongPasswordException(user.getUsername());
     			} else {
         			//inicia sessao
         			getUserTok(user.getUsername());
