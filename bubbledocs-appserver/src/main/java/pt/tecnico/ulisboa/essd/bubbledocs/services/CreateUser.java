@@ -1,37 +1,53 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
 import pt.ist.fenixframework.FenixFramework;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UsernameAlreadyExistsException;
 
 
 public class CreateUser extends BubbleDocsService {
-	
+
 
 	private String userToken;
 	private String newUsername;
 	private String password;
 	private String name;
-	
-    public CreateUser(String userToken, String newUsername, String password, String name) {
-    	
-    	this.userToken = userToken;
-    	this.newUsername = newUsername;
-    	this.password = password;
-    	this.name = name;
-    }
 
-    @Override
-    protected void dispatch() throws BubbleDocsException {
-    	
-    	//Acrescentar a Verificação do Login usando o token
-    	
-    	Utilizador user = new Utilizador(newUsername, password, name);
-    
-    	
-    	FenixFramework.getDomainRoot().addUtilizadores(user);
-    	
-    		
-    	}
-    }
+	public CreateUser(String userToken, String newUsername, String password, String name) {
+
+		this.userToken = userToken;
+		this.newUsername = newUsername;
+		this.password = password;
+		this.name = name;
+	}
+
+	@Override
+	protected void dispatch() throws BubbleDocsException {
+
+
+		for(Token token : Bubbledocs.getInstance().getTokensSet()){
+
+			if(token.getToken().equals(userToken)){
+
+				for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
+
+					if(user.getUsername().equals(newUsername)){
+
+						throw new UsernameAlreadyExistsException(newUsername);
+
+					}
+				}
+
+			}
+		}
+
+		Utilizador user = new Utilizador(newUsername, password, name);
+
+		Bubbledocs.getInstance().addUtilizadores(user);
+	}
+}
+
