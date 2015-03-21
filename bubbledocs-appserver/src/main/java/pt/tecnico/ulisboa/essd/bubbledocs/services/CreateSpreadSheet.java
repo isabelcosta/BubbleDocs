@@ -3,6 +3,7 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.dtos.SpreadSheetDto;
@@ -34,18 +35,22 @@ public class CreateSpreadSheet extends BubbleDocsService {
 
     @Override
     protected void dispatch() throws BubbleDocsException {
-    	
-    	//obter username a partir do token
-    	//obter o LOgin
-    	
-    	FolhadeCalculo folha = new FolhadeCalculo();
-    	
-    	folha.setDono(userToken);              //Guardar o userToken
-    	folha.setLinhas(rows);
-    	folha.setColunas(columns);
-    	folha.setNomeFolha(name);
-    	
-    	Bubbledocs.getInstance().addFolhas(folha);
-    		
+
+    	for(Token token : Bubbledocs.getInstance().getTokensSet()){
+
+    		if(token.getToken().equals(userToken)){
+
+    			FolhadeCalculo folha = new FolhadeCalculo();
+
+    			folha.setDono(userToken);              
+    			folha.setLinhas(rows);
+    			folha.setColunas(columns);
+    			folha.setNomeFolha(name);
+
+    			Bubbledocs.getInstance().addFolhas(folha);
+
+    		}
+    	}
+
     }
 }
