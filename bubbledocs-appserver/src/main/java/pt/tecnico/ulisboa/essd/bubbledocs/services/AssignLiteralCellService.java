@@ -4,6 +4,9 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 
 
@@ -25,24 +28,32 @@ public class AssignLiteralCellService extends BubbleDocsService {
     }
 
     @Override
-    protected void dispatch() throws BubbleDocsException {
+    protected void dispatch() throws OutOfBoundsException, NotLiteralException, SpreadSheetDoesNotExistException {
 	
     	FolhadeCalculo folha = null;
+    	
+    	boolean existe = false;
     	for( FolhadeCalculo folhaIter : Bubbledocs.getInstance().getFolhasSet()  ){
     		if(folhaIter.getID() == folhaId){
     			folha = folhaIter;
+    			existe = true;
     		}
+    	}
+    	
+    	if(existe == false){
+    		throw new SpreadSheetDoesNotExistException(folhaId + "");
     	}
     	    	
     	int[] linhaColuna = null;
-		try {
-			linhaColuna = Parser.parseEndereco(cellToFill, folha);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+		linhaColuna = Parser.parseEndereco(cellToFill, folha);
+		
+		//Verifica se o literal e um inteiro
+		try{
+			Integer.parseInt(literalToAssign);
+		}catch(Exception e){
+			throw new NotLiteralException(literalToAssign);
 		}
-    	
 		
     	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
     	

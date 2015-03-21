@@ -10,7 +10,9 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.BubbleDocsService;
 
@@ -28,16 +30,24 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     private static final String USERNAME_DOES_NOT_EXIST = "no-one";
     private static final String LITERAL = "94";
     private static final String SPREADSHEET_NAME = "myFolha";
-    private static final String CELL_ID = "5;4";
-    private static final int DOC_ID = 2;
+    private static final String CELL_ID = "3;4";
+    private static final int DOC_ID = 8;
     private static final String USER_TOKEN = "JonhyBravo234";
     
-//    @Override
-//    public void populate4Test() {
+    @Override
+    public void populate4Test() {
 //        createUser(USERNAME, PASSWORD, "Antï¿½nio Rito Silva");
 //        root = addUserToSession("root");
 //        ars = addUserToSession("ars");
-//    }
+    	
+    	//Substituir as funcoes por servicos?!?!
+//    	System.out.println("ENCONTREI FOLHA");
+//    	for( FolhadeCalculo folhaIter : BubbleDocsService.getBubbleDocs().getFolhasSet() ){
+//			if(folhaIter.getNomeFolha().equals("Notas ES")){
+//				System.out.println("---------    " + folhaIter.getID());
+//			}
+//		}
+    }
 
     @Test
     public void success() {
@@ -72,34 +82,42 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
         assertEquals(LITERAL, literalInCell);
     }
 
-    @Test(expected = OutOfBoundsException.class) // <--- tenho de arranjar excepcao
-    public void LineNotInSpreadSheet() {
+    @Test(expected = OutOfBoundsException.class)
+    public void LineOutOfBoundOfSpreadSheet() {
     	
-    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, "235;2", LITERAL);
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, "7000;2", LITERAL);
     	 service.execute();
     }
     
-//		FALTA TESTARRRRRRRRRRRRRRRRRRRRRRRRR    
-//    @Test(expected = LineNotPositiveException.class) // <--- tenho de arranjar excepcao
-//    public void LineNotPositive() {
-//    	
-//    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, "-2;2", LITERAL);
-//    	 service.execute();
-//    }
+    @Test(expected = OutOfBoundsException.class)
+    public void LineNegative() {
+    	
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, "-2;2", LITERAL);
+    	 service.execute();
+    }
 
-    @Test(expected = OutOfBoundsException.class) // <--- tenho de arranjar excepcao
-    public void ColumnNotInSpreadSheet() {
+    @Test(expected = OutOfBoundsException.class)
+    public void ColumnOutOfBoundOfSpreadSheet() {
     	
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, "4;3457", LITERAL);
          service.execute();
     }
-
-    @Test(expected = DontHavePermissionException.class) // <--- tenho de arranjar excepcao
-    public void unauthorizedUser() {
+    
+    @Test(expected = OutOfBoundsException.class)
+    public void ColumnNegativeSpreadSheet() {
     	
-    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, "4;-1", LITERAL);
          service.execute();
     }
+    
+//	FALTA TESTARRRRRRRRRRRRRRRRRRRRRRRRR 
+//    @Test(expected = DontHavePermissionException.class) // <--- tenho de arranjar excepcao
+//    public void unauthorizedUser() {
+//    	
+//    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
+//         service.execute();
+//    }
+    
 //		FALTA TESTARRRRRRRRRRRRRRRRRRRRRRRRR 
 //    @Test(expected = UserNotLogged.class) // <--- tenho de arranjar excepcao
 //    public void userNotLogged() {
@@ -108,21 +126,19 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 //    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
 //         service.execute();
 //    }    
-
-//	FALTA TESTARRRRRRRRRRRRRRRRRRRRRRRRR     
-//    @Test(expected = NotLiteralException.class) // <--- tenho de arranjar excepcao
-//    public void notLiteral() {
-//    	
-//    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, "AB4");
-//         service.execute();
-//    }
     
-//	FALTA TESTARRRRRRRRRRRRRRRRRRRRRRRRR 
-//    @Test(expected = SpreadSheetDoesNotExistsException.class) // <--- tenho de arranjar excepcao
-//    public void SpreadSheetDoesNotExists() {
-//
-//    	AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, 34534, CELL_ID, LITERAL);
-//    	service.execute();    	
-//    }
+    @Test(expected = NotLiteralException.class)
+    public void notLiteral() {
+    	
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, "AB4");
+         service.execute();
+    }
+    
+    @Test(expected = SpreadSheetDoesNotExistException.class)
+    public void SpreadSheetDoesNotExists() {
+
+    	AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, 34534, CELL_ID, LITERAL);
+    	service.execute();    	
+    }
     
 }

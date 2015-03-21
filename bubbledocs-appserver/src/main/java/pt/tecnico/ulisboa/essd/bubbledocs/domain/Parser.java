@@ -1,5 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
+
 public class Parser {
 
     public static void parseExpressao(FolhadeCalculo folha, String expressao) throws Exception{
@@ -16,15 +18,15 @@ public class Parser {
 
     
     
-    public static int[] parseEndereco(String endereco, FolhadeCalculo folha) throws Exception{
+    public static int[] parseEndereco(String endereco, FolhadeCalculo folha) throws OutOfBoundsException{
 		String[] args = endereco.split(";");
 		
 		int[] vec = {Integer.parseInt(args[0]), Integer.parseInt(args[1])};
 		
 		if(vec[0] <=0 || vec[0] > folha.getLinhas())
-			throw new Exception();
+			throw new OutOfBoundsException(vec[0], vec[1]);
 		if(vec[1] <=0 || vec[1] > folha.getColunas())	
-			throw new Exception();
+			throw new OutOfBoundsException(vec[0], vec[1]);
 		return vec;
     }
 
