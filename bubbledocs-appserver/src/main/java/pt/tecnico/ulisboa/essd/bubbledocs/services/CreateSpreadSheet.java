@@ -6,6 +6,8 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UsernameAlreadyExistsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.dtos.SpreadSheetDto;
 
 
@@ -49,6 +51,12 @@ public class CreateSpreadSheet extends BubbleDocsService {
 
     			Bubbledocs.getInstance().addFolhas(folha);
 
+    		}
+    		
+    		else{
+    			
+    			throw new DontHavePermissionException(userToken);
+    			
     		}
     	}
 
