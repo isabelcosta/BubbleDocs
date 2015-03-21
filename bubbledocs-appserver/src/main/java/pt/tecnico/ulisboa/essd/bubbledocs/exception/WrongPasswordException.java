@@ -20,7 +20,7 @@ public class WrongPasswordException extends BubbleDocsException {
 	 }
 	 
 	 
-	 public String getName() {
+	 public String getUserName() {
 	        return this.username;
 	 }
 	 
