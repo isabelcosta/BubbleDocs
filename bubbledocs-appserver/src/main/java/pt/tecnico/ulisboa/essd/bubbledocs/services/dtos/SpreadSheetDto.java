@@ -1,4 +1,4 @@
-package pt.tecnico.ulisboa.essd.bubbledocs.service.dtos;
+package pt.tecnico.ulisboa.essd.bubbledocs.services.dtos;
 
 public class SpreadSheetDto implements java.io.Serializable{
 	
