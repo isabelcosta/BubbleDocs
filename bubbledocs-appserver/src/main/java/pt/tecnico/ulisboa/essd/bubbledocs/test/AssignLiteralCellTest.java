@@ -1,4 +1,4 @@
-package pt.tecnico.ulisboa.essd.bubbledocs.tests;
+/*package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
 import static org.junit.Assert.assertEquals;
 
@@ -103,4 +103,4 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 //    public void rootAuthorized() {
 //    	// TODO ESTE TESTE
 //    }
-}
+}*/

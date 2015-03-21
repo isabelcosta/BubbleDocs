@@ -5,10 +5,9 @@ import java.util.Random;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
-//import javax.servlet.http.HttpSessionEvent;
-//import javax.servlet.http.HttpSessionListener;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongCredencialsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
  
 
 // add needed import declarations
@@ -29,7 +28,7 @@ public class LoginUser extends BubbleDocsService {
     				//throw new WrongCredencialsException("Password incorrecta");
     			} else {
         			//inicia sessao
-        			getUserToken(user);
+        			getUserTok(user.getUsername());
     			}
     		} 
     	}
@@ -40,26 +39,22 @@ public class LoginUser extends BubbleDocsService {
     }
         
     	
-    @Override
+    private void getUserTok(String username) { //funcao criada para chamar a classe token funcao getusertoken
+		
+    	Token token = new Token(username);
+    	
+    	token.getUserToken(username);
+	}
+
+
+	@Override
     protected void dispatch() throws BubbleDocsException {
 	// add code here
     }
 
-    public final String getUserToken(Utilizador user) {
-	
-    	String userToken = user.getUsername() + generateToken();
 
-    	return userToken;
-    }
     
     
-    public int generateToken(){
-    	
-        Random rand = new Random(); 
-        //This will give value from 0 to 9.
-        int intToken = rand.nextInt(10);
-        
-        return intToken;
-    }
+
     
 }
