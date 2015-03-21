@@ -15,8 +15,11 @@ import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.TransactionManager;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
 
 
 
@@ -60,22 +63,9 @@ public class BubbleApplication {
 			
 			populateBubbleDocs(bd);
 	    	
-			/*
-	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
-	    			System.out.println(folhaIter.getID() + " identificador");
-	    			for (Celula cel : folhaIter.getCelulaSet()) {
-	    				System.out.println(cel.getLinha() + " linha");
-	    				System.out.println(cel.getColuna() + " coluna");
-	    				System.out.println(cel.getConteudo() + " conteudo");
-	    				
-						
-					}
-	    		
-	    		}
-	    	}
+
 	    	
-	    	for (FolhadeCalculo folhaIter : user1.getFolhascriadasSet()) {
+	    	/*for (FolhadeCalculo folhaIter : user1.getFolhascriadasSet()) {
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
 	    			for (Celula cel : folhaIter.getCelulaSet())
 	    			{
@@ -129,11 +119,28 @@ public class BubbleApplication {
 			    	}
 				}
 			}
-//	    	//****************************************************************************************
-//			System.out.println("TA NA HORA DO MEU TESTEEEEEEEEEEEEEEEEEEEEE ISABEL");
+	    	//****************************************************************************************
+			System.out.println("TA NA HORA DO MEU TESTEEEEEEEEEEEEEEEEEEEEE ISABEL");
+			
+//			Integer folhaID  = null;
+//			
+//	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
+//	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
+//	    			folhaID = folhaIter.getID();
+//	    			System.out.println(folhaIter.getID() + " identificador");
+//	    			for (Celula cel : folhaIter.getCelulaSet()) {
+//	    				System.out.println(cel.getLinha() + " linha");
+//	    				System.out.println(cel.getColuna() + " coluna");
+//	    				System.out.println(cel.getConteudo() + " conteudo");
+//	    				
+//						
+//					}
+//	    		
+//	    		}
+//	    	}
 //	    	
 //			Integer result = null;
-//			
+			
 //	    	for( FolhadeCalculo folhaIter : bd.getFolhasSet()  ){
 //	    		if(folhaIter.getID() == 6){
 //	    			System.out.println("folha folha0:      " + folhaIter.toString());
@@ -146,11 +153,9 @@ public class BubbleApplication {
 //	    		}
 //	    	}
 //
-//	    	
-//			System.out.println("Na celula 3;4 estava o valor:      " + result);
-//	    	
-//	        AssignLiteralCellService service = new AssignLiteralCellService( "dfgsdv", 6, "3;4", "3");
-//	        service.execute();
+//				System.out.println("Na celula 3;4 estava o valor:      " + result);
+//				AssignReferenceCellService service = new AssignReferenceCellService( "dfgsdv", folhaID, "5;4", "=3;4");
+//				service.execute();
 //	        
 //			System.out.println("Na celula 3;4 esta o valor:      " + service.getResult());
 	        
@@ -416,7 +421,7 @@ public class BubbleApplication {
     			folhaIter.modificarCelula(5,6,conteudoAdd);
     			
     			//-->Referencia para a celula (5, 6) na posicao (1, 1)
-    			String conteudoReferencia = "2"; //"=5;6"; ???? Porque da excepcao com referencia?
+    			String conteudoReferencia = "=5;6"; //"=5;6"; ???? Porque da excepcao com referencia?
     			folhaIter.modificarCelula(1,1, conteudoReferencia);
     			
     			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
