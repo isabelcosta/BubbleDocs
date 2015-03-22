@@ -96,7 +96,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
         
     }
 
-//    @Test(expected = userNaoAutorizadoException.class) // <--- Nao sei se este é preciso!!!!!
+//    @Test(expected = UserNaoAutorizadoException.class) // <--- Nao sei se este é preciso!!!!!
 //    public void userNaoAutorizado() {
 //    	
 //    	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, CELL_ID, REFERENCE);
@@ -104,14 +104,14 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 //    	
 //    }
 
-    @Test(expected = OutOfBoundsException.class) 
+    @Test(expected = ArgLinhaInvalidoException.class) 
     public void argLinhaInvalido() {
     	
     	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, "4;1", REFERENCE);
         service.execute();
     }
 
-    @Test(expected = OutOfBoundsException.class) 
+    @Test(expected = ArgColunaInvalidoException.class) 
     public void argColunaInvalido() {
     	
     	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, "1;9", REFERENCE);
