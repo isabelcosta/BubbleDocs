@@ -41,12 +41,12 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 //        ars = addUserToSession("ars");
     	
     	//Substituir as funcoes por servicos?!?!
-//    	System.out.println("ENCONTREI FOLHA");
-//    	for( FolhadeCalculo folhaIter : BubbleDocsService.getBubbleDocs().getFolhasSet() ){
-//			if(folhaIter.getNomeFolha().equals("Notas ES")){
-//				System.out.println("---------    " + folhaIter.getID());
-//			}
-//		}
+    	System.out.println("ENCONTREI FOLHA");
+    	for( FolhadeCalculo folhaIter : BubbleDocsService.getBubbleDocs().getFolhasSet() ){
+			if(folhaIter.getNomeFolha().equals("Notas ES")){
+				System.out.println("---------    " + folhaIter.getID());
+			}
+		}
     }
 
     @Test
@@ -109,14 +109,13 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, "4;-1", LITERAL);
          service.execute();
     }
-    
-//	FALTA TESTARRRRRRRRRRRRRRRRRRRRRRRRR 
-//    @Test(expected = DontHavePermissionException.class) // <--- tenho de arranjar excepcao
-//    public void unauthorizedUser() {
-//    	
-//    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
-//         service.execute();
-//    }
+     
+    @Test(expected = DontHavePermissionException.class)
+    public void unauthorizedUser() {
+    	
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
+         service.execute();
+    }
     
 //		FALTA TESTARRRRRRRRRRRRRRRRRRRRRRRRR 
 //    @Test(expected = UserNotLogged.class) // <--- tenho de arranjar excepcao

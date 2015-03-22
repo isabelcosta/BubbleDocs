@@ -61,13 +61,14 @@ public class AssignLiteralCellService extends BubbleDocsService {
 			
 	    	for(Celula cell: folha.getCelulaSet()){
 	    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
-	    			//if(!cell.getProtegida()){
+	    			System.out.println("show m ethe boolean " + cell.getProtegida());
+	    			if(!cell.getProtegida()){
 		    	    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
 		    			result = cell.getConteudo().getValor().toString();
-	    			//} 
-//	    			else {
-//	    				throw new DontHavePermissionException(tokenUserLogged.getUsername());
-//	    			}
+	    			} 
+	    			else {
+	    				throw new DontHavePermissionException(tokenUserLogged);
+	    			}
 	    		}
 	    	}
 //    	} else {
