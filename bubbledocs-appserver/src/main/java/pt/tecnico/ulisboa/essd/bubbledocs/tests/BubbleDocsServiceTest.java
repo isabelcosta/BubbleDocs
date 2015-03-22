@@ -53,19 +53,26 @@ public class BubbleDocsServiceTest {
     }
 //    // auxiliary methods that access the domain layer and are needed in the test classes
 //    // for defining the initial state and checking that the service has the expected behavior
-//    Utilizador createUser(String username, String password, String name) {
-//	// add code here
-//    }
+    public Utilizador createUser(String username, String password, String name) {
+	// add code here
+    	return null;
+    }
 //
-//    public FolhadeCalculo createSpreadSheet(Utilizador user, String name, int row,
-//            int column) {
-//	// add code here
-//    }
+    public FolhadeCalculo createSpreadSheet(Utilizador user, String name, int row,
+            int column) {
+    	// add code here
+    	return null;
+    }
 //
 //    // returns a spreadsheet whose name is equal to name
-//    public FolhadeCalculo getSpreadSheet(String name) {
-//	// add code here
-//    }
+    public FolhadeCalculo getSpreadSheet(String name) {
+		  for (FolhadeCalculo f : Bubbledocs.getInstance().getFolhasSet()){
+			   if (f.getNomeFolha().equals(name))
+			   		return f;
+		  }
+		//Expected dont reach this point
+    	return null;
+    }
 //
 //    // returns the user registered in the application whose username is equal to username
 //    Utilizador getUserFromUsername(String username) {
@@ -73,9 +80,10 @@ public class BubbleDocsServiceTest {
 //    }
 //
 //    // put a user into session and returns the token associated to it
-//    String addUserToSession(String username) {
+    public String addUserToSession(String username) {
 //	// add code here
-//    }
+    	return null;
+    	}
 //
 //    // remove a user from session given its token
 //    void removeUserFromSession(String token) {
