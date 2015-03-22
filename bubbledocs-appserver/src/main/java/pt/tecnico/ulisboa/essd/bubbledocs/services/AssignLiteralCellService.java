@@ -4,6 +4,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
@@ -28,12 +29,13 @@ public class AssignLiteralCellService extends BubbleDocsService {
     }
 
     @Override
-    protected void dispatch() throws OutOfBoundsException, NotLiteralException, SpreadSheetDoesNotExistException {
+    protected void dispatch() throws OutOfBoundsException, NotLiteralException, SpreadSheetDoesNotExistException, DontHavePermissionException {
 	
     	FolhadeCalculo folha = null;
+    	Bubbledocs bd = Bubbledocs.getInstance();
     	
     	boolean existe = false;
-    	for( FolhadeCalculo folhaIter : Bubbledocs.getInstance().getFolhasSet()  ){
+    	for( FolhadeCalculo folhaIter : bd.getFolhasSet()  ){
     		if(folhaIter.getID() == folhaId){
     			folha = folhaIter;
     			existe = true;
@@ -43,26 +45,34 @@ public class AssignLiteralCellService extends BubbleDocsService {
     	if(existe == false){
     		throw new SpreadSheetDoesNotExistException(folhaId + "");
     	}
-    	    	
-    	int[] linhaColuna = null;
-
-		linhaColuna = Parser.parseEndereco(cellToFill, folha);
-		
-		//Verifica se o literal e um inteiro
-		try{
-			Integer.parseInt(literalToAssign);
-		}catch(Exception e){
-			throw new NotLiteralException(literalToAssign);
-		}
-		
-    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
     	
-    	for(Celula cell: folha.getCelulaSet()){
-    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
-    			result = cell.getConteudo().getValor().toString();
-    		}
-    	}
-    	
+//    	if(folha.podeEscrever(tokenUserLogged.getUsername()) || folha.isDono(tokenUserLogged.getUsername())){
+	    	int[] linhaColuna = null;
+	
+			linhaColuna = Parser.parseEndereco(cellToFill, folha);
+			
+			//Verifica se o literal e um inteiro
+			try{
+				Integer.parseInt(literalToAssign);
+			}catch(Exception e){
+				throw new NotLiteralException(literalToAssign);
+			}
+			
+			
+	    	for(Celula cell: folha.getCelulaSet()){
+	    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
+	    			//if(!cell.getProtegida()){
+		    	    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
+		    			result = cell.getConteudo().getValor().toString();
+	    			//} 
+//	    			else {
+//	    				throw new DontHavePermissionException(tokenUserLogged.getUsername());
+//	    			}
+	    		}
+	    	}
+//    	} else {
+//    		throw new DontHavePermissionException(tokenUserLogged.getUsername());
+//    	}
     }
 
     public String getResult() {

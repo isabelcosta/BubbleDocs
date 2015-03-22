@@ -113,7 +113,6 @@ public class BubbleApplication {
 				}
 			}
 	    	//****************************************************************************************
-			System.out.println("TA NA HORA DO MEU TESTEEEEEEEEEEEEEEEEEEEEE ISABEL");
 			
 //			Integer folhaID  = null;
 //			

@@ -12,6 +12,7 @@ public class Celula extends Celula_Base {
 		this.setLinha(linha);
 		this.setColuna(coluna);
 		this.setConteudo(conteudo);
+		this.setProtegida(false);
 	}
 
 	public void delete() {

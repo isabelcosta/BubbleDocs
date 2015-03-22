@@ -31,7 +31,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     private static final String LITERAL = "94";
     private static final String SPREADSHEET_NAME = "myFolha";
     private static final String CELL_ID = "3;4";
-    private static final int DOC_ID = 8;
+    private static final int DOC_ID = 10;
     private static final String USER_TOKEN = "JonhyBravo234";
     
     @Override

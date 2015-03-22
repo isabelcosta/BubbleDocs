@@ -19,12 +19,12 @@ public class Bubbledocs extends Bubbledocs_Base {
     	FenixFramework.getDomainRoot().setBubbledocs(this);
     }
     
-    public void criaFolha(String nomeFolha,String nome, int linhas, int colunas){
+    public void criaFolha(String nomeFolha, String username, int linhas, int colunas){
         
         FolhadeCalculo folha = new FolhadeCalculo();
         
         folha.setNomeFolha(nomeFolha);
-        folha.setDono(nome);
+        folha.setDono(username);
         folha.setLinhas(linhas);
         folha.setColunas(colunas);
         int id = getProxID();

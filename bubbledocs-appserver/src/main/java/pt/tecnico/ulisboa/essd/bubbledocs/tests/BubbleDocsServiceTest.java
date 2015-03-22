@@ -8,6 +8,7 @@ import org.junit.Before;
 
 import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.core.WriteOnReadError;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 
@@ -20,6 +21,7 @@ public class BubbleDocsServiceTest {
 
         try {
             FenixFramework.getTransactionManager().begin(false);
+            //unPopulate4Test()
             populate4Test();
         } catch (WriteOnReadError | NotSupportedException | SystemException e1) {
             e1.printStackTrace();
@@ -40,6 +42,15 @@ public class BubbleDocsServiceTest {
     public void populate4Test() {
     }
 
+    public void unPopulate4Test(){
+    	Bubbledocs bd = Bubbledocs.getInstance();
+		for (FolhadeCalculo folha : bd.getFolhasSet()){
+			bd.removeFolhas(folha);
+		}			
+		for (Utilizador user : bd.getUtilizadoresSet()){
+			bd.removeUtilizadores(user);
+		}
+    }
 //    // auxiliary methods that access the domain layer and are needed in the test classes
 //    // for defining the initial state and checking that the service has the expected behavior
 //    Utilizador createUser(String username, String password, String name) {
