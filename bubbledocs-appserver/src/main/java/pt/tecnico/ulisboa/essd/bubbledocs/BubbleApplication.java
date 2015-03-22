@@ -42,17 +42,10 @@ public class BubbleApplication {
 			Bubbledocs bd = Bubbledocs.getInstance();
 			
 			
-//			//-------TRYING TO DELETE DATABASE--------
-//			
-//			for (Utilizador user : bd.getUtilizadoresSet()){
-//				user.apagaFolhas();
-//				bd.removeUtilizadores(user);
-//			}
-
-//			
-//			//---------------------------------------------------
-//			
-
+			//------- Erases users and spread sheets--------
+			
+			unPopulateBubbleDocs(bd);
+			
 			//--------------------------------------------------------------------------
 			//1. Inserir os dados relativos ao cenario de teste na base de dados caso o estado persistente ´
 			//   da aplicacao nao esteja inicializado.
@@ -393,6 +386,18 @@ public class BubbleApplication {
     }
     
     //Populates BubbleDocs with the initial test cenario
+    static void unPopulateBubbleDocs(Bubbledocs bd) {
+        if (!isInicialized(bd))
+            return;
+        
+		for (FolhadeCalculo folha : bd.getFolhasSet()){
+			bd.removeFolhas(folha);
+		}			
+		for (Utilizador user : bd.getUtilizadoresSet()){
+			bd.removeUtilizadores(user);
+		}
+    }    
+    //Populates BubbleDocs with the initial test cenario
     static void populateBubbleDocs(Bubbledocs bd) {
         if (isInicialized(bd))
             return;
@@ -432,5 +437,6 @@ public class BubbleApplication {
     		}
     	}
     }
+    
     
 }

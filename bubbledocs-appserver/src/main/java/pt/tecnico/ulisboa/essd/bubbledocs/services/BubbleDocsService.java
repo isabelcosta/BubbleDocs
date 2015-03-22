@@ -5,8 +5,6 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
-// add needed import declarations
-
 public abstract class BubbleDocsService {
 
     @Atomic
