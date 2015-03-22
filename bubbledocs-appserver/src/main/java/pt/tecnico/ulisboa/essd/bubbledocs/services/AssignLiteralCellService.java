@@ -56,21 +56,22 @@ public class AssignLiteralCellService extends BubbleDocsService {
 			}catch(Exception e){
 				throw new NotLiteralException(literalToAssign);
 			}
-			
+
+	    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
 			
 	    	for(Celula cell: folha.getCelulaSet()){
 	    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
-	    			System.out.println("show m ethe boolean " + cell.getProtegida());
-	    			if(!cell.getProtegida()){
-		    	    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
+//	    			System.out.println("show m ethe boolean " + cell.getProtegida());
+//	    			if(!cell.getProtegida()){
+//		    	    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
 		    			result = cell.getConteudo().getValor().toString();
-	    			} 
-	    			else {
-	    				throw new DontHavePermissionException(tokenUserLogged);
-	    			}
+//	    			} 
+//	    			else {
+//	    				throw new DontHavePermissionException(tokenUserLogged);
+//	    			}
 	    		}
-	    	}
-//    	} else {
+	    	} 
+//	    		else {
 //    		throw new DontHavePermissionException(tokenUserLogged.getUsername());
 //    	}
     }

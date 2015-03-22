@@ -122,12 +122,8 @@ public class Bubbledocs extends Bubbledocs_Base {
 				}
     	}	
     
- 	}
 
-	
-        
- 
-    
+ 	}
     
 
 }

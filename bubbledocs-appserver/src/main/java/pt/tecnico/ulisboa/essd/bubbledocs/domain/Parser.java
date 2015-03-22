@@ -136,7 +136,7 @@ public class Parser {
     					return new Referencia(c);
     				}
     			}
-    		return new Referencia(null);
+    		return new Referencia((new Celula(i[0], i[1], null)));
     }
     
 

@@ -21,7 +21,7 @@ public class BubbleDocsServiceTest {
 
         try {
             FenixFramework.getTransactionManager().begin(false);
-            //unPopulate4Test()
+            //unPopulate4Test();
             populate4Test();
         } catch (WriteOnReadError | NotSupportedException | SystemException e1) {
             e1.printStackTrace();

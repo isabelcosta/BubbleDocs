@@ -99,10 +99,15 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	
     	//se a celula existir so vai alterar o conteudo
     	for (Celula existeCelula : this.getCelulaSet()){
-    		if (existeCelula.getLinha() == linha && existeCelula.getColuna() == coluna){
-    			existeCelula.setConteudo(conteudo);
-    			return;
-    		}		
+			if(!existeCelula.getProtegida()){
+	    		if (existeCelula.getLinha() == linha && existeCelula.getColuna() == coluna){
+	    			existeCelula.setConteudo(conteudo);
+	    			return;
+	    		}		
+			} 
+			else {
+				throw new DontHavePermissionException("A celula esta protegida");
+			}
     	}
     	
     		Celula novaCelula = new Celula(linha, coluna, conteudo);
