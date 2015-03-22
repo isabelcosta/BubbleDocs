@@ -56,7 +56,6 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     //FOLHA
     /* Apaga todas as associacoes ligadas a esta folha */
     public void delete(){
-    	System.out.println(getCelulaSet().size());
     	for (Celula toRemove : getCelulaSet()){
     		toRemove.delete();
     	}

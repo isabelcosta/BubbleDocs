@@ -60,7 +60,7 @@ public void importFromXML(Element celula, Element base) {
 		
 		if (c1.get(0).getName().equals("literal")) {
 			setConteudo(new Literal(Integer.parseInt(c1.get(0).getAttributeValue("valor"))));
-		}else if(c1.get(0).getName().equals("referencia")){
+		}else if(c1.get(0).getName().equals("celula")){
 			Integer linhaRef = Integer.parseInt(c1.get(0).getAttributeValue("linha"));
 			Integer colunaRef = Integer.parseInt(c1.get(0).getAttributeValue("coluna"));
 			for (Celula cel : getFolhadecalculoC().getCelulaSet()){
@@ -92,7 +92,6 @@ public void importFromXML(Element celula, Element base) {
 			
 			
 			if (c1.get(0).getChild("arg1").getChildren().get(0).getName().equals("celula")) {
-				
 				linhaRefArg1 = Integer.parseInt(c1.get(0).getChild("arg1").getChildren().get(0).getAttributeValue("linha"));
 				colunaRefArg1 = Integer.parseInt(c1.get(0).getChild("arg1").getChildren().get(0).getAttributeValue("coluna"));
 				isRefArg1= 1;
@@ -121,8 +120,12 @@ public void importFromXML(Element celula, Element base) {
 						encCelArg1 = 1;
 					}
 				}
+				//<WARNING>
+				//Referência não existe 
+				//Célula com conteúdo nulo
+				//Solução pode ser usar o observer
 				if(encCelArg1==0)
-					arg1 = new Referencia(new Celula(linhaRefArg1,colunaRefArg1,null));		//watch out
+					arg1 = new Referencia(new Celula(linhaRefArg1,colunaRefArg1,null));
 			}
 			if (isRefArg2==1)
 			{
@@ -131,8 +134,12 @@ public void importFromXML(Element celula, Element base) {
 								arg2 = new Referencia(cel);																// se celula nao existir, cria
 							}
 						}
+				//<WARNING>
+				//Referência não existe 
+				//Célula com conteúdo nulo
+				//Solução pode ser usar o observer
 				if(encCelArg2==0)
-					arg2 = new Referencia(new Celula(linhaRefArg2,colunaRefArg2,null));		//watch out
+					arg2 = new Referencia(new Celula(linhaRefArg2,colunaRefArg2,null));
 			}
 			switch(c1.get(0).getName()) {
 				case "MUL":

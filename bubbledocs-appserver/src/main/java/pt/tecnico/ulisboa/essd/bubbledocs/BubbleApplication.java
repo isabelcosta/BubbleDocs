@@ -212,20 +212,18 @@ public class BubbleApplication {
 	    			}
 	    		}
 			}
-	    	System.out.println("Verificar se esta vazia");
+	    	/*System.out.println("Verificar se esta vazia");
 	    	for(Utilizador userIter : bd.getUtilizadoresSet()){
 				if(userIter.getUsername().equals("pf")){
 			    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-			    		
-							
 							doc= convertToXML(folhaIter);
-				    		printDomainInXML(doc);
-				    		
+							printDomainInXML(doc);
 			    	}
 				}
 			 }
-	    
 	    	System.out.println("fim da verificacao");
+	    	*/
+	    	
 			//--------------------------------------------------------------------------
 			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
 			//--------------------------------------------------------------------------
@@ -311,20 +309,17 @@ public class BubbleApplication {
 			
 			System.out.println("9.Aceder as folhas de calculo do utilizador pf. ");
 
-
-			for(Utilizador userIter : bd.getUtilizadoresSet()){
-				
-			    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-			    		
-						System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
-						System.out.println("-----------------------------------INIT--------------------------------");
-			    		doc = convertToXML(folhaIter);
-			    		
-
-			    		
-						printDomainInXML(doc);
-						System.out.println("-----------------------------------END--------------------------------");
-			    	}
+			for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
+				if(folhaIter.getDono().equals("pf")){
+					System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + folhaIter.getDono() );
+					System.out.println("-----------------------------------INIT--------------------------------");
+					doc = convertToXML(folhaIter);
+					
+					
+					
+					printDomainInXML(doc);
+					System.out.println("-----------------------------------END--------------------------------");
+				}
 			}
 			
 			tm.commit();
@@ -426,7 +421,6 @@ public class BubbleApplication {
     	
  		for(Token token : Bubbledocs.getInstance().getTokensSet()){
 			int minutes = Minutes.minutesBetween(token.getTime(), new LocalTime()).getMinutes();
-			System.out.println(minutes);
 			if(minutes > 120){
 				Bubbledocs.getInstance().getTokensSet().remove(token);
 			}
