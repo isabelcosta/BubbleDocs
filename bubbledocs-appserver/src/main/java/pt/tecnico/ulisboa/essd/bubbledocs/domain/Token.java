@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+<<<<<<< Upstream, based on origin/master
 import java.util.Random;
 
 public class Token extends Token_Base {
@@ -25,6 +26,17 @@ public class Token extends Token_Base {
         int intToken = rand.nextInt(10);
         
         return intToken;
+=======
+import org.joda.time.LocalTime;
+
+public class Token extends Token_Base {
+    
+    public Token(String user, String token) {
+    	super();   	
+    	setTime(new LocalTime());
+    	setUsername(user);
+    	setToken(token);
+>>>>>>> 3d15570 LoginUser
     }
     
 }
