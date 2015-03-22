@@ -10,6 +10,8 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 
 import org.jdom2.output.XMLOutputter;
+import org.joda.time.LocalTime;
+import org.joda.time.Minutes;
 
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
@@ -17,9 +19,11 @@ import pt.ist.fenixframework.TransactionManager;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
 
 
 
@@ -408,8 +412,27 @@ public class BubbleApplication {
     	
     	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
     	bd.addUtilizadores(user2);			
-
-
+    	
+    	
+    	
+    	for(Token token : Bubbledocs.getInstance().getTokensSet()){
+    		if(!token.getUsername().equals("Paul Door")){
+    			LoginUser login = new LoginUser("Paul Door", "sub");
+    	 		login.execute(); //	-> cria o result
+    	 		Bubbledocs.getInstance().addTokens(new Token("Paul Door", login.getResult()));
+    		}
+		}
+    	
+    	
+ 		for(Token token : Bubbledocs.getInstance().getTokensSet()){
+			int minutes = Minutes.minutesBetween(token.getTime(), new LocalTime()).getMinutes();
+			System.out.println(minutes);
+			if(minutes > 120){
+				Bubbledocs.getInstance().getTokensSet().remove(token);
+			}
+		}
+		
+    	 
 		bd.criaFolha("Notas ES","pf",300, 20);
     
     	
