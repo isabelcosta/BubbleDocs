@@ -442,7 +442,7 @@ public class BubbleApplication {
     			folhaIter.modificarCelula(5,6,conteudoAdd);
     			
     			//-->Referencia para a celula (5, 6) na posicao (1, 1)
-    			String conteudoReferencia = "=5;6"; //"=5;6"; ???? Porque da excepcao com referencia?
+    			String conteudoReferencia = "6"; //"=5;6"; ???? Porque da excepcao com referencia?
     			folhaIter.modificarCelula(1,1, conteudoReferencia);
     			
     			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)

@@ -6,7 +6,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 
@@ -29,7 +28,7 @@ public class AssignLiteralCellService extends BubbleDocsService {
     }
 
     @Override
-    protected void dispatch() throws OutOfBoundsException, NotLiteralException, SpreadSheetDoesNotExistException, DontHavePermissionException {
+    protected void dispatch() throws BubbleDocsException {
 	
     	FolhadeCalculo folha = null;
     	Bubbledocs bd = Bubbledocs.getInstance();
