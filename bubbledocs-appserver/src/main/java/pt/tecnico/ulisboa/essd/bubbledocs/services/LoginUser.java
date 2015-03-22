@@ -1,11 +1,14 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
 import java.util.Random;
+
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 //import javax.servlet.http.HttpSessionEvent;
 //import javax.servlet.http.HttpSessionListener;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongPasswordException;
 
  
 
@@ -18,7 +21,7 @@ public class LoginUser extends BubbleDocsService {
     private String _password;
     
 
-    public LoginUser(String username, String password) throws WrongCredencialsException {
+    public LoginUser(String username, String password) throws WrongPasswordException, UtilizadorInvalidoException {
 		_username = username;
 		_password = password;
     	
