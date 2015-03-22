@@ -1,6 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
 
 public class Parser {
 
@@ -32,8 +33,8 @@ public class Parser {
 
     
     
-    public static Conteudo parseConteudo(FolhadeCalculo folha, String conteudo) throws Exception {
-		
+    public static Conteudo parseConteudo(FolhadeCalculo folha, String conteudo) throws OutOfBoundsException{
+    	
     	if (conteudo.contains("(")) {                 			// é uma função
 		    String funcao = conteudo.substring(1);    			// remove =
 		    String nomeFuncao = parseNomeFuncao(funcao);
@@ -42,7 +43,7 @@ public class Parser {
 		    
 		    if (conteudo.contains(","))
 		    	return parseFuncaoBinaria(folha, nomeFuncao, Operando);
-		    
+		    	
 		    /*else
 		    	return parseFuncaoIntervalo(folha, nomeFuncao, Operando); */
 		    
@@ -52,7 +53,7 @@ public class Parser {
 		} else
 		    return parseLiteral(conteudo);
     	
-		return null;
+    	return null; 
     }
 
     
@@ -71,7 +72,7 @@ public class Parser {
     
 
     
-    public static FuncaoBinaria parseFuncaoBinaria(FolhadeCalculo folha, String nomeFuncao, String Operando) throws Exception{
+    public static FuncaoBinaria parseFuncaoBinaria(FolhadeCalculo folha, String nomeFuncao, String Operando) throws OutOfBoundsException{
 		String[] Operandos = Operando.split(",");
 	
 		Argumento arg1 = parseOperando(folha, Operandos[0]);
@@ -106,7 +107,7 @@ public class Parser {
     } */
 
     
-    public static Argumento parseOperando(FolhadeCalculo folha, String Operando) throws Exception {
+    public static Argumento parseOperando(FolhadeCalculo folha, String Operando) throws OutOfBoundsException {
 		if (Operando.contains(";")) {
 		    return parseReferencia(folha, Operando);
 		}
@@ -124,7 +125,7 @@ public class Parser {
 
     
     
-    public static Referencia parseReferencia(FolhadeCalculo folha, String referencia) throws Exception{
+    public static Referencia parseReferencia(FolhadeCalculo folha, String referencia) throws OutOfBoundsException{
     		int[] i = parseEndereco(referencia,folha);
     		
     		for (Celula c : folha.getCelulaSet()){

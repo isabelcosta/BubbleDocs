@@ -118,42 +118,42 @@ public class BubbleApplication {
 			}
 	    	//****************************************************************************************
 			
-//			Integer folhaID  = null;
-//			
-//	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-//	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
-//	    			folhaID = folhaIter.getID();
-//	    			System.out.println(folhaIter.getID() + " identificador");
-//	    			for (Celula cel : folhaIter.getCelulaSet()) {
-//	    				System.out.println(cel.getLinha() + " linha");
-//	    				System.out.println(cel.getColuna() + " coluna");
-//	    				System.out.println(cel.getConteudo() + " conteudo");
-//	    				
-//						
-//					}
-//	    		
-//	    		}
-//	    	}
-//	    	
-//			Integer result = null;
+			Integer folhaID  = null;
 			
+	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
+	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
+	    			folhaID = folhaIter.getID();
+	    			System.out.println(folhaIter.getID() + " identificador");
+	    			for (Celula cel : folhaIter.getCelulaSet()) {
+	    				System.out.println(cel.getLinha() + " linha");
+	    				System.out.println(cel.getColuna() + " coluna");
+	    				System.out.println(cel.getConteudo() + " conteudo");
+	    				
+						
+					}
+	    		
+	    		}
+	    	}
+// 	
+//			String result = null;
+//			
 //	    	for( FolhadeCalculo folhaIter : bd.getFolhasSet()  ){
-//	    		if(folhaIter.getID() == 6){
+//	    		if(folhaIter.getID() == 4){
 //	    			System.out.println("folha folha0:      " + folhaIter.toString());
 //	    			for(Celula cell: folhaIter.getCelulaSet()){
-//	    	    		if(cell.getLinha() == 3 && cell.getColuna() == 4){
-//	    	    			result = cell.getConteudo().getValor();
+//	    	    		if(cell.getLinha() == 1 && cell.getColuna() == 1){
+//	    	    			result = cell.getConteudo().toString();
 //	    	    			System.out.println("folha folha0:      " + folhaIter.toString());
 //	    	    		}
 //	    	    	}	
 //	    		}
 //	    	}
-//
-//				System.out.println("Na celula 3;4 estava o valor:      " + result);
-//				AssignReferenceCellService service = new AssignReferenceCellService( "dfgsdv", folhaID, "5;4", "=3;4");
-//				service.execute();
-//	        
-//			System.out.println("Na celula 3;4 esta o valor:      " + service.getResult());
+////
+//				System.out.println("Na celula 1;1 estava o valor:      " + result);
+				AssignReferenceCellService service = new AssignReferenceCellService( "dfgsdv", folhaID, "1;1", "=5;6");
+				service.execute();
+	        
+			System.out.println("Na celula 1;1 esta o valor:      " + service.getResult());
 	        
 			//--------------------------------------------------------------------------
 			//4. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 

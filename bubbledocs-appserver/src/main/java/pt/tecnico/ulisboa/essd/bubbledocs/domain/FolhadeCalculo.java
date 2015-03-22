@@ -117,7 +117,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	
     	try {
 			 c= Parser.parseConteudo(this, conteudoAcriar);
-//			 System.out.println(c.toString());
+			 System.out.println(c.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

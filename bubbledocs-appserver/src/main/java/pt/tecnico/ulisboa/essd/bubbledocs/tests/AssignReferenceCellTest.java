@@ -36,8 +36,8 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     private static final String CELL_ID = "1;1";
     private static final String SPREADSHEET_NAME = "Notas ES";
     
-//    @Override
-////    public void populate4Test() {
+    @Override
+    public void populate4Test() {
 ////		
 ////    	FolhadeCalculo folha = new FolhadeCalculo();
 ////		
@@ -48,7 +48,11 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 ////       
 ////		root = addUserToSession("root");
 ////        ars = addUserToSession("ars");
-////    }
+    	for(FolhadeCalculo folhacalc : Bubbledocs.getInstance().getFolhasSet()){
+
+    		System.out.println("ID DA FOLHAS:      " + folhacalc.getID());
+    	}
+    }
 
     @Test
     public void success() {
@@ -106,8 +110,8 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 //      service.execute();
 //  	
 //  }
-
-    @Test(expected = IdFolhaInvalidoException.class) 
+//
+    @Test(expected = OutOfBoundsException.class) 
     public void IdFolhaInvalido() {
     	
     	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, 93423, CELL_ID, REFERENCE);
@@ -116,31 +120,31 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     }
 
 
-    @Test(expected = ArgLinhaInvalidoException.class) 
+    @Test(expected = OutOfBoundsException.class) 
     public void argLinhaInvalido() {
     	
-    	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, "4;1", REFERENCE);
+    	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, "40000;1", REFERENCE);
         service.execute();
     }
     
     
-    @Test(expected = ArgLinhaInvalidoException.class)
+    @Test(expected = OutOfBoundsException.class)
     public void LineNegative() {
     	
-    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, FOLHA_ID, "-1;1", REFERENCE);
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, FOLHA_ID, "-9;1", REFERENCE);
     	 service.execute();
     }
     
 
-    @Test(expected = ArgColunaInvalidoException.class) 
+    @Test(expected = OutOfBoundsException.class) 
     public void argColunaInvalido() {
     	
-    	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, "1;9", REFERENCE);
+    	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, "1;900000", REFERENCE);
         service.execute();
     }
     
     
-    @Test(expected = ArgColunaInvalidoException.class)
+    @Test(expected = OutOfBoundsException.class)
     public void ColumnNegativeSpreadSheet() {
     	
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, FOLHA_ID, "1;-1", REFERENCE);
@@ -148,13 +152,19 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     }
 
     
-    @Test(expected = ReferenciaInvalidaException.class) 
-    public void referenciaInvalida() {
+    @Test(expected = OutOfBoundsException.class) 
+    public void NotRefernce() {
     	
-    	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, CELL_ID, "=5;9" );
+    	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, CELL_ID, "9" );
         service.execute();
     }
     
+    @Test(expected = OutOfBoundsException.class) 
+    public void ReferenciaInvalida() {
+    	
+    	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, CELL_ID, "=29999;33" );
+        service.execute();
+    }
     
 //    @Test(expected = UserNotInSessionException.class) 
 //    public void rootEstaAutorizado() {
