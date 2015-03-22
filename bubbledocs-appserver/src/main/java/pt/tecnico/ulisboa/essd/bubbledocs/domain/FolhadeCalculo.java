@@ -73,22 +73,22 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     }
     
     /* Verifica se o utilizador pode escrever nesta folha */
-    public boolean podeEscrever (String nome) throws DontHavePermissionException{
+    public boolean podeEscrever (String username) throws DontHavePermissionException{
     	for (Utilizador existeUtilizador : this.getUtilizadores_eSet()){
-    		if (existeUtilizador.getNome().equals(nome))
+    		if (existeUtilizador.getUsername().equals(username))
     			return true;
     	}
-    	throw new DontHavePermissionException(nome);
+    	throw new DontHavePermissionException(username);
     	
     }
     
     /* Verifica se o utilizador pode ler nesta folha */
-    public boolean podeLer (String nome) throws DontHavePermissionException{
+    public boolean podeLer (String username) throws DontHavePermissionException{
     	for (Utilizador existeUtilizador : this.getUtilizadores_lSet()){
-    		if (existeUtilizador.getNome().equals(nome))
+    		if (existeUtilizador.getUsername().equals(username))
     			return true;
         }
-    	throw new DontHavePermissionException(nome);
+    	throw new DontHavePermissionException(username);
         
     }
     
