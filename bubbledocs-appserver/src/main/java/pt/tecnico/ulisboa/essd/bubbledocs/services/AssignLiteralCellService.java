@@ -29,7 +29,13 @@ public class AssignLiteralCellService extends BubbleDocsService {
 
     @Override
     protected void dispatch() throws BubbleDocsException {
-	
+    	
+    	if(!validSession(tokenUserLogged)){
+    		throw new DontHavePermissionException("Session for user " + tokenUserLogged.substring(0, tokenUserLogged.length()-1) + " is invalid" );
+    	}else{
+    		refreshToken(tokenUserLogged);
+    	}
+    	
     	FolhadeCalculo folha = null;
     	Bubbledocs bd = Bubbledocs.getInstance();
     	

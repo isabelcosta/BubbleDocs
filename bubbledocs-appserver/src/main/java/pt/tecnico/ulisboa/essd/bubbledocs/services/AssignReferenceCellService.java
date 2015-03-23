@@ -9,6 +9,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 
@@ -35,17 +36,14 @@ public class AssignReferenceCellService extends BubbleDocsService {
 
     @Override
     protected void dispatch() throws OutOfBoundsException {
-
-    	//falta verificar o token
+    	
+    	if(!validSession(tokenDoUser)){
+    		throw new DontHavePermissionException("Session for user " + tokenDoUser.substring(0, tokenDoUser.length()-1) + " is invalid" );
+    	}else{
+    		refreshToken(tokenDoUser);
+    	}
     	
     	boolean existe = false;
-    	
-    	
-    	for(Token token : Bubbledocs.getInstance().getTokensSet()){
-    		if(token.equals(tokenDoUser)){
-    			
-    		}
-    	}
     		
 
     	FolhadeCalculo folha = null;

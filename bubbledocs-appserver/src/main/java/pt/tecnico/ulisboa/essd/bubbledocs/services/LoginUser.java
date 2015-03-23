@@ -32,6 +32,7 @@ public class LoginUser extends BubbleDocsService {
     protected void dispatch() throws BubbleDocsException {
     	
     	//verifica se o utilizador e pass sao validos
+    	
     	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
     		if(user.getUsername().equals(_username)){
     			if(!user.getPassword().equals(_password)){

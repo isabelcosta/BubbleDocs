@@ -118,22 +118,19 @@ public class BubbleApplication {
 			}
 	    	//****************************************************************************************
 			
+			
 			Integer folhaID  = null;
 			
 	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
 	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
 	    			folhaID = folhaIter.getID();
-	    			System.out.println(folhaIter.getID() + " identificador");
 	    			for (Celula cel : folhaIter.getCelulaSet()) {
-	    				System.out.println(cel.getLinha() + " linha");
-	    				System.out.println(cel.getColuna() + " coluna");
-	    				System.out.println(cel.getConteudo() + " conteudo");
-	    				
 						
 					}
 	    		
 	    		}
 	    	}
+	    	
 // 	
 //			String result = null;
 //			
@@ -148,11 +145,22 @@ public class BubbleApplication {
 //	    	    	}	
 //	    		}
 //	    	}
-////
-//				System.out.println("Na celula 1;1 estava o valor:      " + result);
-				AssignReferenceCellService service = new AssignReferenceCellService( "dfgsdv", folhaID, "1;1", "=5;6");
+////		
+	    	String userToken = null;
+	    	for(Token tokenObject : Bubbledocs.getInstance().getTokensSet()){
+	    		if(tokenObject.getUsername().equals("pf")){
+	    			userToken = tokenObject.getToken();
+	    		}
+	    	}
+	    	
+	    	
+			AssignReferenceCellService service = new AssignReferenceCellService( userToken, folhaID, "1;1", "=5;6");
+			try {
 				service.execute();
-	        
+			} catch (Exception e) {
+				System.out.println(e.getMessage() + " INVALID");
+			}
+        
 			System.out.println("Na celula 1;1 esta o valor:      " + service.getResult());
 	        
 			//--------------------------------------------------------------------------
@@ -162,7 +170,7 @@ public class BubbleApplication {
 			System.out.println("---------------------------------------------------------------------------------");
 			
 			System.out.println("4.Aceder as folhas de calculo do utilizador pf. ");
-
+			
 
 			for(Utilizador userIter : bd.getUtilizadoresSet()){
 				if(userIter.getUsername().equals("pf")){
@@ -171,7 +179,7 @@ public class BubbleApplication {
 							System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
 							System.out.println("-----------------------------------INIT--------------------------------");
 							doc= convertToXML(folhaIter);
-				    		printDomainInXML(doc);
+							printDomainInXML(doc);
 				    		
 				    		// new XMLOutputter().output(doc, System.out);
 				    		XMLOutputter xmlOutput = new XMLOutputter();
@@ -212,17 +220,6 @@ public class BubbleApplication {
 	    			}
 	    		}
 			}
-	    	/*System.out.println("Verificar se esta vazia");
-	    	for(Utilizador userIter : bd.getUtilizadoresSet()){
-				if(userIter.getUsername().equals("pf")){
-			    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-							doc= convertToXML(folhaIter);
-							printDomainInXML(doc);
-			    	}
-				}
-			 }
-	    	System.out.println("fim da verificacao");
-	    	*/
 	    	
 			//--------------------------------------------------------------------------
 			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
@@ -394,6 +391,9 @@ public class BubbleApplication {
 		for (Utilizador user : bd.getUtilizadoresSet()){
 			bd.removeUtilizadores(user);
 		}
+		for(Token token : bd.getTokensSet()){
+    		bd.removeTokens(token);
+		}
     }    
     //Populates BubbleDocs with the initial test cenario
     static void populateBubbleDocs(Bubbledocs bd) {
@@ -408,16 +408,20 @@ public class BubbleApplication {
     	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
     	bd.addUtilizadores(user2);			
     	
-    	
-    	
+    	Boolean existsToken = false;
+
     	for(Token token : Bubbledocs.getInstance().getTokensSet()){
-    		if(!token.getUsername().equals("Paul Door")){
-    			LoginUser login = new LoginUser("Paul Door", "sub");
-    	 		login.execute(); //	-> cria o result
-    	 		Bubbledocs.getInstance().addTokens(new Token("Paul Door", login.getResult()));
+    		if(token.getUsername().equals("pf")){
+    			existsToken = true;
     		}
 		}
+    	if(!existsToken){
+    		LoginUser login = new LoginUser("pf", "sub");
+        	login.execute(); //	-> cria o result
+        	Bubbledocs.getInstance().addTokens(new Token("pf", login.getResult()));
+    	}
     	
+
     	
  		for(Token token : Bubbledocs.getInstance().getTokensSet()){
 			int minutes = Minutes.minutesBetween(token.getTime(), new LocalTime()).getMinutes();
