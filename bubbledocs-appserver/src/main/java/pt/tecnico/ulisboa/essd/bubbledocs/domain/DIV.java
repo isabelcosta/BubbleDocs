@@ -28,9 +28,17 @@ public class DIV extends DIV_Base {
 	}
     
     public String toString(){
-		String res = "=" + "DIV" + "(" + getArgumento1().toString() + "," + getArgumento2().toString() + ")";
-		
-		return res;
+    	String arg1 = getArgumento1().toString();
+    	String arg2 = getArgumento2().toString();
+    			
+    	if(getArgumento1().toString().contains("=")){
+    		arg1 =  getArgumento1().toString().substring(1);
+    	}
+    	if(getArgumento2().toString().contains("=")){
+    		arg2 =  getArgumento2().toString().substring(1);
+    	}
+    			
+		return "=" + "DIV" + "(" + arg1 + "," + arg2 + ")";
     }
    
 }

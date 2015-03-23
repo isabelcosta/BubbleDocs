@@ -40,4 +40,8 @@ public class Literal extends Literal_Base {
     	deleteDomainObject();
     }
 	
+	public String toString(){
+		return this.getLiteral().toString();	
+	}
+	
 }

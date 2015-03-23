@@ -99,25 +99,33 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	
     	//se a celula existir so vai alterar o conteudo
     	for (Celula existeCelula : this.getCelulaSet()){
-			if(!existeCelula.getProtegida()){
-	    		if (existeCelula.getLinha() == linha && existeCelula.getColuna() == coluna){
+    		if (existeCelula.getLinha() == linha && existeCelula.getColuna() == coluna){
+    			if(!existeCelula.getProtegida()){
 	    			existeCelula.setConteudo(conteudo);
 	    			return;
-	    		}		
+    			}	
+				else {
+					throw new DontHavePermissionException("A celula esta protegida");
+				}    			
 			} 
-			else {
-				throw new DontHavePermissionException("A celula esta protegida");
-			}
     	}
     	
-    		Celula novaCelula = new Celula(linha, coluna, conteudo);
-    		this.addCelula(novaCelula);
+		Celula novaCelula = new Celula(linha, coluna, conteudo);
+		this.addCelula(novaCelula);
 
     }
     
     //recebe ou True para bloquear ou False para desbloquear a celula 
-    public void protegeCelula(Celula celula, boolean protege){
-    	celula.setProtegida(protege);
+    public void protegeCelula(int linha, int coluna, boolean protege){
+    	for (Celula existeCelula : this.getCelulaSet()){
+    		if (existeCelula.getLinha() == linha && existeCelula.getColuna() == coluna){
+    			existeCelula.setProtegida(protege);
+    			return;
+    		}
+    	}
+		Celula novaCelula = new Celula(linha, coluna, null);
+		novaCelula.setProtegida(protege);
+		this.addCelula(novaCelula);
     }
     
     /* Dependendo da string que recebe cria o conteudo correspondente */

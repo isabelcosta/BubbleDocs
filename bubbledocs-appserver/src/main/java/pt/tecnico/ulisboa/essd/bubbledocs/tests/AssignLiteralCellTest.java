@@ -36,7 +36,8 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     private static final String LITERAL = "94";
     private static final String SPREADSHEET_NAME = "myFolha";
     private static final String CELL_ID = "3;2";
-    private static final int DOC_ID = 13;
+    private static final String CELL_ID_PROTEGIDA = "4;8";
+    private static final int DOC_ID = 19;
     private static final String USER_TOKEN = "JonhyBravo234";
     
     @Override
@@ -84,9 +85,10 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     			String conteudoLiteral = "4";
     			folhaIter.modificarCelula(3, 2, conteudoLiteral);
     			
-    			
     			String conteudoAdd = "=ADD(2,3;2)";
     			folhaIter.modificarCelula(5,7,conteudoAdd);
+    			
+    			folhaIter.protegeCelula(4, 8, true);
     			
     		} else if (folhaIter.getNomeFolha().equals("piFolha")){
     			
@@ -94,6 +96,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     			folhaIter.modificarCelula(2,7,conteudoRef);   			
     		}
     	}
+    	
     	//------------------------------------------------------------------------------------
     	
     	//Substituir as funcoes por servicos?!?!
@@ -101,7 +104,11 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	for( FolhadeCalculo folhaIter : BubbleDocsService.getBubbleDocs().getFolhasSet() ){
 				System.out.println("Nome: " + folhaIter.getNomeFolha() + "    Id: " + folhaIter.getID() + "    Dono: " + folhaIter.getDono());
 			   	for( Celula cell : folhaIter.getCelulaSet() ){
-					System.out.println("Linha: " + cell.getLinha() + "    Coluna: " + cell.getColuna() + "    Conteudo: " + cell.getConteudo());
+			   		if(cell.getConteudo() == null){
+			   			System.out.println("Linha: " + cell.getLinha() + "    Coluna: " + cell.getColuna() + "    Conteudo: #VALUE");
+			   		}else{
+			   			System.out.println("Linha: " + cell.getLinha() + "    Coluna: " + cell.getColuna() + "    Conteudo: " + cell.getConteudo().toString());
+			   		}
 			   	}
     	}
     }
@@ -168,11 +175,18 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     }
      
     @Test(expected = DontHavePermissionException.class)
-    public void unauthorizedUser() {
+    public void unauthorizedUserForProtectedCell() {
     	
-    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID_PROTEGIDA, LITERAL);
          service.execute();
     }
+
+//    @Test(expected = DontHavePermissionException.class)
+//    public void unauthorizedUserForWriting() {
+//    	
+//    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
+//         service.execute();
+//    }
     
 //		FALTA TESTARRRRRRRRRRRRRRRRRRRRRRRRR 
 //    @Test(expected = UserNotLogged.class) // <--- tenho de arranjar excepcao
