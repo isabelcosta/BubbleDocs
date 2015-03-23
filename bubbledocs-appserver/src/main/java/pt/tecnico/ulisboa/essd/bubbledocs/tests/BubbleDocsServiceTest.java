@@ -1,5 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
+import java.util.Random;
+
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 
@@ -105,12 +107,23 @@ public class BubbleDocsServiceTest {
 //
 //    // put a user into session and returns the token associated to it
     public String addUserToSession(String username) {
-//	// add code here
-    	return null;
+    	
+    	Bubbledocs bd = Bubbledocs.getInstance();
+    	
+    	//cria o token
+    	Random rand = new Random(); 
+        int intToken = rand.nextInt(10);
+        String userToken = username + intToken;
+        
+        //poe em sessao
+        Token token = new Token(username, userToken);
+        bd.addTokens(token);
+        
+    	return userToken;
     }
 
     // remove a user from session given its token
-    void removeUserFromSession(String token) {
+    public void removeUserFromSession(String token) {
 	
     	Bubbledocs bd = Bubbledocs.getInstance();
     	for(Token userToken : bd.getTokensSet()){
@@ -121,8 +134,25 @@ public class BubbleDocsServiceTest {
     }
 //
 //    // return the user registered in session whose token is equal to token
-//    Utilizador getUserFromSession(String token) {
-//	// add code here
-//    }
+    public Utilizador getUserFromSession(String token) {
+    	
+    	Bubbledocs bd = Bubbledocs.getInstance();
+    	Utilizador user = null;
+    	String userStr = null;
+    	
+    	for(Token t: bd.getTokensSet()){
+			if(t.getToken().equals(token)){
+				userStr = t.getUsername();
+			}
+    	}
+    	
+    	for(Utilizador u: bd.getUtilizadoresSet()){
+			if(u.getUsername().equals(userStr)){
+				user = u;
+			}
+    	}
+    	
+    	return user;
+    }
 
 }
