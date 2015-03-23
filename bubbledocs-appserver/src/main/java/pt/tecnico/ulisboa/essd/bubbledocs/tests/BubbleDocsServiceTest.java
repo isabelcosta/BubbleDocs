@@ -61,7 +61,7 @@ public class BubbleDocsServiceTest {
     	Bubbledocs bd = Bubbledocs.getInstance();
     	
     	//Cria user
-		Utilizador user = new Utilizador(username, password, name);
+		Utilizador user = new Utilizador(name, username, password);
     	bd.addUtilizadores(user);
     		
     	return user;
