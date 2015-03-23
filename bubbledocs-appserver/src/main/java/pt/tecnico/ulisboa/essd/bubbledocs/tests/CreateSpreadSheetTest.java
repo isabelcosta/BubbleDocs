@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
@@ -21,12 +20,15 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
 	private static final int COLUMNS = 100;
 	private static final int BAD_COLUMN = -1;
 	private static final String BAD_USER_TOKEN = "false-token";
+	private static final String USERNAME = "frc";
+	private static final String PASSWORD = "frc";
 
 	private String token;
   
   @Override
   public void populate4Test() {
-	  	user = createUser(USERNAME, PASSWORD, "Fabio Carvalho");
+	  
+	  	Utilizador user = createUser(USERNAME, PASSWORD, "Fabio Carvalho");     //so usado para ser adicionado a sessao
 	  	token = addUserToSession("frc");
   	
   }

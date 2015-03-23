@@ -71,18 +71,13 @@ public class BubbleDocsServiceTest {
     	Bubbledocs bd = Bubbledocs.getInstance();
     	
     	//cria folha
-    	FolhadeCalculo folha = new FolhadeCalculo();
-    	
     	String dono = null;
     	for (Utilizador u : bd.getUtilizadoresSet()){
 			if(user.getNome().equals(u.getNome()))
 				dono=u.getNome();
 		}
     	
-    	folha.setDono(dono);              
-		folha.setLinhas(row);
-		folha.setColunas(column);
-		folha.setNomeFolha(name);
+    	FolhadeCalculo folha = new FolhadeCalculo(name,dono,row,column);
     	
     	return folha;
     }

@@ -40,16 +40,11 @@ public class CreateSpreadSheet extends BubbleDocsService {
     	for(Token token : Bubbledocs.getInstance().getTokensSet()){
 
     		if(token.getToken().equals(userToken)){
-
-    			FolhadeCalculo folha = new FolhadeCalculo();
     			
     			String dono = userToken.substring(0, userToken.length()-1);
     			
-    			folha.setDono(dono);              
-    			folha.setLinhas(rows);
-    			folha.setColunas(columns);
-    			folha.setNomeFolha(name);
-
+    			FolhadeCalculo folha = new FolhadeCalculo(name, dono, rows, columns);
+    			
     			bd.addFolhas(folha);
     			
     			//apos a folha criada, ir buscar o ID
