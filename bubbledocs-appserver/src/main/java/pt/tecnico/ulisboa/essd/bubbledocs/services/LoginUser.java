@@ -30,22 +30,18 @@ public class LoginUser extends BubbleDocsService {
     	
     @Override
     protected void dispatch() throws BubbleDocsException {
-    	
-    	//verifica se o utilizador e pass sao validos
-    	
     	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
     		if(user.getUsername().equals(_username)){
     			if(!user.getPassword().equals(_password)){
-    				//throw new WrongCredencialsException("Password incorrecta");
+    				throw new WrongPasswordException("Password incorrecta!");
     			} else {
-        			//inicia sessao
     				result = setUserToken(user.getUsername());
     				return ;
     			}
     		} 
     	}
-       //throw new WrongCredencialsException("Utilizador nao existe");	   	
-    }
+	    throw new UtilizadorInvalidoException("Utilizador não existe!");	   	
+	    }
 
     public final String setUserToken(String user) {
     	String userToken = user + generateToken();
@@ -54,9 +50,7 @@ public class LoginUser extends BubbleDocsService {
     
     
     public int generateToken(){
-    	
         Random rand = new Random(); 
-        //This will give value from 0 to 9.
         int intToken = rand.nextInt(10);
         return intToken;
     }
