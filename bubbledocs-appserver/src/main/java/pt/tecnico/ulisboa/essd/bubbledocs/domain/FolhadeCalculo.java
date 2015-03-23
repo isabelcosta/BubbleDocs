@@ -30,7 +30,8 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 		element.setAttribute("nome", getNomeFolha());
 		element.setAttribute("linhas", Integer.toString(getLinhas()));
 		element.setAttribute("colunas", Integer.toString(getColunas()));
-		
+		element.setAttribute("data", getDataCriacao().toString());
+		element.setAttribute("id", Integer.toString(getID()));
 		
 		if (!getCelulaSet().isEmpty()){
 			Element celulasElement = new Element("celulas");

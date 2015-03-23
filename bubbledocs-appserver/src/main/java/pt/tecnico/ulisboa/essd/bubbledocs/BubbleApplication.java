@@ -10,6 +10,7 @@ import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 
 import org.jdom2.output.XMLOutputter;
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 
@@ -359,19 +360,28 @@ public class BubbleApplication {
     	String nomeFolha = jdomDoc.getRootElement().getAttributeValue("nome");
     	int linhas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("linhas"));
     	int colunas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("colunas"));
+    	int id = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("id"));
+    	String data = jdomDoc.getRootElement().getAttributeValue("data");
+    	
     	
     	for(FolhadeCalculo folha : bd.getFolhasSet())
 	    	if(folha.getNomeFolha().equals(nomeFolha)) {
+	    		folha.setDataCriacao(new LocalDate(data));
+    			folha.setID(id);
 	    		folha.importFromXML(jdomDoc.getRootElement());
 	    		return;
 	    	}
     	
     	//caso nao tenha encontrado a folha cria uma nova
     	bd.criaFolha(nomeFolha, donoFolha, linhas, colunas);
-    	for (FolhadeCalculo folha : bd.getFolhasSet())
-    		if(folha.getNomeFolha().equals(nomeFolha))
-	    		folha.importFromXML(jdomDoc.getRootElement());
     	
+    	for (FolhadeCalculo folha : bd.getFolhasSet())
+    		if(folha.getNomeFolha().equals(nomeFolha)){
+    			
+    			folha.setDataCriacao(new LocalDate(data));
+    			folha.setID(id);
+	    		folha.importFromXML(jdomDoc.getRootElement());
+    		}
     	
     }
     
