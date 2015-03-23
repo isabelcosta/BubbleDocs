@@ -34,7 +34,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     // It must get this data from the session object of the application
     private LocalTime getLastAccessTimeInSession(String userToken) {
     	for (Token token : Bubbledocs.getInstance().getTokensSet()) {
-			if (token.getUsername().equals(userToken)) {
+			if (token.getToken().equals(userToken)) {
 				return token.getTime();
 			}
 		}
@@ -50,13 +50,11 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 		
         LocalTime currentTime = new LocalTime();
 		
-        String ss = service.getUserToken();
         Utilizador user = getUserFromSession(service.getUserToken());
         assertEquals(USERNAME, user.getUsername());
 
-        System.out.println("asdf");
 		int difference = Seconds.secondsBetween(getLastAccessTimeInSession(token), currentTime).getSeconds();
-	
+		
 		assertTrue("Access time in session not correctly set", difference >= 0);
 		assertTrue("diference in seconds greater than expected", difference < 2);
     }

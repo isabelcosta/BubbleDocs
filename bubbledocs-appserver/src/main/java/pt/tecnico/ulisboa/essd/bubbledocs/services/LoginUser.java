@@ -2,7 +2,10 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
 import java.util.Random;
 
+import org.joda.time.LocalTime;
+
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 //import javax.servlet.http.HttpSessionEvent;
 //import javax.servlet.http.HttpSessionListener;
@@ -31,12 +34,12 @@ public class LoginUser extends BubbleDocsService {
     @Override
     protected void dispatch() throws BubbleDocsException {
     	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
-    		String user1 = user.getUsername();
     		if(user.getUsername().equals(_username)){
     			if(!user.getPassword().equals(_password)){
     				throw new WrongPasswordException("Password incorrecta!");
     			} else {
     				_result = _username + generateToken();
+    				refreshTokenTotal(_result);
     				return ;
     			}
     		}
@@ -56,4 +59,13 @@ public class LoginUser extends BubbleDocsService {
         return intToken;
     }
     
+    
+    public final void refreshTokenTotal (String token) {
+    	for(Token tokenObject : Bubbledocs.getInstance().getTokensSet()){
+    		if(tokenObject.getUsername().equals(_username)){
+    			tokenObject.setTime(new LocalTime());
+    			tokenObject.setToken(token);
+    		}
+    	}
+    }
 }
