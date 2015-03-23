@@ -12,6 +12,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 
 // add needed import declarations
 
@@ -43,9 +44,10 @@ public class AssignReferenceCellService extends BubbleDocsService {
     		refreshToken(tokenDoUser);
     	}
     	
-    	boolean existe = false;
+    	
+    	Bubbledocs bd = Bubbledocs.getInstance();
     		
-
+    	boolean existe = false;
     	FolhadeCalculo folha = null;
     	int[] linhaEcoluna = null;
     	Conteudo referenciaValida = null;
@@ -58,30 +60,37 @@ public class AssignReferenceCellService extends BubbleDocsService {
     	}
     	
     	if(existe == false){
-    		throw new OutOfBoundsException(1,1);
+    		throw new SpreadSheetDoesNotExistException(folha + "");
     	}
     	
+    	Token token = null;
 
-		
-			linhaEcoluna = Parser.parseEndereco(idCelula, folha);
+     	//obtem o objecto token para a seguir obter o username  
+    	for(Token token2 : Bubbledocs.getInstance().getTokensSet()){
+			if(token2.getToken().equals(tokenDoUser)){
+				token = token2;
+			}
+		}
+    	
+    	if(folha.podeEscrever(token.getUsername())){
+			
+    		linhaEcoluna = Parser.parseEndereco(idCelula, folha);
 			
 			if (referencia.contains("=")){
 				
 				referenciaValida = Parser.parseConteudo(folha, referencia);
 
-				
 			} else
 				throw new OutOfBoundsException(1,1);
 	
-    	
-    	for(Celula celula : folha.getCelulaSet()){
-    		if(celula.getLinha() ==  linhaEcoluna[0] && celula.getColuna() == linhaEcoluna[1])
-				folha.modificarCelula( linhaEcoluna[0], linhaEcoluna[1], referencia);
-    			result = celula.getConteudo().toString();
+			folha.modificarCelula( linhaEcoluna[0], linhaEcoluna[1], referencia);
+			
+			for(Celula celula : folha.getCelulaSet()){
+				if(celula.getLinha() ==  linhaEcoluna[0] && celula.getColuna() == linhaEcoluna[1])
+					result = celula.getConteudo().toString();
+				}
+    		}
     	}
-    	
-
-    }
   
 
     public final String getResult() {
