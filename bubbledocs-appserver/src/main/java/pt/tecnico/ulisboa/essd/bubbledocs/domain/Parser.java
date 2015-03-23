@@ -136,7 +136,10 @@ public class Parser {
     					return new Referencia(c);
     				}
     			}
-    		return new Referencia((new Celula(i[0], i[1], null)));
+    		Celula cell = new Celula(i[0], i[1], null);
+    		folha.addCelula(cell);
+    		Referencia ref = new Referencia(cell);
+    		return ref;
     }
     
 
