@@ -9,9 +9,21 @@ public class Bubbledocs extends Bubbledocs_Base {
 	public static Bubbledocs getInstance() {
 		Bubbledocs bd = FenixFramework.getDomainRoot().getBubbledocs();
 		
-		if (bd==null)
+		if (bd==null){
 			bd = new Bubbledocs();
+		}
 		
+		boolean existe = false;
+		for (Utilizador u : bd.getUtilizadoresSet()){
+			if(u.getUsername().equals("root"))
+				existe = true;
+		}
+		
+		if (!existe){
+			Utilizador user =new Utilizador("Super User", "root", "root");
+			bd.addUtilizadores(user);
+		}
+	
 		return bd;
 	}
 	
