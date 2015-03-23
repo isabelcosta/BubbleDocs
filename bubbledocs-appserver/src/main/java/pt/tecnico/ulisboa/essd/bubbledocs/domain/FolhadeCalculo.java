@@ -1,6 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import org.jdom2.Element;
+import org.joda.time.LocalDate;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
@@ -8,8 +9,18 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 
 public class FolhadeCalculo extends FolhadeCalculo_Base {
     
-    public FolhadeCalculo() {
+    public FolhadeCalculo(String nomeFolha, String username, int linhas, int colunas) {
     	 super();
+    	 setNomeFolha(nomeFolha);
+         setDono(username);
+         setLinhas(linhas);
+         setColunas(colunas);
+         int id = Bubbledocs.getInstance().getProxID();
+         setID(id++);
+         setDataCriacao(new LocalDate());
+         
+         //actualiza ID
+         Bubbledocs.getInstance().setProxID(id++);
     }
     
     public Element exportToXML() {
@@ -19,6 +30,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 		element.setAttribute("nome", getNomeFolha());
 		element.setAttribute("linhas", Integer.toString(getLinhas()));
 		element.setAttribute("colunas", Integer.toString(getColunas()));
+		
 		
 		if (!getCelulaSet().isEmpty()){
 			Element celulasElement = new Element("celulas");

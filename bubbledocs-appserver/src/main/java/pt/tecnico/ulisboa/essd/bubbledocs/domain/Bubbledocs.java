@@ -21,20 +21,9 @@ public class Bubbledocs extends Bubbledocs_Base {
     
     public void criaFolha(String nomeFolha, String username, int linhas, int colunas){
         
-        FolhadeCalculo folha = new FolhadeCalculo();
+        FolhadeCalculo folha = new FolhadeCalculo(nomeFolha, username, linhas, colunas);
         
-        folha.setNomeFolha(nomeFolha);
-        folha.setDono(username);
-        folha.setLinhas(linhas);
-        folha.setColunas(colunas);
-        int id = getProxID();
-        folha.setID(id++);
-        
-        //actualiza ID
-        setProxID(id++);
-        
-        this.addFolhas(folha);
-        
+        addFolhas(folha);
     }
     
     public void eliminaFolha(String nomeFolha){
