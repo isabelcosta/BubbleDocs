@@ -60,14 +60,14 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	//Faz o login dos users
 		LoginUser login1 = new LoginUser("ab", "maya");
     	login1.execute();
-    	Token tk1 = new Token("ab", login1.getResult());
+    	Token tk1 = new Token("ab", login1.getUserToken());
     	Bubbledocs.getInstance().addTokens(tk1);
 	
     	USER_TOKEN = tk1.getToken();
 
 		LoginUser login2 = new LoginUser("pi", "altas");
     	login2.execute();
-    	Token tk2 = new Token("pi", login2.getResult());
+    	Token tk2 = new Token("pi", login2.getUserToken());
     	Bubbledocs.getInstance().addTokens(tk2);
     	
     	USER_TOKEN_PODE_ESCREVER = tk2.getToken();   	

@@ -434,7 +434,7 @@ public class BubbleApplication {
     	if(!existsToken){
     		LoginUser login = new LoginUser("pf", "sub");
         	login.execute(); //	-> cria o result
-        	Bubbledocs.getInstance().addTokens(new Token("pf", login.getResult()));
+        	Bubbledocs.getInstance().addTokens(new Token("pf", login.getUserToken()));
     	}
     	
 

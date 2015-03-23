@@ -1,4 +1,4 @@
-/*package pt.tecnico.ulisboa.essd.bubbledocs.tests;
+package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -45,13 +45,16 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     public void success() {
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
         service.execute();
-		LocalTime currentTime = new LocalTime();
+        String token = service.getUserToken();
+        Bubbledocs.getInstance().addTokens(new Token(USERNAME, token));
 		
-		String token = service.getUserToken();
-
+        LocalTime currentTime = new LocalTime();
+		
+        String ss = service.getUserToken();
         Utilizador user = getUserFromSession(service.getUserToken());
         assertEquals(USERNAME, user.getUsername());
 
+        System.out.println("asdf");
 		int difference = Seconds.secondsBetween(getLastAccessTimeInSession(token), currentTime).getSeconds();
 	
 		assertTrue("Access time in session not correctly set", difference >= 0);
@@ -63,6 +66,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
 
         service.execute();
+        Bubbledocs.getInstance().addTokens(new Token(USERNAME, service.getUserToken()));
         String token1 = service.getUserToken();
 
         service.execute();
@@ -74,17 +78,17 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         assertEquals(USERNAME, user.getUsername());
     }
     
-    
+    /*
     @Test(expected = UnknownBubbleDocsUserException.class)
     public void loginUnknownUser() {
         LoginUser service = new LoginUser("jp2", "jp");
         service.execute();
     }
-    
+    */
 
     @Test(expected = WrongPasswordException.class)
     public void loginUserWithinWrongPassword() {
         LoginUser service = new LoginUser(USERNAME, "jp2");
         service.execute();
     }
-}*/
+}

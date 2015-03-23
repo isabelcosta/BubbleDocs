@@ -61,7 +61,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	//Inicia sessao para o utilizador ms
     	LoginUser login1 = new LoginUser("ms", "marias");
     	login1.execute();
-    	Token tk1 = new Token("ms", login1.getResult());
+    	Token tk1 = new Token("ms", login1.getUserToken());
     	Bubbledocs.getInstance().addTokens(tk1);
     	
     	USER_TOKEN = tk1.getToken();
@@ -69,7 +69,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	//Inicia sessao para o utilizador js
     	LoginUser login2 = new LoginUser("js", "joaos");
     	login2.execute();
-    	Token tk2 = new Token("js", login2.getResult());
+    	Token tk2 = new Token("js", login2.getUserToken());
     	Bubbledocs.getInstance().addTokens(tk2);
     	
     	USER_TOKEN_PODE_ESCREVER = tk2.getToken();   

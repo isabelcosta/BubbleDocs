@@ -16,7 +16,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongPasswordException;
 
 public class LoginUser extends BubbleDocsService {
 
-    private String result;
+    private String _result;
     private String _username;
     private String _password;
     
@@ -31,23 +31,22 @@ public class LoginUser extends BubbleDocsService {
     @Override
     protected void dispatch() throws BubbleDocsException {
     	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
-    		
+    		String user1 = user.getUsername();
     		if(user.getUsername().equals(_username)){
     			if(!user.getPassword().equals(_password)){
     				throw new WrongPasswordException("Password incorrecta!");
     			} else {
-    				result = getUserToken();
+    				_result = _username + generateToken();
     				return ;
     			}
     		}
     		
     	}
-    	throw new WrongPasswordException("Password incorrecta!");  	
-	    }
+    	throw new UtilizadorInvalidoException("Password incorrecta!");  	
+    } 
 
     public final String getUserToken() {
-    	String userToken = _username + generateToken();
-    	return userToken;
+    	return _result;
     }
     
     
@@ -57,7 +56,4 @@ public class LoginUser extends BubbleDocsService {
         return intToken;
     }
     
-    public String getResult() {
-    	return result;
-    }
 }

@@ -53,6 +53,9 @@ public class BubbleDocsServiceTest {
 		for (Utilizador user : bd.getUtilizadoresSet()){
 			bd.removeUtilizadores(user);
 		}
+		for (Token token : bd.getTokensSet()){
+			bd.removeTokens(token);
+		}
     }
 //    // auxiliary methods that access the domain layer and are needed in the test classes
 //    // for defining the initial state and checking that the service has the expected behavior
