@@ -64,23 +64,23 @@ public class Bubbledocs extends Bubbledocs_Base {
      * NOTA: permissao so recebe "leitura" ou "escrita"
      * 
      * */	
-    public void darPermissoes(String permissao, String utilizadorDador, String utilizadorReceptor, String nomeFolha) {
+    public void darPermissoes(String permissao, String utilizadorDador, String utilizadorReceptor, int folhaID) {
     	
     	// chama utilizador
     	Utilizador utilizador=null;
     	for(Utilizador u : getUtilizadoresSet()){
-    		if (u.getNome().equals(utilizadorReceptor))
+    		if (u.getUsername().equals(utilizadorReceptor))
     			utilizador=u;
     	}
     	
     	// chama folha
     	FolhadeCalculo folha=null;
     	for(FolhadeCalculo f : getFolhasSet()){
-    		if (f.getNomeFolha().equals(nomeFolha))
+    		if (f.getID() == folhaID)
     			folha=f;
     	}
     	
-    	if (folha.getNomeFolha().equals(nomeFolha) && 
+    	if (folha.getID() == folhaID && 
 			(utilizadorDador.equals(folha.getDono()) || folha.podeEscrever(utilizadorDador))){
 																//Lança excepcao
 			
@@ -94,23 +94,23 @@ public class Bubbledocs extends Bubbledocs_Base {
     
  	}
     
-    public void retirarPermissoes(String permissao, String utilizadorRetira, String utilizadorReceptor, String nomeFolha) {
+    public void retirarPermissoes(String permissao, String utilizadorRetira, String utilizadorReceptor, int folhaID) {
     	
     	// chama utilizador
     	Utilizador utilizador=null;
     	for(Utilizador u : getUtilizadoresSet()){
-    		if (u.getNome().equals(utilizadorReceptor))
+    		if (u.getUsername().equals(utilizadorReceptor))
     			utilizador=u;
     	}
     	
     	// chama folha
     	FolhadeCalculo folha=null;
     	for(FolhadeCalculo f : getFolhasSet()){
-    		if (f.getNomeFolha().equals(nomeFolha))
+    		if (f.getID() == folhaID)
     			folha=f;
     	}
     	
-    	if (folha.getNomeFolha().equals(nomeFolha) && 
+    	if (folha.getID() == folhaID && 
 			(utilizadorRetira.equals(folha.getDono()) || folha.podeEscrever(utilizadorRetira))){
 																//Lança excepcao
 			

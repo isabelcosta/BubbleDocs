@@ -37,51 +37,49 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     private static final String SPREADSHEET_NAME = "myFolha";
     private static final String CELL_ID = "3;2";
     private static final String CELL_ID_PROTEGIDA = "4;8";
-    private static final int DOC_ID = 19;
-    private static final String USER_TOKEN = "JonhyBravo234";
+    private static int DOC_ID;
+    private static int DOC_ID_SEM_PERMISSAO;    
+    private static String USER_TOKEN;
+    private static String USER_TOKEN_PODE_ESCREVER;    
     
     @Override
     public void populate4Test() {
-//        createUser(USERNAME, PASSWORD, "Antï¿½nio Rito Silva");
-//        root = addUserToSession("root");
-//        ars = addUserToSession("ars");
     	
-    	//------------------------------------------------------------------------------------
-        // setup the initial state if bubbledocs is empty
+    	//Limpa a base de dados
     	unPopulate4Test();
     	
     	Bubbledocs bd = Bubbledocs.getInstance();
+    	
+    	//Cria users
 		Utilizador user1 = new Utilizador("abelha maya", "ab", "maya");
     	bd.addUtilizadores(user1);
     	
     	Utilizador user2 = new Utilizador("pipi meias altas", "pi", "altas");
     	bd.addUtilizadores(user2);			
-    	    	
+    	    
+    	//Faz o login dos users
+		LoginUser login1 = new LoginUser("ab", "maya");
+    	login1.execute();
+    	Token tk1 = new Token("ab", login1.getResult());
+    	Bubbledocs.getInstance().addTokens(tk1);
+	
+    	USER_TOKEN = tk1.getToken();
+
+		LoginUser login2 = new LoginUser("pi", "altas");
+    	login2.execute();
+    	Token tk2 = new Token("pi", login2.getResult());
+    	Bubbledocs.getInstance().addTokens(tk2);
     	
-//    	for(Token token : Bubbledocs.getInstance().getTokensSet()){
-//    		if(!token.getUsername().equals("Paul Door")){
-//    			LoginUser login = new LoginUser("Paul Door", "sub");
-//    	 		login.execute(); //	-> cria o result
-//    	 		Bubbledocs.getInstance().addTokens(new Token("Paul Door", login.getResult()));
-//    		}
-//		}
-//    	
-//    	
-// 		for(Token token : Bubbledocs.getInstance().getTokensSet()){
-//			int minutes = Minutes.minutesBetween(token.getTime(), new LocalTime()).getMinutes();
-//			System.out.println(minutes);
-//			if(minutes > 120){
-//				Bubbledocs.getInstance().getTokensSet().remove(token);
-//			}
-//		}
-		
-    	 
-		bd.criaFolha("abFolha","ab",20, 30);
-		bd.criaFolha("piFolha","pi",40, 11);
+    	USER_TOKEN_PODE_ESCREVER = tk2.getToken();   	
     	
+    	//cria duas folhas
+		bd.criaFolha("abFolha", "ab", 20, 30);
+		bd.criaFolha("piFolha", "pi", 40, 11);
+
+		//preenche a folha
     	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
     		if(folhaIter.getNomeFolha().equals("abFolha")){
-    			
+    			DOC_ID = folhaIter.getID();
     			String conteudoLiteral = "4";
     			folhaIter.modificarCelula(3, 2, conteudoLiteral);
     			
@@ -89,28 +87,17 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     			folhaIter.modificarCelula(5,7,conteudoAdd);
     			
     			folhaIter.protegeCelula(4, 8, true);
-    			
+
     		} else if (folhaIter.getNomeFolha().equals("piFolha")){
-    			
+    			DOC_ID_SEM_PERMISSAO = folhaIter.getID();
     			String conteudoRef = "=3;2";
     			folhaIter.modificarCelula(2,7,conteudoRef);   			
     		}
     	}
     	
-    	//------------------------------------------------------------------------------------
+    	//da "ab" da permissoes de escrita a "pi" para preencher a sua folha
+    	bd.darPermissoes("escrita", "ab", "pi", DOC_ID);
     	
-    	//Substituir as funcoes por servicos?!?!
-    	System.out.println("ENCONTREI FOLHA");
-    	for( FolhadeCalculo folhaIter : BubbleDocsService.getBubbleDocs().getFolhasSet() ){
-				System.out.println("Nome: " + folhaIter.getNomeFolha() + "    Id: " + folhaIter.getID() + "    Dono: " + folhaIter.getDono());
-			   	for( Celula cell : folhaIter.getCelulaSet() ){
-			   		if(cell.getConteudo() == null){
-			   			System.out.println("Linha: " + cell.getLinha() + "    Coluna: " + cell.getColuna() + "    Conteudo: #VALUE");
-			   		}else{
-			   			System.out.println("Linha: " + cell.getLinha() + "    Coluna: " + cell.getColuna() + "    Conteudo: " + cell.getConteudo().toString());
-			   		}
-			   	}
-    	}
     }
 
     @Test
@@ -118,9 +105,6 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	
         AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
         service.execute();
-
-//	// User is the domain class that represents a User
-//        Utilizador user = Bubbledocs.getUserFromUsername(USERNAME_DOES_NOT_EXIST);
 
 		FolhadeCalculo folha = null;
 		String literalInCell = null;
@@ -145,7 +129,36 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	
         assertEquals(LITERAL, literalInCell);
     }
+    
+    @Test
+    public void successPodeEscrever() {
+        AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN_PODE_ESCREVER, DOC_ID, CELL_ID, LITERAL);
+        service.execute();
 
+		FolhadeCalculo folha = null;
+		String literalInCell = null;
+		
+    	for( FolhadeCalculo folhaIter : BubbleDocsService.getBubbleDocs().getFolhasSet() ){
+			if(folhaIter.getID() == DOC_ID){
+				folha = folhaIter;
+			}
+		}
+    	int[] linhaColuna = null;        
+		try {
+			linhaColuna = Parser.parseEndereco(CELL_ID, folha);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	for(Celula cell: folha.getCelulaSet()){
+    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
+    			literalInCell = cell.getConteudo().getValor().toString();
+    		}
+    	}
+    	
+        assertEquals(LITERAL, literalInCell);
+    }
+    
     @Test(expected = OutOfBoundsException.class)
     public void LineOutOfBoundOfSpreadSheet() {
     	
@@ -181,21 +194,20 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
          service.execute();
     }
 
-//    @Test(expected = DontHavePermissionException.class)
-//    public void unauthorizedUserForWriting() {
-//    	
-//    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
-//         service.execute();
-//    }
+    @Test(expected = DontHavePermissionException.class)
+    public void unauthorizedUserForWriting() {
+    	
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID_SEM_PERMISSAO, CELL_ID, LITERAL);
+         service.execute();
+    }
     
-//		FALTA TESTARRRRRRRRRRRRRRRRRRRRRRRRR 
-//    @Test(expected = UserNotLogged.class) // <--- tenho de arranjar excepcao
-//    public void userNotLogged() {
-//    	
-//    	 removeFromSession(USER_TOKEN);
-//    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
-//         service.execute();
-//    }    
+    @Test(expected = DontHavePermissionException.class) // <--- tenho de arranjar excepcao
+    public void userNotLogged() {
+    	
+    	 removeUserFromSession(USER_TOKEN);
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
+         service.execute();
+    }    
     
     @Test(expected = NotLiteralException.class)
     public void notLiteral() {

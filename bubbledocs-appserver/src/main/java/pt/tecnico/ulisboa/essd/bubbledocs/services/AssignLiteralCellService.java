@@ -3,6 +3,7 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
@@ -51,7 +52,16 @@ public class AssignLiteralCellService extends BubbleDocsService {
     		throw new SpreadSheetDoesNotExistException(folhaId + "");
     	}
     	
-//    	if(folha.podeEscrever(tokenUserLogged.getUsername()) || folha.isDono(tokenUserLogged.getUsername())){
+     	//obtem o objecto token para a seguir obter o username   	
+    	Token token = null;
+
+    	for(Token token2 : Bubbledocs.getInstance().getTokensSet()){
+			if(token2.getToken().equals(tokenUserLogged)){
+				token = token2;
+			}
+		}
+
+    	if(folha.podeEscrever(token.getUsername())){
 	    	int[] linhaColuna = null;
 	
 			linhaColuna = Parser.parseEndereco(cellToFill, folha);
@@ -67,19 +77,10 @@ public class AssignLiteralCellService extends BubbleDocsService {
 			
 	    	for(Celula cell: folha.getCelulaSet()){
 	    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
-//	    			System.out.println("show m ethe boolean " + cell.getProtegida());
-//	    			if(!cell.getProtegida()){
-//		    	    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
 		    			result = cell.getConteudo().getValor().toString();
-//	    			} 
-//	    			else {
-//	    				throw new DontHavePermissionException(tokenUserLogged);
-//	    			}
-	    		}
-	    	} 
-//	    		else {
-//    		throw new DontHavePermissionException(tokenUserLogged.getUsername());
-//    	}
+	    		} 
+	    	}
+	    }
     }
 
     public String getResult() {

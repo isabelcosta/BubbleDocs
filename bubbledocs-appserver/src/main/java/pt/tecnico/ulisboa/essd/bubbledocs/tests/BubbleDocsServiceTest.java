@@ -10,6 +10,7 @@ import pt.ist.fenixframework.FenixFramework;
 import pt.ist.fenixframework.core.WriteOnReadError;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 
 // add needed import declarations
@@ -83,12 +84,18 @@ public class BubbleDocsServiceTest {
     public String addUserToSession(String username) {
 //	// add code here
     	return null;
+    }
+
+    // remove a user from session given its token
+    void removeUserFromSession(String token) {
+	
+    	Bubbledocs bd = Bubbledocs.getInstance();
+    	for(Token userToken : bd.getTokensSet()){
+			if(userToken.getToken().equals(token)){
+				bd.removeTokens(userToken);
+			}
     	}
-//
-//    // remove a user from session given its token
-//    void removeUserFromSession(String token) {
-//	// add code here
-//    }
+    }
 //
 //    // return the user registered in session whose token is equal to token
 //    Utilizador getUserFromSession(String token) {
