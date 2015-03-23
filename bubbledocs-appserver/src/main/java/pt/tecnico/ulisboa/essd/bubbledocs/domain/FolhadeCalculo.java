@@ -115,13 +115,18 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 
     }
     
+    //recebe ou True para bloquear ou False para desbloquear a celula 
+    public void protegeCelula(Celula celula, boolean protege){
+    	celula.setProtegida(protege);
+    }
+    
     /* Dependendo da string que recebe cria o conteudo correspondente */
     private Conteudo criaConteudo(String conteudoAcriar) {
     	Conteudo c = null;
     	
     	try {
 			 c= Parser.parseConteudo(this, conteudoAcriar);
-			 System.out.println(c.toString());
+			 //System.out.println(c.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
