@@ -35,11 +35,11 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     private static final String ROOT_USERNAME = "root";
     private static final String USERNAME_DOES_NOT_EXIST = "no-one";
     private static final String NOT_REFERENCE = "noReference";
-    private static final String REFERENCE = "=4;2";
+    private static final String REFERENCE = "=5;7";
     private static final String SPREADSHEET_NAME = "Notas ES";
     private static int FOLHA_ID;
     private static int FOLHA_ID_SEM_PERMISSAO;
-    private static final String CELL_ID = "5;7";
+    private static final String CELL_ID = "4;2";
     private static final String CELL_ID_PROTEGIDA = "4;8";
     private static String USER_TOKEN;
     private static String USER_TOKEN_PODE_ESCREVER;
