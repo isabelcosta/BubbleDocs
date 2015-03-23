@@ -55,14 +55,36 @@ public class BubbleDocsServiceTest {
 //    // auxiliary methods that access the domain layer and are needed in the test classes
 //    // for defining the initial state and checking that the service has the expected behavior
     public Utilizador createUser(String username, String password, String name) {
-	// add code here
-    	return null;
+    	
+    	Bubbledocs bd = Bubbledocs.getInstance();
+    	
+    	//Cria user
+		Utilizador user = new Utilizador(username, password, name);
+    	bd.addUtilizadores(user);
+    		
+    	return user;
     }
 //
     public FolhadeCalculo createSpreadSheet(Utilizador user, String name, int row,
             int column) {
-    	// add code here
-    	return null;
+    	
+    	Bubbledocs bd = Bubbledocs.getInstance();
+    	
+    	//cria folha
+    	FolhadeCalculo folha = new FolhadeCalculo();
+    	
+    	String dono = null;
+    	for (Utilizador u : bd.getUtilizadoresSet()){
+			if(user.getNome().equals(u.getNome()))
+				dono=u.getNome();
+		}
+    	
+    	folha.setDono(dono);              
+		folha.setLinhas(row);
+		folha.setColunas(column);
+		folha.setNomeFolha(name);
+    	
+    	return folha;
     }
 //
 //    // returns a spreadsheet whose name is equal to name
@@ -76,8 +98,14 @@ public class BubbleDocsServiceTest {
     }
 //
 //    // returns the user registered in the application whose username is equal to username
-//    Utilizador getUserFromUsername(String username) {
-//	// add code here
+    public Utilizador getUserFromUsername(String username) {
+    	for (Utilizador u : Bubbledocs.getInstance().getUtilizadoresSet()){
+    		if (u.getUsername().equals(username))
+    			return u;
+    	}
+    	//Expected dont reach this point
+		return null;
+ }
 //    }
 //
 //    // put a user into session and returns the token associated to it

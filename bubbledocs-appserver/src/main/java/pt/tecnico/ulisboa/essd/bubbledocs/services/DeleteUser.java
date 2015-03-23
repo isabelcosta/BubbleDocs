@@ -5,7 +5,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UsernameAlreadyExistsException;
 
 
 public class DeleteUser extends BubbleDocsService {
@@ -22,20 +21,29 @@ public class DeleteUser extends BubbleDocsService {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
+		
+		Bubbledocs bd = Bubbledocs.getInstance();
+		
+		if(!validSession(userToken)){
+    		throw new DontHavePermissionException("Session for user " + userToken.substring(0, userToken.length()-1) + " is invalid" );
+    	}else{
+    		refreshToken(userToken);
+    	}
+		
+		//vai buscar o token da root
+		String rootToken = null;
+		for (Token t : bd.getTokensSet()){
+			if (t.getUsername().equals("root"))
+				rootToken = t.getToken();
+		}
 
 		for(Token token : Bubbledocs.getInstance().getTokensSet()){
-
-			if(token.getToken().equals(userToken)){
-
-				for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
-
+			if(token.getToken().equals(rootToken)){
+				for(Utilizador user : bd.getUtilizadoresSet()){
 					if(user.getUsername().equals(toDeleteUsername)){
-
-						Bubbledocs.getInstance().removeUtilizadores(user);
-
+						bd.removeUtilizadores(user);
 					}
 				}
-
 			}
 		}
 	}

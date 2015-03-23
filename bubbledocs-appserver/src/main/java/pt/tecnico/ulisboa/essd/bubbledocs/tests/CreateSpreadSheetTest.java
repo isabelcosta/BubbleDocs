@@ -26,7 +26,7 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
   
   @Override
   public void populate4Test() {
-	  	//user = createUser(USERNAME, PASSWORD, "Fabio Carvalho");
+	  	user = createUser(USERNAME, PASSWORD, "Fabio Carvalho");
 	  	token = addUserToSession("frc");
   	
   }
