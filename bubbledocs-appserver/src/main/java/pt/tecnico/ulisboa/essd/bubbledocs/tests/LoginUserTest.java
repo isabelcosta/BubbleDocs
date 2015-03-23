@@ -1,12 +1,19 @@
-/*package pt.tecnico.bubbledocs.service;
+/*package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
+import org.junit.Test;
 import org.joda.time.LocalTime;
 import org.joda.time.Seconds;
+
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongPasswordException;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
+import pt.tecnico.ulisboa.essd.bubbledocs.tests.BubbleDocsServiceTest;
 
 // add needed import declarations
 
@@ -26,24 +33,29 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     // returns the time of the last access for the user with token userToken.
     // It must get this data from the session object of the application
     private LocalTime getLastAccessTimeInSession(String userToken) {
-	// add code here
+    	for (Token token : Bubbledocs.getInstance().getTokensSet()) {
+			if (token.getUsername().equals(userToken)) {
+				return token.getTime();
+			}
+		}
+		return null;
     }
 
     @Test
     public void success() {
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
         service.execute();
-	LocalTime currentTime = new LocalTime();
-	
-	String token = service.getUserToken();
+		LocalTime currentTime = new LocalTime();
+		
+		String token = service.getUserToken();
 
-        User user = getUserFromSession(service.getUserToken());
+        Utilizador user = getUserFromSession(service.getUserToken());
         assertEquals(USERNAME, user.getUsername());
 
-	int difference = Seconds.secondsBetween(getLastAccessTimeInSession(token), currentTime).getSeconds();
-
-	assertTrue("Access time in session not correctly set", difference >= 0);
-	assertTrue("diference in seconds greater than expected", difference < 2);
+		int difference = Seconds.secondsBetween(getLastAccessTimeInSession(token), currentTime).getSeconds();
+	
+		assertTrue("Access time in session not correctly set", difference >= 0);
+		assertTrue("diference in seconds greater than expected", difference < 2);
     }
 
     @Test
@@ -56,17 +68,19 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         service.execute();
         String token2 = service.getUserToken();
 
-        User user = getUserFromSession(token1);
+        Utilizador user = getUserFromSession(token1);
         assertNull(user);
         user = getUserFromSession(token2);
         assertEquals(USERNAME, user.getUsername());
     }
-
+    
+    
     @Test(expected = UnknownBubbleDocsUserException.class)
     public void loginUnknownUser() {
         LoginUser service = new LoginUser("jp2", "jp");
         service.execute();
     }
+    
 
     @Test(expected = WrongPasswordException.class)
     public void loginUserWithinWrongPassword() {

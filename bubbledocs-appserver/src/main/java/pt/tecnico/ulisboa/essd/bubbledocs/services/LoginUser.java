@@ -31,20 +31,22 @@ public class LoginUser extends BubbleDocsService {
     @Override
     protected void dispatch() throws BubbleDocsException {
     	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
+    		
     		if(user.getUsername().equals(_username)){
     			if(!user.getPassword().equals(_password)){
     				throw new WrongPasswordException("Password incorrecta!");
     			} else {
-    				result = setUserToken(user.getUsername());
+    				result = getUserToken();
     				return ;
     			}
-    		} 
+    		}
+    		
     	}
-	    throw new UtilizadorInvalidoException("Utilizador não existe!");	   	
+    	throw new WrongPasswordException("Password incorrecta!");  	
 	    }
 
-    public final String setUserToken(String user) {
-    	String userToken = user + generateToken();
+    public final String getUserToken() {
+    	String userToken = _username + generateToken();
     	return userToken;
     }
     

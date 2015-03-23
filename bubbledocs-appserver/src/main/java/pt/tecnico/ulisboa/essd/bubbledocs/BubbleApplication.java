@@ -1,8 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
-import java.io.FileWriter;
-import java.io.IOException;
-
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -22,7 +19,9 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.ExportDocumentService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
 
 
@@ -171,27 +170,23 @@ public class BubbleApplication {
 			
 			System.out.println("4.Aceder as folhas de calculo do utilizador pf. ");
 			
-
 			for(Utilizador userIter : bd.getUtilizadoresSet()){
+				String userToken2= null;
 				if(userIter.getUsername().equals("pf")){
 			    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-			    		
-							System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
-							System.out.println("-----------------------------------INIT--------------------------------");
-							doc= convertToXML(folhaIter);
-							printDomainInXML(doc);
-				    		
-				    		// new XMLOutputter().output(doc, System.out);
-				    		XMLOutputter xmlOutput = new XMLOutputter();
-				     
-				    		// display nice nice
-				    		xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
-				    		try {
-								xmlOutput.output(doc, new FileWriter(folhaIter.getNomeFolha() + ".xml"));
-							} catch (IOException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
+		    			for (Token token : bd.getTokensSet()) {
+							if (token.getUsername().equals("pf")) {
+								userToken2= token.getToken();
 							}
+						}
+		    			//EXPORTDOCUMENTSERVICE
+		    			ExportDocumentService exportService = new ExportDocumentService(folhaIter.getID(),userToken2 );
+		    			exportService.execute();
+		    			
+						System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
+						System.out.println("-----------------------------------INIT--------------------------------");
+						doc= exportService.getResult();
+						printDomainInXML(doc);
 			    	}
 				
 			    		
@@ -310,7 +305,17 @@ public class BubbleApplication {
 				if(folhaIter.getDono().equals("pf")){
 					System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + folhaIter.getDono() );
 					System.out.println("-----------------------------------INIT--------------------------------");
-					doc = convertToXML(folhaIter);
+					String userToken9 = null;
+					for (Token token : bd.getTokensSet()) {
+						if (token.getUsername().equals("pf")) {
+							userToken9= token.getToken();
+						}
+					}
+					
+					ExportDocumentService exportService = new ExportDocumentService(folhaIter.getID(), userToken9);
+	    			exportService.execute();
+					
+					doc = exportService.getResult();
 					
 					
 					
@@ -321,9 +326,11 @@ public class BubbleApplication {
 			
 			tm.commit();
 			committed = true;
-		}catch (SystemException| NotSupportedException | RollbackException| HeuristicMixedException | HeuristicRollbackException ex) {
+		} catch (SystemException| NotSupportedException | RollbackException| HeuristicMixedException | HeuristicRollbackException ex) {
 			System.err.println("Error in execution of transaction: " + ex);
-		} finally {
+		} catch (DontHavePermissionException dhpe) {
+			System.err.println("Error with permissions: " + dhpe);
+		}finally {
 			if (!committed) 
 				try {
 					tm.rollback();
