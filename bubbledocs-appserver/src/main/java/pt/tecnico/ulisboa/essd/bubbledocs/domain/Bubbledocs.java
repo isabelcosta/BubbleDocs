@@ -38,10 +38,10 @@ public class Bubbledocs extends Bubbledocs_Base {
         addFolhas(folha);
     }
     
-    public void eliminaFolha(String nomeFolha){
+    public void eliminaFolha(int idFolha){
         
         for(FolhadeCalculo folha : getFolhasSet()){
-            if(folha.getNomeFolha().equals(nomeFolha)){
+            if(folha.getID() == idFolha){
                 folha.delete();
                 removeFolhas(folha);   //retira da lista
             }
@@ -53,7 +53,7 @@ public class Bubbledocs extends Bubbledocs_Base {
         
         for(FolhadeCalculo folha : getFolhasSet()){
             if (nomeUtilizador.equals(folha.getDono()))
-            	eliminaFolha(folha.getDono()); 
+            	eliminaFolha(folha.getID()); 
         }   
     }
 
