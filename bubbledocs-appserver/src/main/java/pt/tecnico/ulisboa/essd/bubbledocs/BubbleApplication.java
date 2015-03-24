@@ -20,7 +20,10 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheet;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateUser;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.ExportDocumentService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
 
@@ -53,6 +56,7 @@ public class BubbleApplication {
 			//1. Inserir os dados relativos ao cenario de teste na base de dados caso o estado persistente ´
 			//   da aplicacao nao esteja inicializado.
 			//--------------------------------------------------------------------------
+			
 			System.out.println("---------------------------------------------------------------------------------");
 			
 			System.out.println("1. Inserir dados relativos ao cenario de teste na base de dados.");
@@ -60,21 +64,6 @@ public class BubbleApplication {
 			populateBubbleDocs(bd);
 	    	
 
-	    	
-	    	/*for (FolhadeCalculo folhaIter : user1.getFolhascriadasSet()) {
-	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
-	    			for (Celula cel : folhaIter.getCelulaSet())
-	    			{
-	    				System.out.println("Coluna: " + cel.getColuna() + " conteudo " + cel.getConteudo());
-	    				if (cel.getColuna().equals(2)) {
-	    					FuncaoBinaria fb = (FuncaoBinaria) cel.getConteudo();
-	    					Referencia arg1 = (Referencia) fb.getArgumento1();
-	    					System.out.println("arg1 conteudo " + arg1.getCelularef().getLinha());
-						}
-	    			}
-	    				
-	    		}
-			}*/
 			//--------------------------------------------------------------------------
 			//2. Escrever a informacao sobre todos os utilizadores registados na aplicacao.
 			//--------------------------------------------------------------------------
@@ -88,10 +77,10 @@ public class BubbleApplication {
 			}
 					
 			
-			
 			//--------------------------------------------------------------------------
 			//3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.
 			//--------------------------------------------------------------------------
+			
 			System.out.println("----------------------------------------------------------------------------------------");
 			
 			System.out.println("3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.");
@@ -117,56 +106,12 @@ public class BubbleApplication {
 			    	}
 				}
 			}
-	    	//****************************************************************************************
-			
-			
-			Integer folhaID  = null;
-			
-	    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-	    		if(folhaIter.getNomeFolha().equals("Notas ES")){
-	    			folhaID = folhaIter.getID();
-	    			for (Celula cel : folhaIter.getCelulaSet()) {
-						
-					}
-	    		
-	    		}
-	    	}
 	    	
-// 	
-//			String result = null;
-//			
-//	    	for( FolhadeCalculo folhaIter : bd.getFolhasSet()  ){
-//	    		if(folhaIter.getID() == 4){
-//	    			System.out.println("folha folha0:      " + folhaIter.toString());
-//	    			for(Celula cell: folhaIter.getCelulaSet()){
-//	    	    		if(cell.getLinha() == 1 && cell.getColuna() == 1){
-//	    	    			result = cell.getConteudo().toString();
-//	    	    			System.out.println("folha folha0:      " + folhaIter.toString());
-//	    	    		}
-//	    	    	}	
-//	    		}
-//	    	}
-////		
-	    	String userToken = null;
-	    	for(Token tokenObject : Bubbledocs.getInstance().getTokensSet()){
-	    		if(tokenObject.getUsername().equals("pf")){
-	    			userToken = tokenObject.getToken();
-	    		}
-	    	}
-	    	
-	    	
-			AssignReferenceCellService service = new AssignReferenceCellService( userToken, folhaID, "1;1", "=5;6");
-			try {
-				service.execute();
-			} catch (Exception e) {
-				System.out.println(e.getMessage() + " INVALID");
-			}
-        
-			System.out.println("Na celula 1;1 esta o valor:      " + service.getResult());
+			
 	        
-			//--------------------------------------------------------------------------
+			//-----------------------------------------------------------------------------------------
 			//4. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
-			//--------------------------------------------------------------------------
+			//-----------------------------------------------------------------------------------------
 			
 			System.out.println("---------------------------------------------------------------------------------");
 			
@@ -417,14 +362,33 @@ public class BubbleApplication {
         if (isInicialized(bd))
             return;
 
+        String rootToken = null;
+        String pfToken = null;
+        int folhaID = 0;
+        
         // setup the initial state if bubbledocs is empty
         
-   
-		Utilizador user1 = new Utilizador("Paul Door", "pf", "sub");
-    	bd.addUtilizadores(user1);
-    	
-    	Utilizador user2 = new Utilizador("Step Rabbit", "ra", "cor");
-    	bd.addUtilizadores(user2);			
+        //faz login da root
+        LoginUser loginRoot = new LoginUser("root", "root");
+        loginRoot.execute();
+        Bubbledocs.getInstance().addTokens(new Token("root", loginRoot.getUserToken()));
+        
+       
+        //procura o token da root
+        for(Token token : bd.getTokensSet()){
+        	if(token.getUsername().equals("root")){
+        		rootToken = token.getToken();
+        	}	
+        }
+        
+        
+        //cria os utilizadores
+        CreateUser serviceUser1 = new CreateUser(rootToken, "pf", "sub", "Paul Door");
+        serviceUser1.execute();
+        		
+        CreateUser serviceUser2 = new CreateUser(rootToken, "ra", "cor", "Step Rabbit");
+        serviceUser2.execute();
+	
     	
     	Boolean existsToken = false;
 
@@ -433,6 +397,7 @@ public class BubbleApplication {
     			existsToken = true;
     		}
 		}
+    	
     	if(!existsToken){
     		LoginUser login = new LoginUser("pf", "sub");
         	login.execute(); //	-> cria o result
@@ -448,24 +413,40 @@ public class BubbleApplication {
 			}
 		}
 		
-    	 
-		bd.criaFolha("Notas ES","pf",300, 20);
+        
+ 		//procura o token do pf
+        for(Token token : bd.getTokensSet()){
+        	if(token.getUsername().equals("pf")){
+        		pfToken = token.getToken();
+        	}	
+        }
+        
+ 		
+        //cria a folha 
+ 		CreateSpreadSheet serviceFolha = new CreateSpreadSheet(pfToken, "Notas ES", 300, 20);
+ 		serviceFolha.execute();
     
-    	
+ 		
     	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
     		if(folhaIter.getNomeFolha().equals("Notas ES")){
     			
+    			folhaID = folhaIter.getID();
+    		
+    			
     			//-->Literal 5 na posicao (3, 4)
-    			String conteudoLiteral = "5";
-    			folhaIter.modificarCelula(3, 4, conteudoLiteral);
+    			AssignLiteralCellService serviceLiteral = new AssignLiteralCellService(pfToken, folhaID, "3;4", "5" );
+    			serviceLiteral.execute();
+    			
     			
     			//-->Funcao = ADD(2, 3; 4) na posicao (5, 6)
     			String conteudoAdd = "=ADD(2,3;4)";
     			folhaIter.modificarCelula(5,6,conteudoAdd);
     			
+    			
     			//-->Referencia para a celula (5, 6) na posicao (1, 1)
-    			String conteudoReferencia = "=5;6"; //"=5;6"; ???? Porque da excepcao com referencia?
-    			folhaIter.modificarCelula(1,1, conteudoReferencia);
+    			AssignReferenceCellService serviceReferencia = new AssignReferenceCellService(pfToken, folhaID, "1;1", "=5;6" );
+    			serviceReferencia.execute();
+
     			
     			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
     			String conteudoDiv = "=DIV(1;1,3;4)";
