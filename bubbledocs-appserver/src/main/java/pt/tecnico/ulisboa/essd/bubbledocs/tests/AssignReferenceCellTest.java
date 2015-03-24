@@ -12,6 +12,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.ProtectedCellException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
@@ -22,19 +23,11 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.BubbleDocsService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
 
-// add needed import declarations
+
 
 public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
-    // the tokens
-    private String root;
-    private String ars;
 
-//    private static final String USERNAME = "pf";
-//    private static final String PASSWORD = "sub";
-//    private static final String ROOT_USERNAME = "root";
-//    private static final String USERNAME_DOES_NOT_EXIST = "no-one";
-//    private static final String NOT_REFERENCE = "noReference";
     private static final String REFERENCE = "=5;7";
     private static int FOLHA_ID;
     private static int FOLHA_ID_SEM_PERMISSAO;
@@ -42,6 +35,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     private static final String CELL_ID_PROTEGIDA = "4;8";
     private static String USER_TOKEN;
     private static String USER_TOKEN_PODE_ESCREVER;
+    private static final String CELL_ID_VAZIA = "10;10";
     
     @Override
     public void populate4Test() {
@@ -50,8 +44,8 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	
     	Bubbledocs bd = Bubbledocs.getInstance();
     	
-    	//Cria utilizadores
     	
+    	//Cria utilizadores
     	Utilizador user1 = createUser("ms", "marias", "Maria Santos");
 
     	Utilizador user2 = createUser("js", "joaos", "Joao Santos");
@@ -71,7 +65,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	FolhadeCalculo folha2 = createSpreadSheet(user2, "jsFolha", 40, 20 );
     	
     			
-    	//adiciona conteudo a celula
+    	//adiciona conteudo a folha da ms
     	FOLHA_ID = folha1.getID();
     			
     	String conteudoReferencia = "7";
@@ -83,7 +77,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	folha1.protegeCelula(4, 8, true);
 
     	
-    	//adiciona conteudo a celula
+    	//adiciona conteudo a folha do js
     	FOLHA_ID_SEM_PERMISSAO = folha2.getID();
     			
 		String conteudoRef = "3";
@@ -115,6 +109,17 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
     }
 
+    @Test
+    public void successAssignToEmptyCell() {
+    	
+    	AssignReferenceCellService service = new AssignReferenceCellService( USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID_VAZIA, REFERENCE);
+        service.execute();
+
+        assertEquals(REFERENCE, service.getResult());
+
+    }
+    
+    
     @Test(expected = UserNotInSessionException.class) 
     public void loginInvalido() {
     	
@@ -132,7 +137,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
         service.execute();
     }
     
-    @Test(expected = UserNotInSessionException.class)
+    @Test(expected = ProtectedCellException.class)
     public void unauthorizedUserForProtectedCell() {
     	
     	AssignReferenceCellService service = new AssignReferenceCellService( USER_TOKEN, FOLHA_ID, CELL_ID_PROTEGIDA, REFERENCE);
