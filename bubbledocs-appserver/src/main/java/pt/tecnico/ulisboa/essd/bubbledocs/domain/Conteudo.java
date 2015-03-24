@@ -14,16 +14,15 @@ public class Conteudo extends Conteudo_Base {
     }
 
 	public Element exportToXML() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public void importToXML() {
-		// TODO Auto-generated method stub
-		
+	public void importToXML() {		
 	}
 	
-	
+	public Integer getValor(){
+		return null;		
+	}
 
    
 }

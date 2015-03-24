@@ -30,4 +30,17 @@ public class Referencia extends Referencia_Base {
 		return res;
 	}
 		
+	
+	  @Override
+	  public Integer getValor(){
+	    	
+		  //primeiro verifica se tem conteudo
+	    if (getCelularef().getConteudo() == null || getCelularef().getConteudo().getValor() == null){
+	    	return null;
+	    }
+	    	
+	    Integer res = getCelularef().getConteudo().getValor();
+	    	
+	    return res;
+	    }
 }

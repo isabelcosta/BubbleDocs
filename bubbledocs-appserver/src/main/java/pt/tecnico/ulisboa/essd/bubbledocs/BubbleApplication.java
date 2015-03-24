@@ -86,6 +86,8 @@ public class BubbleApplication {
 			for (Utilizador user: bd.getUtilizadoresSet()){
 				System.out.println("Nome: " + user.getNome() + " ; Username: " + user.getUsername() + " ; Password: " + user.getPassword());
 			}
+					
+			
 			
 			//--------------------------------------------------------------------------
 			//3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.

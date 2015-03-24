@@ -40,4 +40,16 @@ public class MUL extends MUL_Base {
     			
 		return "=" + "MUL" + "(" + arg1 + "," + arg2 + ")";
     }
+    
+    @Override
+    public Integer getValor(){
+    	
+    	if (getArgumento1().getValor() == null || getArgumento2().getValor() == null){
+    		return null;
+    	}
+    	
+    	Integer res = getArgumento1().getValor() * getArgumento2().getValor();
+    	
+    	return res;
+    }
 }

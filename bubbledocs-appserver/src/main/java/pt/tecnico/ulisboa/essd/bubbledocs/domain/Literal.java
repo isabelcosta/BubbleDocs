@@ -31,6 +31,8 @@ public class Literal extends Literal_Base {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 	public void delete() {
     	setCelula(null);
     	setLiteral(null);

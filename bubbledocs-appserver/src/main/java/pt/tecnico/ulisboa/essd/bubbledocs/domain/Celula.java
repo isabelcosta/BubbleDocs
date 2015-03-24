@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.jdom2.Element;
 
-import pt.ist.fenixframework.FenixFramework;
-
 public class Celula extends Celula_Base {
     
 	public Celula(int linha, int coluna, Conteudo conteudo) {
@@ -40,7 +38,7 @@ public class Celula extends Celula_Base {
 		return element;
 	}
 	
-public void importFromXML(Element celula, Element base) {
+	public void importFromXML(Element celula, Element base) {
 		
 		List<Element> c1 = celula.getChild("conteudo").getChildren();   // lista de children pode ter: "literal", "referencia" ou "div" ou "sum" etc
 		Integer linha = Integer.parseInt(celula.getAttributeValue("linha"));
@@ -154,4 +152,9 @@ public void importFromXML(Element celula, Element base) {
 			
 		}
 	}
+	
+	public Integer getValor(){
+		return getConteudo().getValor();
+	}
+	
 }

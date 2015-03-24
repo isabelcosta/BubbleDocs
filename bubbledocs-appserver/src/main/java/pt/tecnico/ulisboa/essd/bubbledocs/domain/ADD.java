@@ -38,4 +38,16 @@ public class ADD extends ADD_Base {
     			
 		return "=" + "ADD" + "(" + arg1 + "," + arg2 + ")";
     }
+
+    @Override
+    public Integer getValor(){
+    	
+    	if (getArgumento1().getValor() == null || getArgumento2().getValor() == null){
+    		return null;
+    	}
+    	
+    	Integer res = getArgumento1().getValor() + getArgumento2().getValor();
+    	
+    	return res;
+    }
 }
