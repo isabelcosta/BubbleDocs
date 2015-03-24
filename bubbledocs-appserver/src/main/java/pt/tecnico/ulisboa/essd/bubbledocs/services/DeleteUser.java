@@ -4,6 +4,9 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 
 
@@ -23,12 +26,18 @@ public class DeleteUser extends BubbleDocsService {
 	protected void dispatch() throws BubbleDocsException {
 		
 		Bubbledocs bd = Bubbledocs.getInstance();
-		
 		if(!validSession(userToken)){
     		throw new UserNotInSessionException("Session for user " + userToken.substring(0, userToken.length()-1) + " is invalid" );
-    	}else{
-    		refreshToken(userToken);
     	}
+		if(!isRoot(userToken)){
+			throw new UnauthorizedOperationException("Session for user " + userToken.substring(0, userToken.length()-1) + " is not root");
+		}
+		refreshToken(userToken);
+    	
+		
+		if(toDeleteUsername == "" || toDeleteUsername == null){
+			throw new EmptyUsernameException("User empty!");
+		}
 		
 		//vai buscar o token da root
 		String rootToken = null;
@@ -42,9 +51,11 @@ public class DeleteUser extends BubbleDocsService {
 				for(Utilizador user : bd.getUtilizadoresSet()){
 					if(user.getUsername().equals(toDeleteUsername)){
 						bd.removeUtilizadores(user);
+						return;
 					}
 				}
 			}
 		}
+		throw new UnknownBubbleDocsUserException(toDeleteUsername);
 	}
 }

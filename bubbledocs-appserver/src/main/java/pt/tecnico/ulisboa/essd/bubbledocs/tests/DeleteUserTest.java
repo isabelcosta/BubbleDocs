@@ -1,9 +1,15 @@
-/*package pt.tecnico.bubbledocs.service;
+package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
+
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.DeleteUser;
 
 // add needed import declarations
 
@@ -22,7 +28,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     @Override
     public void populate4Test() {
         createUser(USERNAME, PASSWORD, "António Rito Silva");
-        User smf = createUser(USERNAME_TO_DELETE, "smf", "Sérgio Fernandes");
+        Utilizador smf = createUser(USERNAME_TO_DELETE, "smf", "Sérgio Fernandes");
         createSpreadSheet(smf, USERNAME_TO_DELETE, 20, 20);
 
         root = addUserToSession(ROOT_USERNAME);
@@ -44,7 +50,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
      * accessUsername exists, is in session and is root toDeleteUsername exists
      * and is not in session
      */
-  /*  @Test
+   @Test
     public void successToDeleteIsNotInSession() {
         success();
     }
@@ -53,7 +59,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
      * accessUsername exists, is in session and is root toDeleteUsername exists
      * and is in session Test if user and session are both deleted
      */
-    /*@Test
+    @Test
     public void successToDeleteIsInSession() {
         String token = addUserToSession(USERNAME_TO_DELETE);
         success();
@@ -90,4 +96,4 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     public void accessUserDoesNotExist() {
         new DeleteUser(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
     }
-}*/
+}
