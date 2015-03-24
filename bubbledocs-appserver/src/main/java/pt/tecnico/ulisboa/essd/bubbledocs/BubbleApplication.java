@@ -418,7 +418,8 @@ public class BubbleApplication {
             return;
 
         // setup the initial state if bubbledocs is empty
-			
+        
+   
 		Utilizador user1 = new Utilizador("Paul Door", "pf", "sub");
     	bd.addUtilizadores(user1);
     	

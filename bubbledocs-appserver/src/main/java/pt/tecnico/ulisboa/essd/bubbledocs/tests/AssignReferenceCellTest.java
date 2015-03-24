@@ -30,13 +30,12 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     private String root;
     private String ars;
 
-    private static final String USERNAME = "pf";
-    private static final String PASSWORD = "sub";
-    private static final String ROOT_USERNAME = "root";
-    private static final String USERNAME_DOES_NOT_EXIST = "no-one";
-    private static final String NOT_REFERENCE = "noReference";
+//    private static final String USERNAME = "pf";
+//    private static final String PASSWORD = "sub";
+//    private static final String ROOT_USERNAME = "root";
+//    private static final String USERNAME_DOES_NOT_EXIST = "no-one";
+//    private static final String NOT_REFERENCE = "noReference";
     private static final String REFERENCE = "=5;7";
-    private static final String SPREADSHEET_NAME = "Notas ES";
     private static int FOLHA_ID;
     private static int FOLHA_ID_SEM_PERMISSAO;
     private static final String CELL_ID = "4;2";
@@ -54,43 +53,43 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	//Cria utilizadores
     	
     	Utilizador user1 = createUser("ms", "marias", "Maria Santos");
+
     	Utilizador user2 = createUser("js", "joaos", "Joao Santos");
+    
     	
     	//Inicia sessao para o utilizador ms
-    	LoginUser login1 = new LoginUser("ms", "marias");
-    	login1.execute();
-    	Token tk1 = new Token("ms", login1.getUserToken());
-    	Bubbledocs.getInstance().addTokens(tk1);
-    	
-    	USER_TOKEN = tk1.getToken();
+    	USER_TOKEN = addUserToSession("ms");
+
     	
     	//Inicia sessao para o utilizador js
-    	LoginUser login2 = new LoginUser("js", "joaos");
-    	login2.execute();
-    	Token tk2 = new Token("js", login2.getUserToken());
-    	Bubbledocs.getInstance().addTokens(tk2);
-    	
-    	USER_TOKEN_PODE_ESCREVER = tk2.getToken();   
+    	USER_TOKEN_PODE_ESCREVER = addUserToSession("js");; 
+
     	
     	//cria duas folhas
     	
     	FolhadeCalculo folha1 = createSpreadSheet(user1, "msFolha", 50, 20 );
     	FolhadeCalculo folha2 = createSpreadSheet(user2, "jsFolha", 40, 20 );
-    	   			
-		FOLHA_ID = folha1.getID();
-		
-		String conteudoReferencia = "7";
-		folha1.modificarCelula(4, 2, conteudoReferencia);
-		
-		String conteudoAdd = "=ADD(2,3;2)";
-		folha1.modificarCelula(5,7,conteudoAdd);
-		
-		folha1.protegeCelula(4, 8, true);
+    	
+    			
+    	//adiciona conteudo a celula
+    	FOLHA_ID = folha1.getID();
+    			
+    	String conteudoReferencia = "7";
+    	folha1.modificarCelula(4, 2, conteudoReferencia);
+    			
+    	String conteudoAdd = "=ADD(2,3;2)";
+    	folha1.modificarCelula(5,7,conteudoAdd);
+    			
+    	folha1.protegeCelula(4, 8, true);
 
-		FOLHA_ID_SEM_PERMISSAO = folha2.getID();
-		
+    	
+    	//adiciona conteudo a celula
+    	FOLHA_ID_SEM_PERMISSAO = folha2.getID();
+    			
 		String conteudoRef = "3";
 		folha2.modificarCelula(2,7,conteudoRef);   			
+
+    	
 
     	bd.darPermissoes("escrita", "ms", "js", FOLHA_ID);
     }
@@ -98,68 +97,22 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     @Test
     public void success() {
     	
-    	FolhadeCalculo folhaTest = null;
-        String conteudo = null;
-        
     	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, CELL_ID, REFERENCE);
         service.execute();
 
+        assertEquals(REFERENCE, service.getResult());
         
-        //-----------------------------------------------------------------------------
-        // Verifica se o conteudo da celula e o esperado.
-        //------------------------------------------------------------------------------
-        
-        for(FolhadeCalculo folhaIter : Bubbledocs.getInstance().getFolhasSet()){
-			if(folhaIter.getID() == FOLHA_ID)
-        		folhaTest = folhaIter;
-        }
-        	
-        
-    	int[] linhaEColuna = null;        
-		try {
-			linhaEColuna = Parser.parseEndereco(CELL_ID, folhaTest);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        
-        
-        for(Celula cell : folhaTest.getCelulaSet()){
-        	if(cell.getLinha() == linhaEColuna[0] && cell.getColuna() == linhaEColuna[1])
-        		conteudo = cell.getConteudo().toString();	
-        }
-        
-
-        assertEquals(REFERENCE, conteudo);
-
     }
+    
     
     @Test
     public void successPodeEscrever() {
+    	
     	AssignReferenceCellService service = new AssignReferenceCellService( USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID, REFERENCE);
         service.execute();
 
-    	FolhadeCalculo folhaTest = null;
-        String conteudo = null;
-		
-    	for( FolhadeCalculo folhaIter : BubbleDocsService.getBubbleDocs().getFolhasSet() ){
-			if(folhaIter.getID() == FOLHA_ID){
-				folhaTest = folhaIter;
-			}
-		}
-    	int[] linhaEColuna = null;        
-		try {
-			linhaEColuna = Parser.parseEndereco(CELL_ID, folhaTest);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-        for(Celula cell : folhaTest.getCelulaSet()){
-        	if(cell.getLinha() == linhaEColuna[0] && cell.getColuna() == linhaEColuna[1])
-        		conteudo = cell.getConteudo().toString();	
-        }
-    	
-        assertEquals(REFERENCE, conteudo);
+        assertEquals(REFERENCE, service.getResult());
+
     }
 
     @Test(expected = UserNotInSessionException.class) 
