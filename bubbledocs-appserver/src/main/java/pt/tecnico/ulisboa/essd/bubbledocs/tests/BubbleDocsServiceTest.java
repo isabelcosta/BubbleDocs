@@ -87,8 +87,8 @@ public class BubbleDocsServiceTest {
     	
     	return folha;
     }
-//
-//    // returns a spreadsheet whose name is equal to name
+
+    // returns a spreadsheet whose name is equal to name
     public FolhadeCalculo getSpreadSheet(String name) {
 		  for (FolhadeCalculo f : Bubbledocs.getInstance().getFolhasSet()){
 			   if (f.getNomeFolha().equals(name))
@@ -97,8 +97,8 @@ public class BubbleDocsServiceTest {
 		//Expected dont reach this point
     	return null;
     }
-//
-//    // returns the user registered in the application whose username is equal to username
+
+    // returns the user registered in the application whose username is equal to username
     public Utilizador getUserFromUsername(String username) {
     	for (Utilizador u : Bubbledocs.getInstance().getUtilizadoresSet()){
     		if (u.getUsername().equals(username))
@@ -106,10 +106,9 @@ public class BubbleDocsServiceTest {
     	}
     	//Expected dont reach this point
 		return null;
- }
-//    }
-//
-//    // put a user into session and returns the token associated to it
+    }
+
+    // put a user into session and returns the token associated to it
     public String addUserToSession(String username) {
     	
     	Bubbledocs bd = Bubbledocs.getInstance();
@@ -136,7 +135,7 @@ public class BubbleDocsServiceTest {
 			}
     	}
     }
-//
+
 //    // return the user registered in session whose token is equal to token
     public Utilizador getUserFromSession(String token) {
     	

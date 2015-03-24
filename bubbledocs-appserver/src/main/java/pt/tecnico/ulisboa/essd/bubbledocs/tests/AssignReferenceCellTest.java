@@ -54,14 +54,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	//Cria utilizadores
     	
     	Utilizador user1 = createUser("ms", "marias", "Maria Santos");
-    	
-//    	Utilizador user1 = new Utilizador("Maria Santos", "ms", "marias");
-//    	bd.addUtilizadores(user1);
-    	
     	Utilizador user2 = createUser("js", "joaos", "Joao Santos");
-    	
-//    	Utilizador user2 = new Utilizador("Joao Santos", "js", "joaos");
-//    	bd.addUtilizadores(user2);	
     	
     	//Inicia sessao para o utilizador ms
     	LoginUser login1 = new LoginUser("ms", "marias");
@@ -83,33 +76,21 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	
     	FolhadeCalculo folha1 = createSpreadSheet(user1, "msFolha", 50, 20 );
     	FolhadeCalculo folha2 = createSpreadSheet(user2, "jsFolha", 40, 20 );
-    	
-//		bd.criaFolha("msFolha", "ms", 50, 20);
-//		bd.criaFolha("jsFolha", "js", 40, 20);
+    	   			
+		FOLHA_ID = folha1.getID();
 		
-		//preenche a folha
-//    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-//    		if(folhaIter.getNomeFolha().equals("msFolha")){
-    			
-    			FOLHA_ID = folha1.getID();
-    			
-    			String conteudoReferencia = "7";
-    			folha1.modificarCelula(4, 2, conteudoReferencia);
-    			
-    			String conteudoAdd = "=ADD(2,3;2)";
-    			folha1.modificarCelula(5,7,conteudoAdd);
-    			
-    			folha1.protegeCelula(4, 8, true);
+		String conteudoReferencia = "7";
+		folha1.modificarCelula(4, 2, conteudoReferencia);
+		
+		String conteudoAdd = "=ADD(2,3;2)";
+		folha1.modificarCelula(5,7,conteudoAdd);
+		
+		folha1.protegeCelula(4, 8, true);
 
-//    		} else if (folhaIter.getNomeFolha().equals("jsFolha")){
-
-    			FOLHA_ID_SEM_PERMISSAO = folha2.getID();
-    			
-    			String conteudoRef = "3";
-    			folha2.modificarCelula(2,7,conteudoRef);   			
-//    		}
-//    	}
-    	
+		FOLHA_ID_SEM_PERMISSAO = folha2.getID();
+		
+		String conteudoRef = "3";
+		folha2.modificarCelula(2,7,conteudoRef);   			
 
     	bd.darPermissoes("escrita", "ms", "js", FOLHA_ID);
     }
