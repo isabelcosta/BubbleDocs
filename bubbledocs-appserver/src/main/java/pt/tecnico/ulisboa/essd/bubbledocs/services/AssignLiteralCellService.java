@@ -17,8 +17,6 @@ public class AssignLiteralCellService extends BubbleDocsService {
     private String cellToFill;
     private int folhaId;
     private String tokenUserLogged;
-
-    //SO FALATA A QUESTAO DO USER LOGADO----------------------------------------
     
     public AssignLiteralCellService(String tokenUser, int docId, String cellId, String literal) {
 	

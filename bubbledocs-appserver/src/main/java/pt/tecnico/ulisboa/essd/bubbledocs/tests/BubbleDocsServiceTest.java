@@ -15,8 +15,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 
-// add needed import declarations
-
 public class BubbleDocsServiceTest {
 
     @Before

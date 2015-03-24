@@ -2,24 +2,16 @@ package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
 import static org.junit.Assert.assertEquals;
 
-import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
 import org.junit.Test;
 
-import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.BubbleDocsService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
 
 // add needed import declarations
 

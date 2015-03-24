@@ -1,7 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
 
 public class Parser {
 
@@ -130,9 +129,6 @@ public class Parser {
     		
     		for (Celula c : folha.getCelulaSet()){
     			if (c.getLinha() == i[0] && c.getColuna() == i[1]){
-//    				System.out.println("|| Va " + c.getConteudo().getValor()+ " ||");
-//    				System.out.println("|| c " + c.getColuna()+ " ||");
-//    				System.out.println("entrou no if");
     					return new Referencia(c);
     				}
     			}
