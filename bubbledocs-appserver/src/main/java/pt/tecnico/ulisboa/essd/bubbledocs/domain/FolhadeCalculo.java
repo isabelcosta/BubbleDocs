@@ -5,7 +5,7 @@ import org.joda.time.LocalDate;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 
 
@@ -103,7 +103,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     }
     
     /* Verifica se o utilizador pode escrever nesta folha */
-    public boolean podeEscrever (String username) throws DontHavePermissionException{
+    public boolean podeEscrever (String username) throws UserNotInSessionException{
     	if(isDono(username)){
     		return true;
     	}
@@ -111,12 +111,12 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		if (existeUtilizador.getUsername().equals(username))
     			return true;
     	}
-    	throw new DontHavePermissionException(username);
+    	throw new UserNotInSessionException(username);
     	
     }
     
     /* Verifica se o utilizador pode ler nesta folha */
-    public boolean podeLer (String username) throws DontHavePermissionException{
+    public boolean podeLer (String username) throws UserNotInSessionException{
     	if(isDono(username)){
     		return true;
     	}    	
@@ -124,7 +124,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		if (existeUtilizador.getUsername().equals(username))
     			return true;
         }
-    	throw new DontHavePermissionException(username);
+    	throw new UserNotInSessionException(username);
         
     }
     
@@ -142,7 +142,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 	    			return;
     			}	
 				else {
-					throw new DontHavePermissionException("A celula esta protegida");
+					throw new UserNotInSessionException("A celula esta protegida");
 				}    			
 			} 
     	}

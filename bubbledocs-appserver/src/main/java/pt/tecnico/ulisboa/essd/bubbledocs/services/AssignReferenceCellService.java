@@ -9,7 +9,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
@@ -39,7 +39,7 @@ public class AssignReferenceCellService extends BubbleDocsService {
     protected void dispatch() throws OutOfBoundsException {
     	
     	if(!validSession(tokenDoUser)){
-    		throw new DontHavePermissionException("Session for user " + tokenDoUser.substring(0, tokenDoUser.length()-1) + " is invalid" );
+    		throw new UserNotInSessionException("Session for user " + tokenDoUser.substring(0, tokenDoUser.length()-1) + " is invalid" );
     	}else{
     		refreshToken(tokenDoUser);
     	}

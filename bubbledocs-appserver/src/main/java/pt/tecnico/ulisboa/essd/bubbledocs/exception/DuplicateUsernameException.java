@@ -1,12 +1,12 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.exception;
 
-public class UsernameAlreadyExistsException extends BubbleDocsException {
+public class DuplicateUsernameException extends BubbleDocsException {
 
 private static final long serialVersionUID = 1L;
 
 	private String conflictingName;
 	
-	public UsernameAlreadyExistsException(String conflictingName) {
+	public DuplicateUsernameException(String conflictingName) {
 		this.conflictingName = conflictingName;
 	}
 	

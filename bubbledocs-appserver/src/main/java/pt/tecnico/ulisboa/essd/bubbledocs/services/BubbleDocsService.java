@@ -47,4 +47,9 @@ public abstract class BubbleDocsService {
     	}
     }
     
+    public final Boolean isRoot(String token){		
+    	return token.substring(0, token.length()-1).equals("root");
+    	
+    }
+    
 }

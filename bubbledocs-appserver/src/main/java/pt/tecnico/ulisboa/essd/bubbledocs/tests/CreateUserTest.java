@@ -1,8 +1,17 @@
-/*package pt.tecnico.bubbledocs.service;
+package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateUser;
 
 // add needed import declarations
 
@@ -19,7 +28,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
 
     @Override
     public void populate4Test() {
-        createUserUSERNAME, PASSWORD, "António Rito Silva");
+        createUser(USERNAME, PASSWORD, "António Rito Silva");
         root = addUserToSession("root");
         ars = addUserToSession("ars");
     }
@@ -31,23 +40,22 @@ public class CreateUserTest extends BubbleDocsServiceTest {
         service.execute();
 
 	// User is the domain class that represents a User
-        User user = getUserFromUsername(USERNAME_DOES_NOT_EXIST);
-
+        
+        Utilizador user = getUserFromUsername(USERNAME_DOES_NOT_EXIST);
         assertEquals(USERNAME_DOES_NOT_EXIST, user.getUsername());
         assertEquals("jose", user.getPassword());
-        assertEquals("José Ferreira", user.getName());
+        assertEquals("José Ferreira", user.getNome());
     }
 
     @Test(expected = DuplicateUsernameException.class)
     public void usernameExists() {
-        CreateUser service = new CreateUser(root, USERNAME, "jose",
-                "José Ferreira");
+        CreateUser service = new CreateUser(root, USERNAME, "jose","José Ferreira");
         service.execute();
     }
 
     @Test(expected = EmptyUsernameException.class)
     public void emptyUsername() {
-        CreateUser service = new CreateUser(root, "", "jose", "José Ferreira");
+        CreateUser service = new CreateUser(root, "", "jose","José Ferreira");
         service.execute();
     }
 
@@ -66,4 +74,4 @@ public class CreateUserTest extends BubbleDocsServiceTest {
         service.execute();
     }
 
-}*/
+}

@@ -13,7 +13,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
@@ -187,21 +187,21 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
          service.execute();
     }
      
-    @Test(expected = DontHavePermissionException.class)
+    @Test(expected = UserNotInSessionException.class)
     public void unauthorizedUserForProtectedCell() {
     	
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID_PROTEGIDA, LITERAL);
          service.execute();
     }
 
-    @Test(expected = DontHavePermissionException.class)
+    @Test(expected = UserNotInSessionException.class)
     public void unauthorizedUserForWriting() {
     	
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID_SEM_PERMISSAO, CELL_ID, LITERAL);
          service.execute();
     }
     
-    @Test(expected = DontHavePermissionException.class) // <--- tenho de arranjar excepcao
+    @Test(expected = UserNotInSessionException.class) // <--- tenho de arranjar excepcao
     public void userNotLogged() {
     	
     	 removeUserFromSession(USER_TOKEN);

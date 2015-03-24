@@ -4,7 +4,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 
 
 public class DeleteUser extends BubbleDocsService {
@@ -25,7 +25,7 @@ public class DeleteUser extends BubbleDocsService {
 		Bubbledocs bd = Bubbledocs.getInstance();
 		
 		if(!validSession(userToken)){
-    		throw new DontHavePermissionException("Session for user " + userToken.substring(0, userToken.length()-1) + " is invalid" );
+    		throw new UserNotInSessionException("Session for user " + userToken.substring(0, userToken.length()-1) + " is invalid" );
     	}else{
     		refreshToken(userToken);
     	}

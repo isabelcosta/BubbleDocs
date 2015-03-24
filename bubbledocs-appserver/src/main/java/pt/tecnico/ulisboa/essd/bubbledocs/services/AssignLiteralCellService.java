@@ -5,7 +5,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
@@ -32,7 +32,7 @@ public class AssignLiteralCellService extends BubbleDocsService {
     protected void dispatch() throws BubbleDocsException {
     	
     	if(!validSession(tokenUserLogged)){
-    		throw new DontHavePermissionException("Session for user " + tokenUserLogged.substring(0, tokenUserLogged.length()-1) + " is invalid" );
+    		throw new UserNotInSessionException("Session for user " + tokenUserLogged.substring(0, tokenUserLogged.length()-1) + " is invalid" );
     	}else{
     		refreshToken(tokenUserLogged);
     	}

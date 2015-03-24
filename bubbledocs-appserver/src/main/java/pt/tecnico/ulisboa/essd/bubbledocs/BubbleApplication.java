@@ -19,7 +19,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.ExportDocumentService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
@@ -329,7 +329,7 @@ public class BubbleApplication {
 			committed = true;
 		} catch (SystemException| NotSupportedException | RollbackException| HeuristicMixedException | HeuristicRollbackException ex) {
 			System.err.println("Error in execution of transaction: " + ex);
-		} catch (DontHavePermissionException dhpe) {
+		} catch (UserNotInSessionException dhpe) {
 			System.err.println("Error with permissions: " + dhpe);
 		}finally {
 			if (!committed) 

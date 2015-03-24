@@ -1,12 +1,12 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.exception;
 
-public class DontHavePermissionException extends BubbleDocsException {
+public class UserNotInSessionException extends BubbleDocsException {
 
 	private static final long serialVersionUID = 1L;
 
 	private String cantDoName;
 	
-	public DontHavePermissionException(String conflictingName) {
+	public UserNotInSessionException(String conflictingName) {
 		this.cantDoName = conflictingName;
 	}
 	

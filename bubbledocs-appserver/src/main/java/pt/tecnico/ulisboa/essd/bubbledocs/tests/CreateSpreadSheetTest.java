@@ -7,6 +7,7 @@ import org.junit.Test;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheet;
 
@@ -45,7 +46,7 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
       assertEquals(SPREADSHEET_NAME,sheetName);
   }
   
-  @Test (expected = UtilizadorInvalidoException.class)
+  @Test (expected = UserNotInSessionException.class)
   public void invalidToken(){
 	  CreateSpreadSheet service = new CreateSpreadSheet( BAD_USER_TOKEN, SPREADSHEET_NAME, ROWS, COLUMNS);
       service.execute();

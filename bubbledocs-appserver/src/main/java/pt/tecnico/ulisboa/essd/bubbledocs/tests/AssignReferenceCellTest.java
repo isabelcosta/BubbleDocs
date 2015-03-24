@@ -12,7 +12,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
@@ -181,7 +181,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
         assertEquals(REFERENCE, conteudo);
     }
 
-    @Test(expected = DontHavePermissionException.class) 
+    @Test(expected = UserNotInSessionException.class) 
     public void loginInvalido() {
     	
     	removeUserFromSession(USER_TOKEN);
@@ -191,14 +191,14 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	
     }
     
-    @Test(expected = DontHavePermissionException.class)
+    @Test(expected = UserNotInSessionException.class)
     public void unauthorizedUserForWriting() {
     	
       	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID_SEM_PERMISSAO, CELL_ID, REFERENCE);
         service.execute();
     }
     
-    @Test(expected = DontHavePermissionException.class)
+    @Test(expected = UserNotInSessionException.class)
     public void unauthorizedUserForProtectedCell() {
     	
     	AssignReferenceCellService service = new AssignReferenceCellService( USER_TOKEN, FOLHA_ID, CELL_ID_PROTEGIDA, REFERENCE);

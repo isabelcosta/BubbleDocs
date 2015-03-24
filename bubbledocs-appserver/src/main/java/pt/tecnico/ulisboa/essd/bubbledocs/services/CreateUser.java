@@ -4,8 +4,10 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UsernameAlreadyExistsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 
 
 public class CreateUser extends BubbleDocsService {
@@ -28,12 +30,18 @@ public class CreateUser extends BubbleDocsService {
 	protected void dispatch() throws BubbleDocsException {
 		
 		Bubbledocs bd = Bubbledocs.getInstance();
-		
 		if(!validSession(userToken)){
-    		throw new DontHavePermissionException("Session for user " + userToken.substring(0, userToken.length()-1) + " is invalid" );
-    	}else{
-    		refreshToken(userToken);
+    		throw new UserNotInSessionException("Session for user " + userToken.substring(0, userToken.length()-1) + " is invalid" );
     	}
+		if(!isRoot(userToken)){
+			throw new UnauthorizedOperationException("Session for user " + userToken.substring(0, userToken.length()-1) + " is not root");
+		}
+		refreshToken(userToken);
+    	
+		
+		if(newUsername == "" || newUsername == null){
+			throw new EmptyUsernameException("User empty!");
+		}
 		
 		//vai buscar o token da root
 		String rootToken = null;
@@ -46,13 +54,13 @@ public class CreateUser extends BubbleDocsService {
 			if(token.getToken().equals(rootToken)){
 				for(Utilizador user : bd.getUtilizadoresSet()){
 					if(user.getUsername().equals(newUsername)){
-						throw new UsernameAlreadyExistsException(newUsername);
+						throw new DuplicateUsernameException(newUsername);
 					}
 				}
 			}
 		}
 
-		Utilizador user = new Utilizador(newUsername, password, name);
+		Utilizador user = new Utilizador(name, newUsername, password);
 		bd.addUtilizadores(user);
 	}
 }
