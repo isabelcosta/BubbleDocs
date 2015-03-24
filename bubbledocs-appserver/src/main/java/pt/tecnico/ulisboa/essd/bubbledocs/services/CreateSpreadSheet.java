@@ -37,7 +37,7 @@ public class CreateSpreadSheet extends BubbleDocsService {
     		refreshToken(userToken);
     	}
 
-    	for(Token token : Bubbledocs.getInstance().getTokensSet()){
+    	for(Token token : bd.getTokensSet()){
 
     		if(token.getToken().equals(userToken)){
     			

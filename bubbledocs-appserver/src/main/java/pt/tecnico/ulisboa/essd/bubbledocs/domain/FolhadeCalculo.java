@@ -3,6 +3,8 @@ package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 import org.jdom2.Element;
 import org.joda.time.LocalDate;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DontHavePermissionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 
@@ -38,10 +40,6 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 			element.addContent(celulasElement);
 			for (Celula celula : getCelulaSet()){		// passa pelas mesmas celulas varias vezes
 				
-//				System.out.println(i + " coluna: " + celula.getColuna());
-//				System.out.println("referencia: " + celula.getReferencia());
-//				System.out.println("");
-				
 				
 				if( celula.getConteudo()!=null)
 					celulasElement.addContent(celula.exportToXML());
@@ -74,6 +72,26 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	}
     		
     }
+    
+    // EXCEPCOES_FOLHA
+    //Linha invalida
+    @Override
+	public void setLinhas(Integer linhas) throws ArgLinhaInvalidoException{
+    	if(linhas < 0 || linhas == null)
+    		throw new ArgLinhaInvalidoException(linhas.toString());
+    	
+    	super.setLinhas(linhas);
+    }
+    
+    //Coluna invalida
+    @Override
+	public void setColunas(Integer colunas) throws ArgColunaInvalidoException{
+    	if(colunas < 0 || colunas == null)
+    		throw new ArgColunaInvalidoException(colunas.toString());
+    	
+    	super.setColunas(colunas);
+    }
+    
     
     // EXCEPCOES-UTILIZADORES
     /* Verifica se um utilizador e dono da folha */

@@ -53,13 +53,13 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
   
   @Test (expected = ArgColunaInvalidoException.class)
   public void invalidColumn(){
-	  CreateSpreadSheet service = new CreateSpreadSheet( BAD_USER_TOKEN, SPREADSHEET_NAME, ROWS, BAD_COLUMN);
+	  CreateSpreadSheet service = new CreateSpreadSheet( token, SPREADSHEET_NAME, ROWS, BAD_COLUMN);
       service.execute();
   }
   
   @Test (expected = ArgLinhaInvalidoException.class)
   public void invalidRow(){
-	  CreateSpreadSheet service = new CreateSpreadSheet( BAD_USER_TOKEN, SPREADSHEET_NAME, BAD_ROW, COLUMNS);
+	  CreateSpreadSheet service = new CreateSpreadSheet( token, SPREADSHEET_NAME, BAD_ROW, COLUMNS);
       service.execute();
   }
   
