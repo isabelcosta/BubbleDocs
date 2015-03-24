@@ -209,7 +209,6 @@ public class BubbleApplication {
 	    	for(Utilizador userTeste : bd.getUtilizadoresSet()){
 	    		if(userTeste.getUsername().equals("pf")){
 	    			for(FolhadeCalculo folha : bd.getFolhasSet()){
-	    				System.out.println("asdf");
 	    				if(folha.getNomeFolha().equals("Notas ES")){
 	    					bd.eliminaFolha("Notas ES");
 	    					System.out.println(" A folha foi removida! ");
