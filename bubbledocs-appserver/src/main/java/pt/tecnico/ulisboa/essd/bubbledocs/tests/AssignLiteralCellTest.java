@@ -2,16 +2,20 @@ package pt.tecnico.ulisboa.essd.bubbledocs.tests;
 
 import static org.junit.Assert.assertEquals;
 
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.ProtectedCellException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheet;
 
 // add needed import declarations
 
@@ -121,7 +125,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
          service.execute();
     }
      
-    @Test(expected = UserNotInSessionException.class)
+    @Test(expected = ProtectedCellException.class)
     public void unauthorizedUserForProtectedCell() {
     	
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID_PROTEGIDA, LITERAL);
@@ -135,7 +139,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
          service.execute();
     }
     
-    @Test(expected = UserNotInSessionException.class) // <--- tenho de arranjar excepcao
+    @Test(expected = UserNotInSessionException.class)
     public void userNotLogged() {
     	
     	 removeUserFromSession(USER_TOKEN);
@@ -156,5 +160,62 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, 34534, CELL_ID, LITERAL);
     	service.execute();    	
     }
-    
+
+//    @Test(expected = ProtectedCellException.class)
+//    public void ImportFuncionaProtegida() {
+//    	org.jdom2.Document jdomDoc = new org.jdom2.Document();
+//    	Bubbledocs bd = Bubbledocs.getInstance();
+//    	for(FolhadeCalculo f : bd.getFolhasSet()){
+//    		if(f.getID() == DOC_ID){
+//    			jdomDoc.setRootElement(f.exportToXML());
+//    		}
+//    	}
+//    	bd.eliminaFolha(DOC_ID);
+//    	recoverFromBackup(jdomDoc,bd);
+//    	
+//    	AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID_PROTEGIDA, LITERAL);
+//    	service.execute();
+//    	
+//    }
+//    
+//    
+//    private static void recoverFromBackup(org.jdom2.Document jdomDoc, Bubbledocs bd) {
+//    	String donoFolha = jdomDoc.getRootElement().getAttributeValue("dono");
+//    	String nomeFolha = jdomDoc.getRootElement().getAttributeValue("nome");
+//    	int linhas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("linhas"));
+//    	int colunas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("colunas"));
+//    	int id = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("id"));
+//    	String data = jdomDoc.getRootElement().getAttributeValue("data");
+//    	
+//    	
+//    	for(FolhadeCalculo folha : bd.getFolhasSet())
+//	    	if(folha.getNomeFolha().equals(nomeFolha)) {
+//	    		folha.setDataCriacao(new LocalDate(data));
+//    			folha.setID(id);
+//	    		folha.importFromXML(jdomDoc.getRootElement());
+//	    		return;
+//	    	}
+//    	
+//    	//procura o token do pf
+//    	String donoFolhaToken = null;
+//        for(Token token : bd.getTokensSet()){
+//        	if(token.getUsername().equals(donoFolha)){
+//        		donoFolhaToken = token.getToken();
+//        	}	
+//        }
+//    	
+//    	
+//    	//caso nao tenha encontrado a folha cria uma nova
+// 		CreateSpreadSheet serviceFolha = new CreateSpreadSheet(donoFolhaToken, nomeFolha, linhas, colunas);
+// 		serviceFolha.execute();
+//    	
+//    	for (FolhadeCalculo folha : bd.getFolhasSet())
+//    		if(folha.getNomeFolha().equals(nomeFolha)){
+//    			
+//    			folha.setDataCriacao(new LocalDate(data));
+//    			folha.setID(id);
+//	    		folha.importFromXML(jdomDoc.getRootElement());
+//    		}
+//    	
+//    }
 }

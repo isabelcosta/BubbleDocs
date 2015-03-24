@@ -5,6 +5,7 @@ import org.joda.time.LocalDate;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.ProtectedCellException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 
@@ -142,7 +143,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 	    			return;
     			}	
 				else {
-					throw new UserNotInSessionException("A celula esta protegida");
+					throw new ProtectedCellException("A celula esta protegida");
 				}    			
 			} 
     	}
