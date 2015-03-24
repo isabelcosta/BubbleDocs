@@ -189,35 +189,7 @@ public class BubbleApplication {
 			//--------------------------------------------------------------------------------------------------------------
 
 			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
-			/*		
 	 		
-			--------Inicio do import a partir do ficheiro
-
-			
-			String aux = "Notas ES.xml";
-			
-			SAXBuilder builder = new SAXBuilder();
-			File xmlFile = new File(aux);
-		 
-			Document document;
-			try {
-				document = (Document) builder.build(xmlFile);
-				printDomainInXML(document);
-				//recoverFromBackup(document);
-			} catch (JDOMException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			
-			--------Fim do import a partir do ficheiro
-					
-			System.out.println(doc + " doc");
-			printDomainInXML(doc);
-			System.out.println(doc + " doc");
-			 */
 			recoverFromBackup(doc, bd);	
 			
 			//--------------------------------------------------------------------------
@@ -287,18 +259,6 @@ public class BubbleApplication {
 		}
 	
 	
-	@Atomic
-    public static org.jdom2.Document convertToXML(FolhadeCalculo folha) { 		//ALTERAR
-		
-		// FolhadeCalculo pb = FolhadeCalculo.getInstance();
-		
-		org.jdom2.Document jdomDoc = new org.jdom2.Document();
-
-		jdomDoc.setRootElement(folha.exportToXML());
-
-		return jdomDoc;
-    }
-
     @Atomic
     public static void printDomainInXML(org.jdom2.Document jdomDoc) {
 		XMLOutputter xml = new XMLOutputter();
@@ -324,8 +284,18 @@ public class BubbleApplication {
 	    		return;
 	    	}
     	
+    	//procura o token do pf
+    	String donoFolhaToken = null;
+        for(Token token : bd.getTokensSet()){
+        	if(token.getUsername().equals(donoFolha)){
+        		donoFolhaToken = token.getToken();
+        	}	
+        }
+    	
+    	
     	//caso nao tenha encontrado a folha cria uma nova
-    	bd.criaFolha(nomeFolha, donoFolha, linhas, colunas);
+ 		CreateSpreadSheet serviceFolha = new CreateSpreadSheet(donoFolhaToken, nomeFolha, linhas, colunas);
+ 		serviceFolha.execute();
     	
     	for (FolhadeCalculo folha : bd.getFolhasSet())
     		if(folha.getNomeFolha().equals(nomeFolha)){

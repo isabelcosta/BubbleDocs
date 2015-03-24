@@ -31,7 +31,9 @@ public class Celula extends Celula_Base {
 		element.setAttribute("linha", Integer.toString(getLinha()));
 		element.setAttribute("coluna", Integer.toString(getColuna()));
 		
-//		System.out.println(getConteudo() + " conteudo");
+		element.setAttribute("protegida", Boolean.toString(getProtegida()));
+		
+		
 		Element conteudoElement = new Element("conteudo");
 		element.addContent(conteudoElement);
 		conteudoElement.addContent(getConteudo().exportToXML());
@@ -43,18 +45,11 @@ public class Celula extends Celula_Base {
 		List<Element> c1 = celula.getChild("conteudo").getChildren();   // lista de children pode ter: "literal", "referencia" ou "div" ou "sum" etc
 		Integer linha = Integer.parseInt(celula.getAttributeValue("linha"));
 		Integer coluna = Integer.parseInt(celula.getAttributeValue("coluna"));
+		Boolean protegida = Boolean.parseBoolean(celula.getAttributeValue("protegida"));
+		
 		setColuna(coluna);
 		setLinha(linha);
-//		getConteudo().importToXML(celula.getChild("conteudo"));
-		
-//		String donoFolha = base.getAttributeValue("dono");
-//    	String nomeFolha = base.getAttributeValue("nome");
-    	
-    	
-    	//ir buscar o 
-		 
-		
-		
+		setProtegida(protegida);
 		
 		if (c1.get(0).getName().equals("literal")) {
 			setConteudo(new Literal(Integer.parseInt(c1.get(0).getAttributeValue("valor"))));
