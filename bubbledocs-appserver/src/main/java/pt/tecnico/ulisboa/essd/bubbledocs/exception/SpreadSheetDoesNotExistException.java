@@ -6,6 +6,9 @@ public class SpreadSheetDoesNotExistException extends BubbleDocsException {
 
 	private String cantDoSpreadSheet;
 	
+	public SpreadSheetDoesNotExistException() {
+    }
+	
 	public SpreadSheetDoesNotExistException(String conflictingSpreadSheet) {
 		this.cantDoSpreadSheet = conflictingSpreadSheet;
 	}

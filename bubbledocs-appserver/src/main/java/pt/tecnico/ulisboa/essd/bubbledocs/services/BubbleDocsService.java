@@ -27,7 +27,7 @@ public abstract class BubbleDocsService {
     	for(Token token2 : Bubbledocs.getInstance().getTokensSet()){
 			if(token2.getToken().equals(token)){
 				int minutes = Minutes.minutesBetween(token2.getTime(), new LocalTime()).getMinutes();
-				if(minutes > 120){
+				if(minutes >= 120){
 					Bubbledocs.getInstance().getTokensSet().remove(token2);
 					return false;
 				}else{

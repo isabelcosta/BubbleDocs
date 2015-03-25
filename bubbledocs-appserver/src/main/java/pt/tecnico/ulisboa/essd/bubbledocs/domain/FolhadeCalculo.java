@@ -6,6 +6,7 @@ import org.joda.time.LocalDate;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ProtectedCellException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 
@@ -104,7 +105,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     }
     
     /* Verifica se o utilizador pode escrever nesta folha */
-    public boolean podeEscrever (String username) throws UserNotInSessionException{
+    public boolean podeEscrever (String username) throws UnauthorizedOperationException{
     	if(isDono(username)){
     		return true;
     	}
@@ -112,7 +113,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		if (existeUtilizador.getUsername().equals(username))
     			return true;
     	}
-    	throw new UserNotInSessionException(username);
+    	throw new UnauthorizedOperationException(username);
     	
     }
     
@@ -125,7 +126,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		if (existeUtilizador.getUsername().equals(username))
     			return true;
         }
-    	throw new UserNotInSessionException(username);
+    	throw new UnauthorizedOperationException(username);
         
     }
     

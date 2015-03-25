@@ -43,23 +43,12 @@ public class CreateUser extends BubbleDocsService {
 			throw new EmptyUsernameException("User empty!");
 		}
 		
-		//vai buscar o token da root
-		String rootToken = null;
-		for (Token t : bd.getTokensSet()){
-			if (t.getUsername().equals("root"))
-				rootToken = t.getToken();
-		}
-
-		for(Token token : bd.getTokensSet()){
-			if(token.getToken().equals(rootToken)){
-				for(Utilizador user : bd.getUtilizadoresSet()){
-					if(user.getUsername().equals(newUsername)){
-						throw new DuplicateUsernameException(newUsername);
-					}
-				}
+		for(Utilizador user : bd.getUtilizadoresSet()){
+			if(user.getUsername().equals(newUsername)){
+				throw new DuplicateUsernameException(newUsername);
 			}
 		}
-
+		
 		Utilizador user = new Utilizador(name, newUsername, password);
 		bd.addUtilizadores(user);
 	}

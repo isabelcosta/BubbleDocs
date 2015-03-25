@@ -13,6 +13,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ProtectedCellException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
@@ -130,7 +131,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	
     }
     
-    @Test(expected = UserNotInSessionException.class)
+    @Test(expected = UnauthorizedOperationException.class)
     public void unauthorizedUserForWriting() {
     	
       	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID_SEM_PERMISSAO, CELL_ID, REFERENCE);

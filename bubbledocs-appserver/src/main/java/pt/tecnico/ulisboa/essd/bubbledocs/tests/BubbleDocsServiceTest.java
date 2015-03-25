@@ -155,5 +155,15 @@ public class BubbleDocsServiceTest {
     	
     	return user;
     }
-
+    
+    public void turnTokenInvalid(String token){
+    	
+    	Bubbledocs bd = Bubbledocs.getInstance();
+    	
+    	for(Token t: bd.getTokensSet()){
+			if(t.getToken().equals(token)){
+				t.setTime(t.getTime().minusHours(2));
+			}
+    	}
+    }
 }

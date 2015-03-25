@@ -3,6 +3,10 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 
 public class ExportDocumentService extends BubbleDocsService{
@@ -22,8 +26,8 @@ public class ExportDocumentService extends BubbleDocsService{
 	protected void dispatch() throws UserNotInSessionException {
 
 //VERIFICAR SE A SESSÃO É VÁLIDA
-		if(_userToken == null){
-			throw new UserNotInSessionException("Session for user is invalid" );
+		if(_userToken == null || _userToken == ""){
+			throw new InvalidTokenException("Session for user is invalid");
 		}
 		if(!validSession(_userToken)){
     		throw new UserNotInSessionException("Session for user " + _userToken.substring(0, _userToken.length()-1) + " is invalid" );
@@ -36,6 +40,16 @@ public class ExportDocumentService extends BubbleDocsService{
 				_folha = folhaIter;
 			}
 		}
+		
+		if(_sheetId < 0){
+			throw new IdFolhaInvalidoException();
+		}
+
+		if(_folha == null){
+			throw new SpreadSheetDoesNotExistException(_userToken);
+		}
+		
+		
 		
 		Token token = null;
 
@@ -51,7 +65,7 @@ public class ExportDocumentService extends BubbleDocsService{
 			jdomDoc.setRootElement(_folha.exportToXML());
 			_result = jdomDoc;
     	}else{
-    		throw new UserNotInSessionException("User " + _userToken.substring(0, _userToken.length()-1) + " have no write, read or owner permissions" ); 
+    		throw new UnauthorizedOperationException("User " + _userToken.substring(0, _userToken.length()-1) + " have no write, read or owner permissions" ); 
     	}
 		
 	}
