@@ -56,12 +56,21 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 
     	
     	for (Element celula : folhadecalculo.getChildren("celula")) {
-    		
-    	    Celula c = new Celula(0, 0, null);
-    	    addCelula(c);
-    	    c.importFromXML(celula, folhadecalculoElement);
-    	    
 
+    		Integer linha = Integer.parseInt(celula.getAttributeValue("linha"));
+    		Integer coluna = Integer.parseInt(celula.getAttributeValue("coluna"));
+    		Boolean entrou=false;
+			for (Celula cel : getCelulaSet()){
+				if (cel.getLinha().equals(linha) && cel.getColuna().equals(coluna)) {
+			    	 cel.importFromXML(celula, folhadecalculoElement);
+			    	 entrou = true;
+				}
+			}
+			if (!entrou) {
+				Celula c = new Celula(0, 0, null);
+	    	    addCelula(c);
+	    	    c.importFromXML(celula, folhadecalculoElement);
+			}
     	
     	}
     }
@@ -113,7 +122,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		if (existeUtilizador.getUsername().equals(username))
     			return true;
     	}
-    	throw new UnauthorizedOperationException(username);
+    	return false;
     	
     }
     
@@ -126,7 +135,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		if (existeUtilizador.getUsername().equals(username))
     			return true;
         }
-    	throw new UnauthorizedOperationException(username);
+    	return false;
         
     }
     
@@ -148,7 +157,6 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 				}    			
 			} 
     	}
-    	
 		Celula novaCelula = new Celula(linha, coluna, conteudo);
 		this.addCelula(novaCelula);
 

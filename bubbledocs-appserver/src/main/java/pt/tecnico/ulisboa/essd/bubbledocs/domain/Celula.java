@@ -42,6 +42,8 @@ public class Celula extends Celula_Base {
 	
 	public void importFromXML(Element celula, Element base) {
 		
+		Celula cell;
+		
 		List<Element> c1 = celula.getChild("conteudo").getChildren();   // lista de children pode ter: "literal", "referencia" ou "div" ou "sum" etc
 		Integer linha = Integer.parseInt(celula.getAttributeValue("linha"));
 		Integer coluna = Integer.parseInt(celula.getAttributeValue("coluna"));
@@ -62,7 +64,10 @@ public class Celula extends Celula_Base {
 					return;
 				}
 			}
-			setConteudo(new Referencia(new Celula(linhaRef,colunaRef,null)));
+			
+			cell = new Celula(linhaRef,colunaRef,null);
+			setConteudo(new Referencia(cell));
+			getFolhadecalculoC().addCelula(cell);
 			
 		}else{
 			Argumento arg1 = null;
@@ -82,6 +87,8 @@ public class Celula extends Celula_Base {
 
 			int encCelArg1 = 0; //  verificar se encontrou celula para a referencia
 			int encCelArg2 = 0;
+			
+			
 			
 			
 			if (c1.get(0).getChild("arg1").getChildren().get(0).getName().equals("celula")) {
@@ -117,8 +124,11 @@ public class Celula extends Celula_Base {
 				//Referência não existe 
 				//Célula com conteúdo nulo
 				//Solução pode ser usar o observer
-				if(encCelArg1==0)
-					arg1 = new Referencia(new Celula(linhaRefArg1,colunaRefArg1,null));
+				if(encCelArg1==0){
+					cell = new Celula(linhaRefArg1,colunaRefArg1,null);
+					arg1 = new Referencia(cell);
+					getFolhadecalculoC().addCelula(cell);
+				}
 			}
 			if (isRefArg2==1)
 			{
@@ -131,8 +141,11 @@ public class Celula extends Celula_Base {
 				//Referência não existe 
 				//Célula com conteúdo nulo
 				//Solução pode ser usar o observer
-				if(encCelArg2==0)
-					arg2 = new Referencia(new Celula(linhaRefArg2,colunaRefArg2,null));
+				if(encCelArg2==0){
+					cell = new Celula(linhaRefArg2,colunaRefArg2,null);
+					arg2 = new Referencia(cell);
+					getFolhadecalculoC().addCelula(cell);
+				}
 			}
 			switch(c1.get(0).getName()) {
 				case "MUL":

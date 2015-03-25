@@ -38,7 +38,11 @@ public class LoginUser extends BubbleDocsService {
     			if(!user.getPassword().equals(_password)){
     				throw new WrongPasswordException("Password incorrecta!");
     			} else {
-    				_result = _username + generateToken();
+    				String temp;
+    				do {
+						temp = _username + generateToken();
+					} while (temp.equals(_result));
+    				_result = temp;
     				refreshTokenTotal(_result);
     				return ;
     			}

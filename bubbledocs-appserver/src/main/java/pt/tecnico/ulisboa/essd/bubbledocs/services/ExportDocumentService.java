@@ -59,7 +59,7 @@ public class ExportDocumentService extends BubbleDocsService{
 			}
 		}
     	
-    	if(_folha.podeEscrever(token.getUsername()) || _folha.podeEscrever(token.getUsername())){
+    	if(_folha.podeEscrever(token.getUsername()) || _folha.podeLer(token.getUsername())){
 //EXPORTAR A FOLHA    	
     		org.jdom2.Document jdomDoc = new org.jdom2.Document();
 			jdomDoc.setRootElement(_folha.exportToXML());

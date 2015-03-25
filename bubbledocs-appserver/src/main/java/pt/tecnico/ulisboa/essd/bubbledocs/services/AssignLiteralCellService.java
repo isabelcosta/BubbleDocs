@@ -5,6 +5,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
@@ -78,6 +79,8 @@ public class AssignLiteralCellService extends BubbleDocsService {
 		    			result = cell.getConteudo().getValor().toString();
 	    		} 
 	    	}
+	    }else {
+	    	throw new UnauthorizedOperationException();
 	    }
     }
 
