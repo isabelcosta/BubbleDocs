@@ -1,6 +1,17 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+import org.joda.time.LocalTime;
+import org.joda.time.Minutes;
+
 import pt.ist.fenixframework.FenixFramework;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnknownBubbleDocsUserException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 
 
 public class Bubbledocs extends Bubbledocs_Base {
@@ -126,5 +137,102 @@ public class Bubbledocs extends Bubbledocs_Base {
 
  	}
     
+    
+    public Boolean validSession(String token) throws UserNotInSessionException, InvalidTokenException{
+    	
+    	if (token == null || token == ""){
+    		throw new InvalidTokenException("Token is invalid");
+    	}
+    	
+    	for(Token token2 : getTokensSet()){
+    		if(token2.getToken().equals(token)){
+    			int minutes = Minutes.minutesBetween(token2.getTime(), new LocalTime()).getMinutes();
+    			if(minutes >= 120){
+    				getTokensSet().remove(token2);
+    				throw new UserNotInSessionException("Session for user " + token.substring(0, token.length()-1) + " is invalid" );
+    			}else{
+    				return true;
+    			}
+    		}
+    	}
+    	throw new UserNotInSessionException("Session for user " + token.substring(0, token.length()-1) + " is invalid" );
+    }
+    
+    
+    public Boolean isRoot(String token) throws UnauthorizedOperationException{
+    	
+    	for(Token tokenObjecto : getTokensSet()){
+    		if(tokenObjecto.getUsername().equals("root") && tokenObjecto.getToken().equals(token)){
+    			return true;
+    		}
+    	}
+    	
+    	throw new UnauthorizedOperationException("Session for user " + token.substring(0, token.length()-1) + " is not root");
+    	
+    }
+    
+    
+    public Boolean emptyUsername(String newUsername) throws EmptyUsernameException{
+    	
+	    if(newUsername == "" || newUsername == null){
+			throw new EmptyUsernameException("User empty!");
+		}
+	    return true;
+    }
 
+    public Boolean duplicatedUsername(String newUsername) throws DuplicateUsernameException{
+    	
+	    for(Utilizador user : getUtilizadoresSet()){
+			if(user.getUsername().equals(newUsername)){
+				throw new DuplicateUsernameException(newUsername);
+			}
+	    }
+	    return true;
+    }
+
+    public String getUsernameOfToken(String token){
+    	for(Token tokenObjecto : getTokensSet()){
+    		if (tokenObjecto.getToken().equals(token))
+    			return tokenObjecto.getUsername();
+    	}
+    	return null;
+    }
+    
+    
+    public Integer getIdOfFolha(String folha) throws SpreadSheetDoesNotExistException{
+    	for(FolhadeCalculo f : getFolhasSet()){
+			if (f.getNomeFolha().equals(folha))
+				return f.getID();		
+		}
+    	throw new SpreadSheetDoesNotExistException();
+    }
+    
+    public Utilizador getUserOfName(String name) throws UnknownBubbleDocsUserException{
+    	for(Utilizador user : getUtilizadoresSet()){
+			if(user.getUsername().equals(name)){
+				return user;
+			}
+    	}
+    	throw new UnknownBubbleDocsUserException();
+    }
+    
+    public FolhadeCalculo getFolhaOfId(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
+    	
+    	if(id < 0 || id == null){
+			throw new IdFolhaInvalidoException();
+		}
+    	
+    	for( FolhadeCalculo folhaIter : getFolhasSet()  ){
+    		if(folhaIter.getID() == id){
+    			return folhaIter;
+    		}
+    	}
+    	throw new SpreadSheetDoesNotExistException();
+    }
+    
+    public org.jdom2.Document exportSheet(FolhadeCalculo folha){
+    	org.jdom2.Document jdomDoc = new org.jdom2.Document();
+    	jdomDoc.setRootElement(folha.exportToXML());
+    	return jdomDoc;
+    }
 }

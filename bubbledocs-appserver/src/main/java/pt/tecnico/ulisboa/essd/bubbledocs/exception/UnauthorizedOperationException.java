@@ -21,7 +21,7 @@ public class UnauthorizedOperationException extends BubbleDocsException {
     
     
 	 public String getMessage(){
-		 return "O utilizador" + invalidRoot + "não tem permissões de root.";
+		 return "O utilizador " + invalidRoot + " não tem permissões de root.";
 	 
 	 }
 }

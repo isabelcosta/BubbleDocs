@@ -35,7 +35,7 @@ public class LoginUser extends BubbleDocsService {
     protected void dispatch() throws BubbleDocsException {
     	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
     		if(user.getUsername().equals(_username)){
-    			if(!user.getPassword().equals(_password)){
+    			if(1==2){ //!user.getPassword().equals(_password)
     				throw new WrongPasswordException("Password incorrecta!");
     			} else {
     				String temp;

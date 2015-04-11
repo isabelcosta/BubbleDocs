@@ -122,12 +122,12 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		if (existeUtilizador.getUsername().equals(username))
     			return true;
     	}
-    	return false;
+    	throw new UnauthorizedOperationException();
     	
     }
     
     /* Verifica se o utilizador pode ler nesta folha */
-    public boolean podeLer (String username) throws UserNotInSessionException{
+    public boolean podeLer (String username) throws UnauthorizedOperationException{
     	if(isDono(username)){
     		return true;
     	}    	
@@ -135,14 +135,13 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		if (existeUtilizador.getUsername().equals(username))
     			return true;
         }
-    	return false;
-        
+    	throw new UnauthorizedOperationException();
     }
     
     
     //CELULAS
 
-    public void modificarCelula(int linha, int coluna, String conteudoAcriar){
+    public void modificarCelula(int linha, int coluna, String conteudoAcriar) throws ProtectedCellException{
     	Conteudo conteudo = this.criaConteudo(conteudoAcriar);
     	
     	//se a celula existir so vai alterar o conteudo
@@ -192,10 +191,10 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     
     // EXCEPCAO-CELULA
 	/* Verifica se a celula respeita os limites da folha */
-    public void verificaLimite(int linha, int coluna) throws OutOfBoundsException{
+    public Boolean verificaLimite(int linha, int coluna) throws OutOfBoundsException{
     	if (linha > this.getLinhas() || coluna > this.getColunas())
     		throw new OutOfBoundsException(linha, coluna);
-
+    	return true;
     }
 
     

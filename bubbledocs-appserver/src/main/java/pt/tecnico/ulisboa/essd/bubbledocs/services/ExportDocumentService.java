@@ -2,9 +2,8 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
@@ -25,49 +24,24 @@ public class ExportDocumentService extends BubbleDocsService{
 	@Override
 	protected void dispatch() throws UserNotInSessionException {
 
+		Bubbledocs bd = Bubbledocs.getInstance();
+		try {
+
 //VERIFICAR SE A SESSÃO É VÁLIDA
-		if(_userToken == null || _userToken == ""){
-			throw new InvalidTokenException("Session for user is invalid");
-		}
-		if(!validSession(_userToken)){
-    		throw new UserNotInSessionException("Session for user " + _userToken.substring(0, _userToken.length()-1) + " is invalid" );
-    	}else{
-    		refreshToken(_userToken);
-    	}
+			if(bd.validSession(_userToken)){
+				refreshToken(_userToken);
+				
 //VERIFICAR SE O USER TEM PERMISSÕES PARA EXPORTAR		
-		for(FolhadeCalculo folhaIter : Bubbledocs.getInstance().getFolhasSet()){
-			if(folhaIter.getID() == _sheetId ){
-				_folha = folhaIter;
-			}
-		}
-		
-		if(_sheetId < 0){
-			throw new IdFolhaInvalidoException();
-		}
-
-		if(_folha == null){
-			throw new SpreadSheetDoesNotExistException(_userToken);
-		}
-		
-		
-		
-		Token token = null;
-
-    	for(Token tokenObject : Bubbledocs.getInstance().getTokensSet()){
-			if(tokenObject.getToken().equals(_userToken)){
-				token = tokenObject;
-			}
-		}
-    	
-    	if(_folha.podeEscrever(token.getUsername()) || _folha.podeLer(token.getUsername())){
+			_folha = bd.getFolhaOfId(_sheetId);
+			
+	    	if(_folha.podeEscrever(bd.getUsernameOfToken(_userToken)) || _folha.podeLer(bd.getUsernameOfToken(_userToken))){
 //EXPORTAR A FOLHA    	
-    		org.jdom2.Document jdomDoc = new org.jdom2.Document();
-			jdomDoc.setRootElement(_folha.exportToXML());
-			_result = jdomDoc;
-    	}else{
-    		throw new UnauthorizedOperationException("User " + _userToken.substring(0, _userToken.length()-1) + " have no write, read or owner permissions" ); 
-    	}
-		
+				_result = bd.exportSheet(_folha);
+	    	}
+		}
+		} catch (UnauthorizedOperationException | ReferenciaInvalidaException | SpreadSheetDoesNotExistException | OutOfBoundsException e) {
+			System.err.println("Couldn't export Sheet: " + e);
+		}
 	}
 	
 	public org.jdom2.Document getResult() {

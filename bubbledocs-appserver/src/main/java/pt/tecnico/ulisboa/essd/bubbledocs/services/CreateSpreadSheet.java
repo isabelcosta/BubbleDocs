@@ -2,8 +2,8 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 
 
@@ -31,25 +31,23 @@ public class CreateSpreadSheet extends BubbleDocsService {
     	
     	Bubbledocs bd = Bubbledocs.getInstance();
     	
-    	if(!validSession(userToken)){
-    		throw new UserNotInSessionException("Session for user " + userToken.substring(0, userToken.length()-1) + " is invalid" );
-    	}else{
-    		refreshToken(userToken);
-    	}
-
-		String dono = userToken.substring(0, userToken.length()-1);
-		
-		FolhadeCalculo folha = new FolhadeCalculo(name, dono, rows, columns);
-		
-		bd.addFolhas(folha);
-		
-		//apos a folha criada, ir buscar o ID
-		for(FolhadeCalculo f : bd.getFolhasSet()){
-			if (f.getNomeFolha().equals(name))
-				result = f.getID();		
+		try {
+			if(bd.validSession(userToken)){
+				refreshToken(userToken);
+		    	
+				String dono = bd.getUsernameOfToken(userToken);
+				
+				FolhadeCalculo folha = new FolhadeCalculo(name, dono, rows, columns);
+				
+				bd.addFolhas(folha);
+				
+				result = bd.getIdOfFolha(name);
+				
+	    	}
+		} catch (SpreadSheetDoesNotExistException | UserNotInSessionException e) {
+			System.err.println("Couldn't create SpreadSheet: " + e);
 		}
-   
-    	
+		
     }
     
     public int getResult() {

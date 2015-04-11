@@ -78,30 +78,30 @@ public class BubbleApplication {
 					
 			
 			//--------------------------------------------------------------------------
-			//3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.
+			//3. Escrever o nomes de todas as folhas de calculo dos utilizadores pfa e rad.
 			//--------------------------------------------------------------------------
 			
 			System.out.println("----------------------------------------------------------------------------------------");
 			
-			System.out.println("3. Escrever o nomes de todas as folhas de calculo dos utilizadores pf e ra.");
+			System.out.println("3. Escrever o nomes de todas as folhas de calculo dos utilizadores pfa e rad.");
 			
-			System.out.println("Nomes das folhas de calculo de pf:");
+			System.out.println("Nomes das folhas de calculo de pfa:");
 			
 			for(Utilizador userIter : bd.getUtilizadoresSet()){
-				if(userIter.getUsername().equals("pf")){
+				if(userIter.getUsername().equals("pfa")){
 			    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-			    		if(folhaIter.getDono().equals("pf"))
+			    		if(folhaIter.getDono().equals("pfa"))
 			    			System.out.println("Nome: " + folhaIter.getNomeFolha());
 			    	}
 				}
 			}
 
-			System.out.println("Nomes das folhas de calculo de ra:");
+			System.out.println("Nomes das folhas de calculo de rad:");
 			
 			for(Utilizador userIter : bd.getUtilizadoresSet()){
-				if(userIter.getUsername().equals("ra")){
+				if(userIter.getUsername().equals("rad")){
 			    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-			    		if(folhaIter.getDono().equals("ra"))
+			    		if(folhaIter.getDono().equals("rad"))
 			    			System.out.println("Nome: " + folhaIter.getNomeFolha());
 			    	}
 				}
@@ -115,14 +115,14 @@ public class BubbleApplication {
 			
 			System.out.println("---------------------------------------------------------------------------------");
 			
-			System.out.println("4.Aceder as folhas de calculo do utilizador pf. ");
+			System.out.println("4.Aceder as folhas de calculo do utilizador pfa. ");
 			
 			for(Utilizador userIter : bd.getUtilizadoresSet()){
 				String userToken2= null;
-				if(userIter.getUsername().equals("pf")){
+				if(userIter.getUsername().equals("pfa")){
 			    	for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
 		    			for (Token token : bd.getTokensSet()) {
-							if (token.getUsername().equals("pf")) {
+							if (token.getUsername().equals("pfa")) {
 								userToken2= token.getToken();
 							}
 						}
@@ -149,10 +149,10 @@ public class BubbleApplication {
 			
 			System.out.println("---------------------------------------------------------------------------------");
 			
-			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pf. ");
+			System.out.println("5.Remover a folha de calculo Notas ES do utilizador pfa. ");
 			
 	    	for(Utilizador userTeste : bd.getUtilizadoresSet()){
-	    		if(userTeste.getUsername().equals("pf")){
+	    		if(userTeste.getUsername().equals("pfa")){
 	    			for(FolhadeCalculo folha : bd.getFolhasSet()){
 	    				if(folha.getNomeFolha().equals("Notas ES")){
 	    					bd.eliminaFolha(folha.getID());
@@ -163,17 +163,17 @@ public class BubbleApplication {
 			}
 	    	
 			//--------------------------------------------------------------------------
-			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
+			//6. Escrever os nomes e ids de todas as folhas de calculo do utilizador pfa.
 			//--------------------------------------------------------------------------
 	    	
 	    	System.out.println("--------------------------------------------------------------------------------");
 	    	
-	    	System.out.println("6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
+	    	System.out.println("6.Escrever os nomes e ids de todas as folhas de calculo do utilizador pfa.");
 
 	    	System.out.println("Estas sao as minhas folhas:");
 	    	
 	    	for(Utilizador user : bd.getUtilizadoresSet()){
-	    		if(user.getUsername().equals("pf")){
+	    		if(user.getUsername().equals("pfa")){
 	    			for(FolhadeCalculo folha : bd.getFolhasSet()){
 	    					System.out.println(" Nome: " + folha.getNomeFolha()+ " Id: " + folha.getID());
 	    			}
@@ -193,17 +193,17 @@ public class BubbleApplication {
 			recoverFromBackup(doc, bd);	
 			
 			//--------------------------------------------------------------------------
-			//8. Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.
+			//8. Escrever os nomes e ids de todas as folhas de calculo do utilizador pfa.
 			//--------------------------------------------------------------------------
 	    	
 			System.out.println("---------------------------------");
 	    	
-	    	System.out.println("8.Escrever os nomes e ids de todas as folhas de calculo do utilizador pf.");
+	    	System.out.println("8.Escrever os nomes e ids de todas as folhas de calculo do utilizador pfa.");
 
 	    	System.out.println("Estas sao as minhas folhas:");
 	    	
 	    	for(Utilizador user : bd.getUtilizadoresSet()){
-	    		if(user.getUsername().equals("pf")){
+	    		if(user.getUsername().equals("pfa")){
 	    			for(FolhadeCalculo folha : bd.getFolhasSet()){
 	    					System.out.println(" Nome: " + folha.getNomeFolha()+ " Id: " + folha.getID());
 	    			}
@@ -212,20 +212,20 @@ public class BubbleApplication {
 	    	}
 	    	
 	    	//--------------------------------------------------------------------------
-			//9. Aceder as folhas de calculo do utilizador pf, utilizando a funcionalidade de exportacao. 
+			//9. Aceder as folhas de calculo do utilizador pfa, utilizando a funcionalidade de exportacao. 
 			//--------------------------------------------------------------------------
 			
 	    	System.out.println("---------------------------------------------------------------------------------");
 			
-			System.out.println("9.Aceder as folhas de calculo do utilizador pf. ");
+			System.out.println("9.Aceder as folhas de calculo do utilizador pfa. ");
 
 			for(FolhadeCalculo folhaIter : bd.getFolhasSet()){
-				if(folhaIter.getDono().equals("pf")){
+				if(folhaIter.getDono().equals("pfa")){
 					System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + folhaIter.getDono() );
 					System.out.println("-----------------------------------INIT--------------------------------");
 					String userToken9 = null;
 					for (Token token : bd.getTokensSet()) {
-						if (token.getUsername().equals("pf")) {
+						if (token.getUsername().equals("pfa")) {
 							userToken9= token.getToken();
 						}
 					}
@@ -284,7 +284,7 @@ public class BubbleApplication {
 	    		return;
 	    	}
     	
-    	//procura o token do pf
+    	//procura o token do pfa
     	String donoFolhaToken = null;
         for(Token token : bd.getTokensSet()){
         	if(token.getUsername().equals(donoFolha)){
@@ -353,25 +353,25 @@ public class BubbleApplication {
         
         
         //cria os utilizadores
-        CreateUser serviceUser1 = new CreateUser(rootToken, "pf", "sub", "Paul Door");
+        CreateUser serviceUser1 = new CreateUser(rootToken, "pfa", "sub", "Paul Door");
         serviceUser1.execute();
         		
-        CreateUser serviceUser2 = new CreateUser(rootToken, "ra", "cor", "Step Rabbit");
+        CreateUser serviceUser2 = new CreateUser(rootToken, "rad", "cor", "Step Rabbit");
         serviceUser2.execute();
 	
     	
     	Boolean existsToken = false;
 
     	for(Token token : Bubbledocs.getInstance().getTokensSet()){
-    		if(token.getUsername().equals("pf")){
+    		if(token.getUsername().equals("pfa")){
     			existsToken = true;
     		}
 		}
     	
     	if(!existsToken){
-    		LoginUser login = new LoginUser("pf", "sub");
+    		LoginUser login = new LoginUser("pfa", "sub");
         	login.execute(); //	-> cria o result
-        	Bubbledocs.getInstance().addTokens(new Token("pf", login.getUserToken()));
+        	Bubbledocs.getInstance().addTokens(new Token("pfa", login.getUserToken()));
     	}
     	
 
@@ -384,9 +384,9 @@ public class BubbleApplication {
 		}
 		
         
- 		//procura o token do pf
+ 		//procura o token do pfa
         for(Token token : bd.getTokensSet()){
-        	if(token.getUsername().equals("pf")){
+        	if(token.getUsername().equals("pfa")){
         		pfToken = token.getToken();
         	}	
         }
