@@ -13,6 +13,7 @@ class Token{
 class Utilizador {
 	String nome;
 	String username;
+	String email;
 	String password;
 	Boolean isRoot;
 	}
