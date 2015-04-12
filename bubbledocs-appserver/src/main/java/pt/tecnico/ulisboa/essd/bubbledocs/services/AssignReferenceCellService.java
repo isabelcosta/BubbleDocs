@@ -31,11 +31,11 @@ public class AssignReferenceCellService extends BubbleDocsService {
     }
 
     @Override
-    protected void dispatch() throws OutOfBoundsException {
+    protected void dispatch() throws OutOfBoundsException, UnauthorizedOperationException  {
 
     	
     	Bubbledocs bd = Bubbledocs.getInstance();
-    	try {
+//    	try {
 			if(bd.validSession(tokenDoUser)){
 				refreshToken(tokenDoUser);
 				FolhadeCalculo folha = bd.getFolhaOfId(idFolha);
@@ -47,7 +47,11 @@ public class AssignReferenceCellService extends BubbleDocsService {
 		    		linhaEcoluna = Parser.parseEndereco(idCelula, folha);	// lanca OutOfBounds
 					
 		    		try{
-		    			Parser.parseConteudo(folha, referencia);
+		    			if(referencia.contains("=")){
+		    				Parser.parseConteudo(folha, referencia);
+		    			}
+		    			else
+		    				throw new ReferenciaInvalidaException(folha,referencia);
 					}catch(Exception e){
 						throw new ReferenciaInvalidaException(folha, referencia);
 					}
@@ -62,9 +66,9 @@ public class AssignReferenceCellService extends BubbleDocsService {
 					
     			}
 			}
-		} catch (UnauthorizedOperationException | ReferenciaInvalidaException | SpreadSheetDoesNotExistException | OutOfBoundsException e) {
-			System.err.println("Couldn't assign Reference: " + e);
-		}
+//		} catch (UnauthorizedOperationException | ReferenciaInvalidaException | SpreadSheetDoesNotExistException | OutOfBoundsException e) {
+//			System.err.println("Couldn't assign Reference: " + referencia);
+//		}
 	}
   
 

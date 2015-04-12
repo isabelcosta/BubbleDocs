@@ -47,17 +47,17 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     	
     	
     	//Cria utilizadores
-    	Utilizador user1 = createUser("ms", "marias", "Maria Santos");
+    	Utilizador user1 = createUser("mas", "marias", "Maria Santos");
 
-    	Utilizador user2 = createUser("js", "joaos", "Joao Santos");
+    	Utilizador user2 = createUser("jos", "joaos", "Joao Santos");
     
     	
     	//Inicia sessao para o utilizador ms
-    	USER_TOKEN = addUserToSession("ms");
+    	USER_TOKEN = addUserToSession("mas");
 
     	
     	//Inicia sessao para o utilizador js
-    	USER_TOKEN_PODE_ESCREVER = addUserToSession("js");; 
+    	USER_TOKEN_PODE_ESCREVER = addUserToSession("jos");; 
 
     	
     	//cria duas folhas
@@ -86,7 +86,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
 
     	
 
-    	bd.darPermissoes("escrita", "ms", "js", FOLHA_ID);
+    	bd.darPermissoes("escrita", "mas", "jos", FOLHA_ID);
     }
 
     @Test
@@ -188,7 +188,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     }
 
     
-    @Test(expected = OutOfBoundsException.class) 
+    @Test(expected = ReferenciaInvalidaException.class) 
     public void NotReference() {
     	
     	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, CELL_ID, "9" );
@@ -196,7 +196,7 @@ public class AssignReferenceCellTest extends BubbleDocsServiceTest {
     }
     
     
-    @Test(expected = OutOfBoundsException.class) 
+    @Test(expected = ReferenciaInvalidaException.class) 
     public void ReferenciaInvalida() {
     	
     	AssignReferenceCellService service = new AssignReferenceCellService(USER_TOKEN, FOLHA_ID, CELL_ID, "=29999;33" );

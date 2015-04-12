@@ -30,7 +30,7 @@ public class AssignLiteralCellService extends BubbleDocsService {
     protected void dispatch() throws BubbleDocsException {
     	
     	Bubbledocs bd = Bubbledocs.getInstance();
-    	try {
+//    	try {
 			if(bd.validSession(tokenUserLogged)){
 				refreshToken(tokenUserLogged);
 				FolhadeCalculo folha = bd.getFolhaOfId(folhaId);
@@ -58,9 +58,9 @@ public class AssignLiteralCellService extends BubbleDocsService {
 			    }
 				
 			}
-		} catch (UnauthorizedOperationException | NotLiteralException | OutOfBoundsException | SpreadSheetDoesNotExistException e) {
-			System.err.println("Couldn't assign Literal: " + e);
-		}
+//		} catch (UnauthorizedOperationException | NotLiteralException | OutOfBoundsException | SpreadSheetDoesNotExistException e) {
+//			System.err.println("Couldn't assign Literal: " + e);
+//		}
     	
     }
 

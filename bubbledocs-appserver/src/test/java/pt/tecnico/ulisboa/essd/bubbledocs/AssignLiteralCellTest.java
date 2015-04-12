@@ -40,13 +40,13 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	Bubbledocs bd = Bubbledocs.getInstance();
     	
     	//Cria users
-		Utilizador user1 = createUser("te", "te#", "Teresa Palhoto");
-    	Utilizador user2 = createUser("mi", "mi#", "Miguel Torrado");	
+		Utilizador user1 = createUser("tep", "te#", "Teresa Palhoto");
+    	Utilizador user2 = createUser("mit", "mi#", "Miguel Torrado");	
     	    
     	//Faz o login dos users
 	
-    	USER_TOKEN = addUserToSession("te");
-    	USER_TOKEN_PODE_ESCREVER = addUserToSession("mi");  	
+    	USER_TOKEN = addUserToSession("tep");
+    	USER_TOKEN_PODE_ESCREVER = addUserToSession("mit");  	
     	
     	//cria duas folhas
     	FolhadeCalculo folha1 = createSpreadSheet(user1, "teFolha", 20, 30);
@@ -69,7 +69,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	folha2.modificarCelula(2,7,conteudoRef);   			
     	
     	//da "ab" da permissoes de escrita a "pi" para preencher a sua folha
-    	bd.darPermissoes("escrita", "te", "mi", DOC_ID);
+    	bd.darPermissoes("escrita", "tep", "mit", DOC_ID);
     	
     }
 

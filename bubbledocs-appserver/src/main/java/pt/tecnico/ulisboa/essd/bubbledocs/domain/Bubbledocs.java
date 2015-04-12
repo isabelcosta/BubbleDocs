@@ -76,7 +76,7 @@ public class Bubbledocs extends Bubbledocs_Base {
      * NOTA: permissao so recebe "leitura" ou "escrita"
      * 
      * */	
-    public void darPermissoes(String permissao, String utilizadorDador, String utilizadorReceptor, int folhaID) {
+    public void darPermissoes(String permissao, String utilizadorDador, String utilizadorReceptor, int folhaID)  {
     	
     	// chama utilizador
     	Utilizador utilizador=null;
@@ -102,7 +102,8 @@ public class Bubbledocs extends Bubbledocs_Base {
     				case("leitura"):
     					folha.addUtilizadores_l(utilizador);
 				}
-    	}	
+    	}
+    	
     
  	}
     
@@ -133,7 +134,7 @@ public class Bubbledocs extends Bubbledocs_Base {
     					folha.removeUtilizadores_l(utilizador);
 				}
     	}	
-    
+    	
 
  	}
     
@@ -190,12 +191,12 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    return true;
     }
 
-    public String getUsernameOfToken(String token){
+    public String getUsernameOfToken(String token) throws UnauthorizedOperationException{
     	for(Token tokenObjecto : getTokensSet()){
     		if (tokenObjecto.getToken().equals(token))
     			return tokenObjecto.getUsername();
     	}
-    	return null;
+    	throw new UnauthorizedOperationException();
     }
     
     

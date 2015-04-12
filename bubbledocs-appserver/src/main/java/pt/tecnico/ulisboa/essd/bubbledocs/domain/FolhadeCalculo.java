@@ -122,7 +122,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		if (existeUtilizador.getUsername().equals(username))
     			return true;
     	}
-    	throw new UnauthorizedOperationException();
+    	throw new UnauthorizedOperationException("O utilizador" + username + "nao pode escrever" );
     	
     }
     
