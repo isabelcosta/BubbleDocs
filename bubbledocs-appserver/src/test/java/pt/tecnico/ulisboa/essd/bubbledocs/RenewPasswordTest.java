@@ -47,6 +47,30 @@ public class RenewPasswordTest extends BubbleDocsServiceTest {
     	 removeUserFromSession(USER_TOKEN);
     	 RenewPasswordService service = new RenewPasswordService( USER_TOKEN_NOT_LOGGED);
          service.execute();
-    }     
+    }   
+    
+
+    @Test
+    public <M extends Runnable & ResultSet> void someTest() {
+        M mock = new MockUp<M>() {
+           @Mock void run() { ...do something... }
+           @Mock boolean next() { return true; }
+        }.getMockInstance();
+
+        mock.run();
+        assertTrue(mock.next());
+    }
+    
+
+    @Test(Unavailable)
+    public <RenewPasswordService extends Runnable> void userTokenInvalidTest() {
+    	RenewPasswordService mock = new MockUp<RenewPasswordService>() {
+           @Mock void execute() { throw new  }
+           @Mock String getResult() { ; }
+        }.getMockInstance();
+
+        mock.run();
+        assertTrue(mock.next());
+    }
     
 }
