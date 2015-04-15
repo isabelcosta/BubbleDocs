@@ -1,5 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
+import java.util.Random;
+
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
@@ -13,6 +15,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 
@@ -22,8 +25,7 @@ public class RenewPasswordService extends BubbleDocsService {
     private String userToken;
     
     
-    public RenewPasswordService(String tokenUser) {
-    	
+    public RenewPasswordService(String tokenUser) {  	
     	this.userToken = tokenUser;
     }
 
@@ -44,30 +46,24 @@ public class RenewPasswordService extends BubbleDocsService {
 				 * */
 				
 				IDRemoteServices remote = null;
-				//...s
+				Utilizador user = bd.getUserFromToken(userToken);
 
 				try {
 					// invoke some method on remote
-					Utilizador user = bd.getUserFromToken(userToken);
 					remote.renewPassword(user.getUsername());
 					
-					
-					//O RENEW NAO DEVOLVCE NADA COMO TENHO A NOVA PASS?????
-//					user.setPassword(newPassword);
+					// invalidar a password
+					user.setPassword(null);
 					
 				} catch (RemoteInvocationException rie) {
+				
 					throw new UnavailableServiceException();
 				}
-				//...
-
-			    }
 				
+			} else {
+				throw new UserNotInSessionException(userToken);
 			}
-//		} catch (UnauthorizedOperationException | NotLiteralException | OutOfBoundsException | SpreadSheetDoesNotExistException e) {
-//			System.err.println("Couldn't assign Literal: " + e);
-//		}
-    	
-//    }
+    }
 
     public String getResult() {
         return result;
