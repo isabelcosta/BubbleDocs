@@ -34,35 +34,29 @@ public class RenewPasswordService extends BubbleDocsService {
     protected void dispatch() throws BubbleDocsException {
     	
     	Bubbledocs bd = Bubbledocs.getInstance();
-//    	try {
-    		//Verifica se a pessoa aidna esta logada
-			if(bd.validSession(userToken)){
-				refreshToken(userToken);
-				
-				/*
-				 * Nota: Os serviccos a desenvolver ou a actualizar tem que verificar sempre se o token indicado ˆ
-				 * representa um utilizador com uma sessao activa, devendo ser actualizado a data do ultimo 
-				 * acesso associada ao token
-				 * */
-				
-				IDRemoteServices remote = null;
-				Utilizador user = bd.getUserFromToken(userToken);
+    	
+		//Verifica se a pessoa aidna esta logada
+		if(bd.validSession(userToken)){
+			refreshToken(userToken);
 
-				try {
-					// invoke some method on remote
-					remote.renewPassword(user.getUsername());
-					
-					// invalidar a password
-					user.setPassword(null);
-					
-				} catch (RemoteInvocationException rie) {
+			Utilizador user = bd.getUserFromToken(userToken);
+			
+			IDRemoteServices remote = new IDRemoteServices();
+
+			try {
+				// invoke some method on remote
+				remote.renewPassword(user.getUsername());
 				
-					throw new UnavailableServiceException();
-				}
+				// invalidar a password
+				user.setPassword(null);
 				
-			} else {
-				throw new UserNotInSessionException(userToken);
+			} catch (RemoteInvocationException rie) {
+				throw new UnavailableServiceException();
 			}
+			
+		} else {
+			throw new UserNotInSessionException(userToken);
+		}
     }
 
     public String getResult() {
