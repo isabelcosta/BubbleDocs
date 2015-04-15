@@ -11,8 +11,10 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 //import javax.servlet.http.HttpSessionListener;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
-
+import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
  
 
@@ -25,7 +27,7 @@ public class LoginUser extends BubbleDocsService {
     private String _password;
     
 
-    public LoginUser(String username, String password) throws LoginBubbleDocsException, UtilizadorInvalidoException {
+    public LoginUser(String username, String password) throws LoginBubbleDocsException, UnavailableServiceException {
 		_username = username;
 		_password = password;
     	
@@ -34,57 +36,40 @@ public class LoginUser extends BubbleDocsService {
     	
     @Override
     protected void dispatch() throws BubbleDocsException {
-    	/*
-    	 * 		Bubbledocs bd = Bubbledocs.getInstance();
-    	 * 
-    	 *     	IDRemoteServices remote = bd.getIDRemoteService();
-    	 *     
-    	 *		remote.login(_username,_password);
-    	 *
-    	 *		
-    	 */
     	
-    	
-    	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
-    			
-    			/* INICIO
-    			* 	
-    			* 	Retirar verificacao da password e user, é o servico remoto que se responsabiliza por essa verificacao
-    			* 	
-    			* 	Usar apenas a comparacao da password local com a remota, se for igual
-    			* 	
-    			* 	Password Remota: quando a que recebemos é igual á remota (chamada remota não lanca exceção).
-    			* 
-    			*
-    			*/
-    		if(user.getUsername().equals(_username)){							// retirar
-    			if(1==2){ //!user.getPassword().equals(_password)				// retirar
-    				throw new LoginBubbleDocsException("Password incorrecta!");	// retirar
-    			} else {
-    			/*
-    			*
-    			*
-    			* FIM
-    			*/
-    				
-    				String temp;
-    				do {
-						temp = _username + generateToken();
-					} while (temp.equals(_result));
-    				_result = temp;
-    				refreshTokenTotal(_result);
-    				return ;
-    			}
-    		}
-    		
+ 		Bubbledocs bd = Bubbledocs.getInstance();
+ 		IDRemoteServices remote = new IDRemoteServices();
+ 		
+ 		
+     	
+ 		try {
+ 			remote.loginUser(_username,_password);	// nunca trata da LoginBubbleDocsException
+ 		}catch(RemoteInvocationException e){
+ 			
+ 			//verificacao da pass local
+ 			Utilizador utilizador = bd.getUserOfName(_username);
+ 			if(!checkLocalPassword(utilizador)) {
+ 				throw new UnavailableServiceException();
+ 			}
+ 		}
+ 		
+ 		// aqui, a verificao remota ocorreu sem problemas
+ 		// entao actualiza-se a password local se for diferente
+ 		Utilizador utilizador = bd.getUserOfName(_username);
+ 		
+ 		if (!checkLocalPassword(utilizador)) {
+ 			utilizador.setPassword(_password);
+		}
+ 		
+    	for(Utilizador user : bd.getUtilizadoresSet()){
+			String temp;
+			do {
+				temp = _username + generateToken();
+			} while (temp.equals(_result));
+			_result = temp;
+			refreshTokenTotal(_result);
+			return ;
     	}
-    	/*
-    	 * retirar
-    	 */
-    	throw new UtilizadorInvalidoException("Password incorrecta!");  	//retirar
-    	/*
-    	 * retirar
-    	 */
     } 
 
     public final String getUserToken() {
@@ -106,5 +91,12 @@ public class LoginUser extends BubbleDocsService {
     			tokenObject.setToken(token);
     		}
     	}
+    }
+    
+    public Boolean checkLocalPassword(Utilizador utilizador){
+    	if (utilizador.getPassword()==null) {
+    		return false;
+    	}
+    	return utilizador.getPassword().equals(_password);
     }
 }

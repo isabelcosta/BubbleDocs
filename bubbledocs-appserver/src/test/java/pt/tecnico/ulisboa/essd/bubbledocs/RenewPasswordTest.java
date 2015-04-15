@@ -2,6 +2,9 @@ package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import java.sql.ResultSet;
 
+import mockit.Expectations;
+import mockit.Mocked;
+
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
