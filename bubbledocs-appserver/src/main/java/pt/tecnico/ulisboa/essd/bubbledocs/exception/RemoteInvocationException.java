@@ -15,6 +15,5 @@ public class RemoteInvocationException extends BubbleDocsException{
 	public String getconflictingSpreadSheet() {
 		return this.remInvExp;
 	}
-}
 	
 }

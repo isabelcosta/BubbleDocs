@@ -1,12 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.exception;
 
-<<<<<<< Upstream, based on origin/master
-public class LoginBubbleDocsException extends BubbleDocsException {
-
-	private static final long serialVersionUID = 1L;
-	
-}
-=======
 public class LoginBubbleDocsException extends BubbleDocsException{
 	private static final long serialVersionUID = 1L;
 
@@ -21,6 +14,5 @@ public class LoginBubbleDocsException extends BubbleDocsException{
 	
 	public String getconflictingSpreadSheet() {
 		return this.loginExp;
-	}
+	}	
 }
->>>>>>> 843b669 criação das excepções
