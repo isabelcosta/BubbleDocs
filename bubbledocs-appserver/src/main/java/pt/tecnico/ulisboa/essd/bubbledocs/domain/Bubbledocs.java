@@ -198,7 +198,18 @@ public class Bubbledocs extends Bubbledocs_Base {
     	}
     	throw new UnauthorizedOperationException();
     }
-    
+
+    public Utilizador getUserFromToken(String token) throws UnauthorizedOperationException{
+    	for(Token tokenObjecto : getTokensSet()){
+    		if (tokenObjecto.getToken().equals(token)){
+    	    	for(Utilizador userObjecto : getUtilizadoresSet()){
+    	    		if (userObjecto.getUsername().equals(tokenObjecto.getUsername()))    			
+    	    			return userObjecto;
+    	    	}
+    		}
+    	}
+    	throw new UnauthorizedOperationException();
+    }
     
     public Integer getIdOfFolha(String folha) throws SpreadSheetDoesNotExistException{
     	for(FolhadeCalculo f : getFolhasSet()){
