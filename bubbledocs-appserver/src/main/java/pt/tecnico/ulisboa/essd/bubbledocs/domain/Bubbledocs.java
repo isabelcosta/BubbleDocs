@@ -12,6 +12,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 
 
 public class Bubbledocs extends Bubbledocs_Base {
@@ -227,6 +228,16 @@ public class Bubbledocs extends Bubbledocs_Base {
     	}
     	throw new LoginBubbleDocsException();
     }
+    
+    public Boolean existsUser(String name) throws UtilizadorInvalidoException{
+    	for(Utilizador user : getUtilizadoresSet()){
+			if(user.getUsername().equals(name)){
+				return true;
+			}
+    	}
+    	throw new UtilizadorInvalidoException();
+    }
+
     
     public FolhadeCalculo getFolhaOfId(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
     	

@@ -2,14 +2,20 @@ package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import mockit.Mock;
+import mockit.MockUp;
 
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.DeleteUser;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 // add needed import declarations
 
@@ -24,7 +30,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
 
     // the tokens for user root
     private String root;
-
+    
     @Override
     public void populate4Test() {
         createUser(USERNAME, PASSWORD, "António Rito Silva");
@@ -35,6 +41,13 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     };
 
     public void success() {
+    	
+    	new MockUp<IDRemoteServices>(){
+    		@Mock
+			public void removeUser(String username){
+    		};
+    	};
+    	
         DeleteUser service = new DeleteUser(root, USERNAME_TO_DELETE);
         service.execute();
 
@@ -65,35 +78,96 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
         success();
 	assertNull("Removed user but not removed from session", getUserFromSession(token));
     }
+    
+   /*
+    * remote invocation fails for some reason: connection, etc
+    * 
+    */
+    @Test(expected = UnavailableServiceException.class)
+    public void remoteInvocationFails() throws Exception{
+    	new MockUp<IDRemoteServices>(){
+    		@Mock
+			public void removeUser(String username){
+    			throw new RemoteInvocationException();
+    		};
+    	};
+    
+    	new DeleteUser(root, USERNAME_TO_DELETE).execute();	
+    }
 
-    @Test(expected = LoginBubbleDocsException.class)
+   
+    /*
+     * the user that we want delete doesn't exist
+     */
+    @Test(expected = UtilizadorInvalidoException.class)
     public void userToDeleteDoesNotExist() {
+   
+    	new MockUp<IDRemoteServices>(){
+    		@Mock
+			public void removeUser(String username){
+    			throw new RemoteInvocationException();
+    		};
+    	};
+    	
         new DeleteUser(root, USERNAME_DOES_NOT_EXIST).execute();
     }
 
+
     @Test(expected = UnauthorizedOperationException.class)
     public void notRootUser() {
+    	
+    	new MockUp<IDRemoteServices>(){
+    		@Mock
+			public void removeUser(String username){
+    			throw new LoginBubbleDocsException();
+    		};
+    	};
         String ars = addUserToSession(USERNAME);
         new DeleteUser(ars, USERNAME_TO_DELETE).execute();
     }
 
+    
     @Test(expected = UserNotInSessionException.class)
     public void rootNotInSession() {
         removeUserFromSession(root);
-
+        
+    	new MockUp<IDRemoteServices>(){
+    		@Mock
+			public void removeUser(String username){
+    			throw new LoginBubbleDocsException();
+    		};
+    	};
+    	
         new DeleteUser(root, USERNAME_TO_DELETE).execute();
     }
 
+    
     @Test(expected = UserNotInSessionException.class)
     public void notInSessionAndNotRoot() {
         String ars = addUserToSession(USERNAME);
         removeUserFromSession(ars);
-
+        
+        new MockUp<IDRemoteServices>(){
+    		@Mock
+			public void removeUser(String username){
+    			throw new LoginBubbleDocsException();
+    		}
+    	};
+    		
         new DeleteUser(ars, USERNAME_TO_DELETE).execute();
     }
 
-    @Test(expected = UserNotInSessionException.class)
+    
+    @Test(expected = UtilizadorInvalidoException.class)
     public void accessUserDoesNotExist() {
+    	
+    	new MockUp<IDRemoteServices>(){
+    		@Mock
+			public void removeUser(String username){
+    			throw new LoginBubbleDocsException();
+    		}
+    	};
+    		
         new DeleteUser(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
     }
 }
