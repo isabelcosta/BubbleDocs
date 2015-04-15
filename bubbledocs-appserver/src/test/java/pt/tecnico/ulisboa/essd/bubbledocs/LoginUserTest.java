@@ -14,7 +14,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongPasswordException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
 
 // add needed import declarations

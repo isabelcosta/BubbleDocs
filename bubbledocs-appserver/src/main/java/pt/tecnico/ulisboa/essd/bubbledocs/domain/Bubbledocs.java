@@ -8,9 +8,9 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 
 
@@ -208,13 +208,13 @@ public class Bubbledocs extends Bubbledocs_Base {
     	throw new SpreadSheetDoesNotExistException();
     }
     
-    public Utilizador getUserOfName(String name) throws UnknownBubbleDocsUserException{
+    public Utilizador getUserOfName(String name) throws LoginBubbleDocsException{
     	for(Utilizador user : getUtilizadoresSet()){
 			if(user.getUsername().equals(name)){
 				return user;
 			}
     	}
-    	throw new UnknownBubbleDocsUserException();
+    	throw new LoginBubbleDocsException();
     }
     
     public FolhadeCalculo getFolhaOfId(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{

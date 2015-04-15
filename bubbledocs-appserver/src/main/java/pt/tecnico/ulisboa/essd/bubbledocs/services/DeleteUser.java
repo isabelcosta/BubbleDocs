@@ -3,8 +3,8 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnknownBubbleDocsUserException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 
 
@@ -34,7 +34,7 @@ public class DeleteUser extends BubbleDocsService {
 					bd.removeUtilizadores(bd.getUserOfName(toDeleteUsername));
 				}
 	    	}
-		} catch (EmptyUsernameException | UnauthorizedOperationException | UserNotInSessionException | UnknownBubbleDocsUserException e) {
+		} catch (EmptyUsernameException | UnauthorizedOperationException | UserNotInSessionException | LoginBubbleDocsException e) {
 			System.err.println("Couldn't delete User: " + e);
 		}
 	}	

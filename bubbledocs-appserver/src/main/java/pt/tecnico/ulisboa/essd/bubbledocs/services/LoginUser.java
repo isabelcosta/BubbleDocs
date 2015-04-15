@@ -10,8 +10,9 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 //import javax.servlet.http.HttpSessionEvent;
 //import javax.servlet.http.HttpSessionListener;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongPasswordException;
+
 
  
 
@@ -24,7 +25,7 @@ public class LoginUser extends BubbleDocsService {
     private String _password;
     
 
-    public LoginUser(String username, String password) throws WrongPasswordException, UtilizadorInvalidoException {
+    public LoginUser(String username, String password) throws LoginBubbleDocsException, UtilizadorInvalidoException {
 		_username = username;
 		_password = password;
     	
@@ -58,7 +59,7 @@ public class LoginUser extends BubbleDocsService {
     			*/
     		if(user.getUsername().equals(_username)){							// retirar
     			if(1==2){ //!user.getPassword().equals(_password)				// retirar
-    				throw new WrongPasswordException("Password incorrecta!");	// retirar
+    				throw new LoginBubbleDocsException("Password incorrecta!");	// retirar
     			} else {
     			/*
     			*
