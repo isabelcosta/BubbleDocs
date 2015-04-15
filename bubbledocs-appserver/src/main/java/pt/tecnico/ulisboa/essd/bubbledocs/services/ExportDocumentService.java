@@ -34,13 +34,17 @@ public class ExportDocumentService extends BubbleDocsService{
 //VERIFICAR SE O USER TEM PERMISSÕES PARA EXPORTAR		
 			_folha = bd.getFolhaOfId(_sheetId);
 			
-	    	if(_folha.podeEscrever(bd.getUsernameOfToken(_userToken)) || _folha.podeLer(bd.getUsernameOfToken(_userToken))){
+	    	if(_folha.podeLer(bd.getUsernameOfToken(_userToken)) || _folha.podeEscrever(bd.getUsernameOfToken(_userToken))){
 //EXPORTAR A FOLHA    	
 				_result = bd.exportSheet(_folha);
-	    	}
-		}
-		} catch (UnauthorizedOperationException | ReferenciaInvalidaException | SpreadSheetDoesNotExistException | OutOfBoundsException e) {
+	    		}
+			}
+		} catch (ReferenciaInvalidaException | OutOfBoundsException e) {
 			System.err.println("Couldn't export Sheet: " + e);
+		} catch (UnauthorizedOperationException e ){
+			throw new UnauthorizedOperationException();
+		} catch (SpreadSheetDoesNotExistException e ){
+			throw new SpreadSheetDoesNotExistException();
 		}
 	}
 	

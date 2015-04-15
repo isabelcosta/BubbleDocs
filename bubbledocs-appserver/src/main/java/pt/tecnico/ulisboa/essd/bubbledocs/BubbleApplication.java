@@ -419,7 +419,7 @@ public class BubbleApplication {
 
     			
     			//-->Funcao = DIV (1; 1, 3; 4) na posicao (2, 2)
-    			String conteudoDiv = "=DIV(1;1,3;4)";
+    			String conteudoDiv = "=SUB(1;1,3;4)";
     			folhaIter.modificarCelula(2,2,conteudoDiv);
     			
     			

@@ -33,11 +33,39 @@ public class LoginUser extends BubbleDocsService {
     	
     @Override
     protected void dispatch() throws BubbleDocsException {
+    	/*
+    	 * 		Bubbledocs bd = Bubbledocs.getInstance();
+    	 * 
+    	 *     	IDRemoteServices remote = bd.getIDRemoteService();
+    	 *     
+    	 *		remote.login(_username,_password);
+    	 *
+    	 *		
+    	 */
+    	
+    	
     	for(Utilizador user : Bubbledocs.getInstance().getUtilizadoresSet()){
-    		if(user.getUsername().equals(_username)){
-    			if(1==2){ //!user.getPassword().equals(_password)
-    				throw new WrongPasswordException("Password incorrecta!");
+    			
+    			/* INICIO
+    			* 	
+    			* 	Retirar verificacao da password e user, é o servico remoto que se responsabiliza por essa verificacao
+    			* 	
+    			* 	Usar apenas a comparacao da password local com a remota, se for igual
+    			* 	
+    			* 	Password Remota: quando a que recebemos é igual á remota (chamada remota não lanca exceção).
+    			* 
+    			*
+    			*/
+    		if(user.getUsername().equals(_username)){							// retirar
+    			if(1==2){ //!user.getPassword().equals(_password)				// retirar
+    				throw new WrongPasswordException("Password incorrecta!");	// retirar
     			} else {
+    			/*
+    			*
+    			*
+    			* FIM
+    			*/
+    				
     				String temp;
     				do {
 						temp = _username + generateToken();
@@ -49,7 +77,13 @@ public class LoginUser extends BubbleDocsService {
     		}
     		
     	}
-    	throw new UtilizadorInvalidoException("Password incorrecta!");  	
+    	/*
+    	 * retirar
+    	 */
+    	throw new UtilizadorInvalidoException("Password incorrecta!");  	//retirar
+    	/*
+    	 * retirar
+    	 */
     } 
 
     public final String getUserToken() {
@@ -57,13 +91,13 @@ public class LoginUser extends BubbleDocsService {
     }
     
     
-    public int generateToken(){
+    public int generateToken(){		//	talvez passar para a bubble docs de forma a separa a lógica de negócio
         Random rand = new Random(); 
         int intToken = rand.nextInt(10);
         return intToken;
     }
     
-    
+    								//	talvez passar para a bubble docs de forma a separa a lógica de negócio
     public final void refreshTokenTotal (String token) {
     	for(Token tokenObject : Bubbledocs.getInstance().getTokensSet()){
     		if(tokenObject.getUsername().equals(_username)){

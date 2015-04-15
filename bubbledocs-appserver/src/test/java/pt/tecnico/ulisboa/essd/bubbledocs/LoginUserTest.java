@@ -11,6 +11,8 @@ import org.junit.Test;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.WrongPasswordException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
@@ -76,15 +78,30 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         assertEquals(USERNAME, user.getUsername());
     }
     
-    @Test(expected = UtilizadorInvalidoException.class)
+    @Test(expected = LoginBubbleDocsException.class)	// dar um USER invalido
     public void loginUnknownUser() {
-        LoginUser service = new LoginUser("jp2", "jp");
-        service.execute();
+        LoginUser service = new LoginUser("jp2", "jp");	
+        service.execute();	// o remote tem que lancar a excessao, logo -> mockit
     }
 
-    @Test(expected = WrongPasswordException.class)
+    @Test(expected = LoginBubbleDocsException.class)		// dar a PASSWORD errada
     public void loginUserWithinWrongPassword() {
         LoginUser service = new LoginUser(USERNAME, "jp2");
         service.execute();
     }
+    
+    				// Remote ou Unavailable...?
+    @Test(expected = RemoteInvocationException.class)		// forcar excessao UnavailableServiceException
+    public void loginUnavailableService() {
+    	
+    	
+    	
+        LoginUser service = new LoginUser(USERNAME, PASSWORD);
+        service.execute();
+    }
+    
+    
+    
+    
+    
 }

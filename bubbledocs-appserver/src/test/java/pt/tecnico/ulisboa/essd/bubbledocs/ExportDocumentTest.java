@@ -25,7 +25,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
     private String root;
     private String ars;
 
-    private static final String USERNAME = "pf";
+    private static final String USERNAME = "pff";
     private static final String PASSWORD = "sub";
     private static final String ROOT_USERNAME = "root";
     private static final String USERNAME_DOES_NOT_EXIST = "no-one";
@@ -60,27 +60,27 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
     	Bubbledocs bd = Bubbledocs.getInstance();
     	
     	//Cria users
-		Utilizador user1 = createUser("te", "te#", "Teresa Palhoto");
-    	Utilizador user2 = createUser("mi", "mi#", "Miguel Torrado");
-    	Utilizador user3 = createUser("re", "re#", "Isabel Costa");
-    	Utilizador user4 = createUser("fa", "fa#", "Inês Garcia");
-    	Utilizador user5 = createUser("do", "do#", "Fábio Pedro");
+		Utilizador user1 = createUser("ter", "te#", "Teresa Palhoto");
+    	Utilizador user2 = createUser("mig", "mi#", "Miguel Torrado");
+    	Utilizador user3 = createUser("ree", "re#", "Isabel Costa");
+    	Utilizador user4 = createUser("faa", "fa#", "Inês Garcia");
+    	Utilizador user5 = createUser("doo", "do#", "Fábio Pedro");
     	    
     	//Faz o login dos users
     	
-    	USER_TOKEN = addUserToSession("te");
-    	USER_TOKEN_NO_ACCESS = addUserToSession("mi");
-    	USER_TOKEN_LEITURA = addUserToSession("fa");
-    	USER_TOKEN_ESCRITA = addUserToSession("do");
+    	USER_TOKEN = addUserToSession("ter");
+    	USER_TOKEN_NO_ACCESS = addUserToSession("mig");
+    	USER_TOKEN_LEITURA = addUserToSession("faa");
+    	USER_TOKEN_ESCRITA = addUserToSession("doo");
     	
     	EMPTY_TOKEN = "";
-    	USER_TOKEN_NOT_IN_SESSION = addUserToSession("re");
+    	USER_TOKEN_NOT_IN_SESSION = addUserToSession("ree");
     	turnTokenInvalid(USER_TOKEN_NOT_IN_SESSION);
     	
     	//cria duas folhas
-    	FolhadeCalculo folha1 = createSpreadSheet(user1, "teFolha", 20, 30);
-		FolhadeCalculo folha2 = createSpreadSheet(user2, "miFolha", 40, 11);
-		FolhadeCalculo folhaTeste = createSpreadSheet(user1, "teFolha", 20, 30);
+    	FolhadeCalculo folha1 = createSpreadSheet(user1, "terFolha", 20, 30);
+		FolhadeCalculo folha2 = createSpreadSheet(user2, "migFolha", 40, 11);
+		FolhadeCalculo folhaTeste = createSpreadSheet(user1, "terFolha", 20, 30);
 		
 		//Preenche a folha (folha1) do user "ab"
 		FOLHA_ID = folha1.getID();
@@ -104,8 +104,8 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
     	
     	
     	//da "ab" da permissoes de escrita a "pi" para preencher a sua folha
-    	bd.darPermissoes("escrita", "te", "do", FOLHA_ID);
-    	bd.darPermissoes("leitura", "te", "fa", FOLHA_ID);
+    	bd.darPermissoes("escrita", "ter", "doo", FOLHA_ID);
+    	bd.darPermissoes("leitura", "ter", "faa", FOLHA_ID);
     	
     }
 	
@@ -134,7 +134,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		assertEquals(FOLHA_TESTE_DATA, data);
 		
 		FolhadeCalculo folha = getSpreadSheet(FOLHA_TESTE);
-		FolhadeCalculo folha1 = getSpreadSheet("teFolha");
+		FolhadeCalculo folha1 = getSpreadSheet("terFolha");
 		
 		assertEquals(folha.getCelulaSet().size(), folha1.getCelulaSet().size());
 		
@@ -182,7 +182,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		assertEquals(FOLHA_TESTE_DATA, data);
 		
 		FolhadeCalculo folha = getSpreadSheet(FOLHA_TESTE);
-		FolhadeCalculo folha1 = getSpreadSheet("teFolha");
+		FolhadeCalculo folha1 = getSpreadSheet("terFolha");
 		
 		assertEquals(folha.getCelulaSet().size(), folha1.getCelulaSet().size());
 		
@@ -230,7 +230,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		assertEquals(FOLHA_TESTE_DATA, data);
 		
 		FolhadeCalculo folha = getSpreadSheet(FOLHA_TESTE);
-		FolhadeCalculo folha1 = getSpreadSheet("teFolha");
+		FolhadeCalculo folha1 = getSpreadSheet("terFolha");
 		
 		assertEquals(folha.getCelulaSet().size(), folha1.getCelulaSet().size());
 		
