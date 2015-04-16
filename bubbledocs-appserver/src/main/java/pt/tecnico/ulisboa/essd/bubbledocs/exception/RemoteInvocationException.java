@@ -1,6 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.exception;
 
-public class RemoteInvocationException extends BubbleDocsException{
+public class RemoteInvocationException extends RemoteException{
 	private static final long serialVersionUID = 1L;
 
 	private String remInvExp;
@@ -12,7 +12,7 @@ public class RemoteInvocationException extends BubbleDocsException{
 		this.remInvExp= remInvExp;
 	}
 	
-	public String getconflictingSpreadSheet() {
+	public String getconflictingRemoteInvocation() {
 		return this.remInvExp;
 	}
 	

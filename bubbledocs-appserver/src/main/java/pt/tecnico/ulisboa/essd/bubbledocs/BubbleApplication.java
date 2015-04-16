@@ -132,7 +132,7 @@ public class BubbleApplication {
 		    			
 						System.out.println("Nome da Folha: " + folhaIter.getNomeFolha() + " de " + userIter.getNome() );
 						System.out.println("-----------------------------------INIT--------------------------------");
-						doc= exportService.getResult();
+						//doc= exportService.getResult();
 						printDomainInXML(doc);
 			    	}
 				
@@ -233,7 +233,7 @@ public class BubbleApplication {
 					ExportDocumentService exportService = new ExportDocumentService(folhaIter.getID(), userToken9);
 	    			exportService.execute();
 					
-					doc = exportService.getResult();
+					//doc = exportService.getResult();
 					
 					
 					
