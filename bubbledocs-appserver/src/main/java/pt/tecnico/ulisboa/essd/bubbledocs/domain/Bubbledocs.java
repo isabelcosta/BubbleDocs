@@ -1,5 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+import java.util.Random;
+
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 
@@ -12,7 +14,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 
 
 public class Bubbledocs extends Bubbledocs_Base {
@@ -95,7 +96,7 @@ public class Bubbledocs extends Bubbledocs_Base {
     	
     	if (folha.getID() == folhaID && 
 			(utilizadorDador.equals(folha.getDono()) || folha.podeEscrever(utilizadorDador))){
-																//Lança excepcao
+																//LanÃ§a excepcao
 			
 				switch(permissao){
     				case("escrita"):
@@ -126,7 +127,7 @@ public class Bubbledocs extends Bubbledocs_Base {
     	
     	if (folha.getID() == folhaID && 
 			(utilizadorRetira.equals(folha.getDono()) || folha.podeEscrever(utilizadorRetira))){
-																//Lança excepcao
+																//LanÃ§a excepcao
 			
 				switch(permissao){
     				case("escrita"):
@@ -229,16 +230,6 @@ public class Bubbledocs extends Bubbledocs_Base {
     	throw new LoginBubbleDocsException();
     }
     
-    public Boolean existsUser(String name) throws UtilizadorInvalidoException{
-    	for(Utilizador user : getUtilizadoresSet()){
-			if(user.getUsername().equals(name)){
-				return true;
-			}
-    	}
-    	throw new UtilizadorInvalidoException();
-    }
-
-    
     public FolhadeCalculo getFolhaOfId(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
     	
     	if(id < 0 || id == null){
@@ -257,5 +248,28 @@ public class Bubbledocs extends Bubbledocs_Base {
     	org.jdom2.Document jdomDoc = new org.jdom2.Document();
     	jdomDoc.setRootElement(folha.exportToXML());
     	return jdomDoc;
+    }
+    
+    public int generateToken(){		//	talvez passar para a bubble docs de forma a separa a lÃ³gica de negÃ³cio
+        Random rand = new Random(); 
+        int intToken = rand.nextInt(10);
+        return intToken;
+    }
+    
+    public final void refreshTokenTotal (String token, String username) {
+    	for(Token tokenObject : Bubbledocs.getInstance().getTokensSet()){
+    		if(tokenObject.getUsername().equals(username)){
+    			tokenObject.setTime(new LocalTime());
+    			tokenObject.setToken(token);
+    		}
+    	}
+    }
+    
+    
+    public Boolean checkLocalPassword(Utilizador utilizador, String password){
+    	if (utilizador.getPassword()==null) {
+    		return false;
+    	}
+    	return utilizador.getPassword().equals(password);
     }
 }

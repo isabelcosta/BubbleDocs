@@ -43,12 +43,12 @@ public class LoginUser extends BubbleDocsService {
  		
      	
  		try {
- 			remote.loginUser(_username,_password);	// nunca trata da LoginBubbleDocsException
+ 			remote.loginUser(_username,_password);
  		}catch(RemoteInvocationException e){
  			
  			//verificacao da pass local
  			Utilizador utilizador = bd.getUserOfName(_username);
- 			if(!checkLocalPassword(utilizador)) {
+ 			if(!bd.checkLocalPassword(utilizador, _password)) {
  				throw new UnavailableServiceException();
  			}
  		}
@@ -57,17 +57,18 @@ public class LoginUser extends BubbleDocsService {
  		// entao actualiza-se a password local se for diferente
  		Utilizador utilizador = bd.getUserOfName(_username);
  		
- 		if (!checkLocalPassword(utilizador)) {
+ 		if (!bd.checkLocalPassword(utilizador, _password)) {
  			utilizador.setPassword(_password);
 		}
  		
     	for(Utilizador user : bd.getUtilizadoresSet()){
 			String temp;
 			do {
-				temp = _username + generateToken();
+				temp = _username + bd.generateToken();
 			} while (temp.equals(_result));
 			_result = temp;
-			refreshTokenTotal(_result);
+			bd.refreshTokenTotal(_result, _username);
+			bd.addTokens(new Token(_username, _result));
 			return ;
     	}
     } 
@@ -75,28 +76,5 @@ public class LoginUser extends BubbleDocsService {
     public final String getUserToken() {
     	return _result;
     }
-    
-    
-    public int generateToken(){		//	talvez passar para a bubble docs de forma a separa a lógica de negócio
-        Random rand = new Random(); 
-        int intToken = rand.nextInt(10);
-        return intToken;
-    }
-    
-    								//	talvez passar para a bubble docs de forma a separa a lógica de negócio
-    public final void refreshTokenTotal (String token) {
-    	for(Token tokenObject : Bubbledocs.getInstance().getTokensSet()){
-    		if(tokenObject.getUsername().equals(_username)){
-    			tokenObject.setTime(new LocalTime());
-    			tokenObject.setToken(token);
-    		}
-    	}
-    }
-    
-    public Boolean checkLocalPassword(Utilizador utilizador){
-    	if (utilizador.getPassword()==null) {
-    		return false;
-    	}
-    	return utilizador.getPassword().equals(_password);
-    }
+   
 }
