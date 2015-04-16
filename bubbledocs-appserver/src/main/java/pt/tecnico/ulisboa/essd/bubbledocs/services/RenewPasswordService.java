@@ -21,15 +21,13 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 public class RenewPasswordService extends BubbleDocsService {
     private String result;
-    private String newPassword;
     private String userToken;
     
     
     public RenewPasswordService(String tokenUser) {  	
     	this.userToken = tokenUser;
     }
-
-    
+ 
     @Override
     protected void dispatch() throws BubbleDocsException {
     	
@@ -37,6 +35,7 @@ public class RenewPasswordService extends BubbleDocsService {
     	
 		//Verifica se a pessoa aidna esta logada
 		if(bd.validSession(userToken)){
+			
 			refreshToken(userToken);
 
 			Utilizador user = bd.getUserFromToken(userToken);
