@@ -163,7 +163,6 @@ public class Bubbledocs extends Bubbledocs_Base {
     
     
     public Boolean isRoot(String token) throws UnauthorizedOperationException{
-    	
     	for(Token tokenObjecto : getTokensSet()){
     		if(tokenObjecto.getUsername().equals("root") && tokenObjecto.getToken().equals(token)){
     			return true;
@@ -230,6 +229,16 @@ public class Bubbledocs extends Bubbledocs_Base {
     	throw new LoginBubbleDocsException();
     }
     
+    
+    public Boolean existsUser(String name) throws UserNotInSessionException{
+    	for(Utilizador user : getUtilizadoresSet()){
+			if(user.getUsername().equals(name)){
+				return true;
+			}
+    	}
+    	throw new UserNotInSessionException(name);
+    }
+
     public FolhadeCalculo getFolhaOfId(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
     	
     	if(id < 0 || id == null){
@@ -243,6 +252,7 @@ public class Bubbledocs extends Bubbledocs_Base {
     	}
     	throw new SpreadSheetDoesNotExistException();
     }
+    
     
     public org.jdom2.Document exportSheet(FolhadeCalculo folha){
     	org.jdom2.Document jdomDoc = new org.jdom2.Document();
