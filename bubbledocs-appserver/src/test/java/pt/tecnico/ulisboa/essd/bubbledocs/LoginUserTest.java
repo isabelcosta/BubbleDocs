@@ -6,6 +6,7 @@ import static org.junit.Assert.assertTrue;
 import mockit.Expectations;
 import mockit.Mock;
 import mockit.MockUp;
+import mockit.Mocked;
 import mockit.StrictExpectations;
 
 import org.joda.time.LocalTime;
@@ -47,20 +48,21 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 		}
 		return null;
     }
-    
+    @Mocked
+	IDRemoteServices remote;
+	
     //1
     @Test
     public void success() {
 
     	
-    	new MockUp <IDRemoteServices>() {
-    		@Mock
-    		public void loginUser (String user, String password) {
-    			//chamada remota foi valida
-    		}
-    	};
-    	
-    	
+    	new StrictExpectations() {
+    		   
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, PASSWORD);
+		    }
+		};
     	
     	
     	LoginUser service = new LoginUser(USERNAME, PASSWORD);
@@ -68,7 +70,6 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         
         
         String token = service.getUserToken();
-        Bubbledocs.getInstance().addTokens(new Token(USERNAME, token));
 		
         LocalTime currentTime = new LocalTime();
 		
@@ -86,26 +87,33 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     @Test
     public void successLoginTwiceLocal() {
     	
-    	new MockUp<IDRemoteServices>() {
-    		@Mock
-    		public void loginUser(String user, String password) {
-    			//chamada remota foi valida
-    		}
-    	};
+    	new StrictExpectations() {
+ 		   
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, PASSWORD);
+		    }
+		};
+    	
+    	
     	
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
         service.execute();
         
-        Bubbledocs.getInstance().addTokens(new Token(USERNAME, service.getUserToken()));
         String token1 = service.getUserToken();
         
-        new MockUp<IDRemoteServices>() {
-    		@Mock
-    		public void loginUser(String user, String password) {
-    			throw new RemoteInvocationException();
-    		}
-    	};
-        	
+    	
+    	new StrictExpectations() {
+ 		   
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, PASSWORD);
+		    }
+		};
+    		
+    		
+    		
         service.execute();
         
         String token2 = service.getUserToken();
@@ -120,20 +128,23 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     @Test
     public void successLoginTwice() {
     	
-    	new MockUp<IDRemoteServices>() {
-    		@Mock
-    		public void loginUser(String user, String password) {
-    			//chamada remota foi valida
-    		}
-    	};
-    	
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, PASSWORD);
+
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, PASSWORD);
+			    }
+    		};
+    		
+    		
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
         service.execute();
         
-        Bubbledocs.getInstance().addTokens(new Token(USERNAME, service.getUserToken()));
         String token1 = service.getUserToken();
 
-        	
         service.execute();
         
         String token2 = service.getUserToken();
@@ -148,16 +159,16 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     @Test(expected = LoginBubbleDocsException.class)	// dar um USER invalido
     public void loginUnknownUser() {
     	
-    	new MockUp<IDRemoteServices>() {
-    		@Mock
-    		public void loginUser(String user, String password) {
-    			if (!(user.equals(USERNAME)) && password.equals(PASSWORD)){
-    				throw new LoginBubbleDocsException();
-    			}
-    		}
-    	};
-    	
-    	
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser("jp2", PASSWORD);
+    			result = new LoginBubbleDocsException();
+		    }
+		};
+    		
+    		
         LoginUser service = new LoginUser("jp2", PASSWORD);
         service.execute();	// o remote tem que lancar a excessao, logo -> mockit
     }
@@ -166,14 +177,17 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     @Test(expected = LoginBubbleDocsException.class)		// dar a PASSWORD errada
     public void loginUserWithinWrongPassword() {
     	
-    	new MockUp<IDRemoteServices>() {
-    		@Mock
-    		public void loginUser(String user, String password) {
-    			if ((user.equals(USERNAME)) && !(password.equals(PASSWORD))){
-    				throw new LoginBubbleDocsException();
-    			}
-    		}
-    	};
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, "jp2");
+    			result = new LoginBubbleDocsException();
+		    }
+		};
+    	
+    	
+    	
     	
         LoginUser service = new LoginUser(USERNAME, "jp2");
         service.execute();
@@ -183,27 +197,27 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     @Test(expected = UnavailableServiceException.class)		// quando faz a verificao da password usando a local e é diferente
     public void loginWrongPasswordLocal() {
     	
-    	new MockUp<IDRemoteServices>() {
-    		@Mock
-    		public void loginUser(String user, String password) {
-    			//chamada remota foi valida
-    		}
-    	};
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, PASSWORD);
+		    }
+		};
+    		
     	
     	
-    	/*
-    	 * Primeiro login para assegurar que existe copia de password local
-    	 */
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
         service.execute();
         
-        new MockUp<IDRemoteServices>() {
-    		@Mock
-    		public void loginUser(String user, String password) {
-				throw new RemoteInvocationException();
-    		}
-    	};
-
+        new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, "errada");
+    			result = new RemoteInvocationException();
+		    }
+		};
     	LoginUser service1 = new LoginUser(USERNAME, "errada");
         service1.execute();
     }
@@ -213,13 +227,14 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     @Test(expected = UnavailableServiceException.class)		// quando faz a verificao da password e nao tem password local
     public void loginNoLocalPassword() {
     	
-    	new MockUp<IDRemoteServices>() {
-    		@Mock
-    		public void loginUser(String user, String password) {
-    			throw new RemoteInvocationException();
-    		}
-    	};
-    	
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, PASSWORD);
+    			result = new RemoteInvocationException();
+		    }
+		};
         LoginUser service = new LoginUser(USERNAME, PASSWORD);
         service.execute();
     }
