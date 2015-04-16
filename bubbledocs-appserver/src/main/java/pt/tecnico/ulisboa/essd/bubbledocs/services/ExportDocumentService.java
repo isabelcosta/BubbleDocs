@@ -1,15 +1,23 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
+import java.io.UnsupportedEncodingException;
+
+import org.jdom2.output.XMLOutputter;
+
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
 
 public class ExportDocumentService extends BubbleDocsService{
-    private org.jdom2.Document _result;
+    private byte[] _result;
     private int _sheetId;
     private String _userToken;
     private FolhadeCalculo _folha;
@@ -25,20 +33,45 @@ public class ExportDocumentService extends BubbleDocsService{
 	protected void dispatch() throws UserNotInSessionException {
 
 		Bubbledocs bd = Bubbledocs.getInstance();
+		StoreRemoteServices remote = new StoreRemoteServices();
+		byte[] resultTemp = null;
 		try {
 
-//VERIFICAR SE A SESSÃO É VÁLIDA
+//VERIFICAR SE A SESSÃƒO Ã‰ VÃ�LIDA
 			if(bd.validSession(_userToken)){
 				refreshToken(_userToken);
+			}
 				
-//VERIFICAR SE O USER TEM PERMISSÕES PARA EXPORTAR		
+//VERIFICAR SE O USER TEM PERMISSÃ•ES PARA EXPORTAR		
 			_folha = bd.getFolhaOfId(_sheetId);
 			
-	    	if(_folha.podeLer(bd.getUsernameOfToken(_userToken)) || _folha.podeEscrever(bd.getUsernameOfToken(_userToken))){
+			String userNameOfToken = bd.getUsernameOfToken(_userToken);
+	    	if(_folha.podeLer(userNameOfToken) || _folha.podeEscrever(userNameOfToken)){
 //EXPORTAR A FOLHA    	
-				_result = bd.exportSheet(_folha);
-	    		}
-			}
+	    		//fazer chamada remota
+	    		
+//CONVERTER A FOLHA EM BYTES
+				org.jdom2.Document sheetDoc = bd.exportSheet(_folha);
+				
+				XMLOutputter xmlOutput = new XMLOutputter();
+				xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
+				String docString = xmlOutput.outputString(sheetDoc);
+				
+				
+				try {
+					resultTemp = docString.getBytes("UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					System.out.println("export falhou: " + e);
+				}
+				
+// CHAMAR O SERVICO REMOTO, SO ACTULIZANDO O RESULT CASO A CHAMADA REMOTA SEJA VALIDA
+				try{
+					remote.storeDocument(userNameOfToken, _folha.getNomeFolha(), resultTemp);
+				} catch (RemoteInvocationException e){
+					throw new UnavailableServiceException();
+				}
+				_result = resultTemp;
+	    	}
 		} catch (ReferenciaInvalidaException | OutOfBoundsException e) {
 			System.err.println("Couldn't export Sheet: " + e);
 		} catch (UnauthorizedOperationException e ){
@@ -48,7 +81,7 @@ public class ExportDocumentService extends BubbleDocsService{
 		}
 	}
 	
-	public org.jdom2.Document getResult() {
+	public byte[] getResult() {
         return _result;
     }
 

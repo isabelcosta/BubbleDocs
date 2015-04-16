@@ -2,6 +2,20 @@ package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import static org.junit.Assert.*;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.rmi.RemoteException;
+
+import mockit.Mock;
+import mockit.MockUp;
+import mockit.Mocked;
+import mockit.StrictExpectations;
+
+import org.jdom2.JDOMException;
+import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.Format;
+import org.jdom2.output.XMLOutputter;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
@@ -10,14 +24,19 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotStoreDocumentException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheet;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.ExportDocumentService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
 
 public class ExportDocumentTest extends BubbleDocsServiceTest{
 	
@@ -63,8 +82,8 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		Utilizador user1 = createUser("ter", "te#", "Teresa Palhoto");
     	Utilizador user2 = createUser("mig", "mi#", "Miguel Torrado");
     	Utilizador user3 = createUser("ree", "re#", "Isabel Costa");
-    	Utilizador user4 = createUser("faa", "fa#", "Inês Garcia");
-    	Utilizador user5 = createUser("doo", "do#", "Fábio Pedro");
+    	Utilizador user4 = createUser("faa", "fa#", "InÃªs Garcia");
+    	Utilizador user5 = createUser("doo", "do#", "FÃ¡bio Pedro");
     	    
     	//Faz o login dos users
     	
@@ -109,28 +128,51 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
     	
     }
 	
+	
+	 @Mocked StoreRemoteServices remote;
+	 
+	//1
 	@Test
 	public void successDonoExport () {
+		
+		
+		new StrictExpectations() {
+	 		   
+    		{
+    			remote = new StoreRemoteServices();
+    			remote.storeDocument("ter", "terFolha",(byte[]) any);
+		    }
+		};
+		
 		
 		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN);
 		exportDocument.execute();
 		
-		String donoFolha = exportDocument.getResult().getRootElement().getAttributeValue("dono");
+		org.jdom2.Document doc = null;
+		
+		try {
+			doc = byteToJdomDoc(exportDocument);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		 
+		
+		String donoFolha = doc.getRootElement().getAttributeValue("dono");
 		assertEquals(USERNAME1, donoFolha);
 		
-		String nomeFolha = exportDocument.getResult().getRootElement().getAttributeValue("nome");
+		String nomeFolha = doc.getRootElement().getAttributeValue("nome");
 		assertEquals(FOLHA_TESTE, nomeFolha);
 		
-		int linhas = Integer.parseInt(exportDocument.getResult().getRootElement().getAttributeValue("linhas"));
+		int linhas = Integer.parseInt(doc.getRootElement().getAttributeValue("linhas"));
 		assertEquals(FOLHA_TESTE_LINHAS, linhas);
 		
-		int colunas = Integer.parseInt(exportDocument.getResult().getRootElement().getAttributeValue("colunas"));
+		int colunas = Integer.parseInt(doc.getRootElement().getAttributeValue("colunas"));
 		assertEquals(FOLHA_TESTE_COLUNAS, colunas);
 		
-		int id = Integer.parseInt(exportDocument.getResult().getRootElement().getAttributeValue("id"));
+		int id = Integer.parseInt(doc.getRootElement().getAttributeValue("id"));
 		assertEquals(FOLHA_ID, id);
 		
-		String data = exportDocument.getResult().getRootElement().getAttributeValue("data");
+		String data = doc.getRootElement().getAttributeValue("data");
 		assertEquals(FOLHA_TESTE_DATA, data);
 		
 		FolhadeCalculo folha = getSpreadSheet(FOLHA_TESTE);
@@ -138,7 +180,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		
 		assertEquals(folha.getCelulaSet().size(), folha1.getCelulaSet().size());
 		
-		folha.importFromXML(exportDocument.getResult().getRootElement());
+		folha.importFromXML(doc.getRootElement());
 		
 		int cellCount = 0;
 		for(Celula cell : folha.getCelulaSet()){
@@ -156,29 +198,44 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 																// igual ao numero de celulas na folha
 		
 	}
-	
+	//2
 	@Test
 	public void successUserReadExport () {
+		
+		new StrictExpectations() {
+    		{
+    			remote = new StoreRemoteServices();
+    			remote.storeDocument("faa", "terFolha",(byte[]) any);
+		    }
+		};
 		
 		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_LEITURA);
 		exportDocument.execute();
 		
-		String donoFolha = exportDocument.getResult().getRootElement().getAttributeValue("dono");
+		org.jdom2.Document doc = null;
+		
+		try {
+			doc = byteToJdomDoc(exportDocument);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		 
+		String donoFolha = doc.getRootElement().getAttributeValue("dono");
 		assertEquals(USERNAME1, donoFolha);
 		
-		String nomeFolha = exportDocument.getResult().getRootElement().getAttributeValue("nome");
+		String nomeFolha = doc.getRootElement().getAttributeValue("nome");
 		assertEquals(FOLHA_TESTE, nomeFolha);
 		
-		int linhas = Integer.parseInt(exportDocument.getResult().getRootElement().getAttributeValue("linhas"));
+		int linhas = Integer.parseInt(doc.getRootElement().getAttributeValue("linhas"));
 		assertEquals(FOLHA_TESTE_LINHAS, linhas);
 		
-		int colunas = Integer.parseInt(exportDocument.getResult().getRootElement().getAttributeValue("colunas"));
+		int colunas = Integer.parseInt(doc.getRootElement().getAttributeValue("colunas"));
 		assertEquals(FOLHA_TESTE_COLUNAS, colunas);
 		
-		int id = Integer.parseInt(exportDocument.getResult().getRootElement().getAttributeValue("id"));
+		int id = Integer.parseInt(doc.getRootElement().getAttributeValue("id"));
 		assertEquals(FOLHA_ID, id);
 		
-		String data = exportDocument.getResult().getRootElement().getAttributeValue("data");
+		String data = doc.getRootElement().getAttributeValue("data");
 		assertEquals(FOLHA_TESTE_DATA, data);
 		
 		FolhadeCalculo folha = getSpreadSheet(FOLHA_TESTE);
@@ -186,7 +243,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		
 		assertEquals(folha.getCelulaSet().size(), folha1.getCelulaSet().size());
 		
-		folha.importFromXML(exportDocument.getResult().getRootElement());
+		folha.importFromXML(doc.getRootElement());
 		
 		int cellCount = 0;
 		for(Celula cell : folha.getCelulaSet()){
@@ -204,29 +261,45 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 																// igual ao numero de celulas na folha
 		
 	}
-	
+	//3
 	@Test
 	public void successUserWriteExport () {
+		new StrictExpectations() {
+	 		   
+    		{
+    			remote = new StoreRemoteServices();
+    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+		    }
+		};
+		
 		
 		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_ESCRITA);
 		exportDocument.execute();
 		
-		String donoFolha = exportDocument.getResult().getRootElement().getAttributeValue("dono");
+		org.jdom2.Document doc = null;
+		
+		try {
+			doc = byteToJdomDoc(exportDocument);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		 
+		String donoFolha = doc.getRootElement().getAttributeValue("dono");
 		assertEquals(USERNAME1, donoFolha);
 		
-		String nomeFolha = exportDocument.getResult().getRootElement().getAttributeValue("nome");
+		String nomeFolha = doc.getRootElement().getAttributeValue("nome");
 		assertEquals(FOLHA_TESTE, nomeFolha);
 		
-		int linhas = Integer.parseInt(exportDocument.getResult().getRootElement().getAttributeValue("linhas"));
+		int linhas = Integer.parseInt(doc.getRootElement().getAttributeValue("linhas"));
 		assertEquals(FOLHA_TESTE_LINHAS, linhas);
 		
-		int colunas = Integer.parseInt(exportDocument.getResult().getRootElement().getAttributeValue("colunas"));
+		int colunas = Integer.parseInt(doc.getRootElement().getAttributeValue("colunas"));
 		assertEquals(FOLHA_TESTE_COLUNAS, colunas);
 		
-		int id = Integer.parseInt(exportDocument.getResult().getRootElement().getAttributeValue("id"));
+		int id = Integer.parseInt(doc.getRootElement().getAttributeValue("id"));
 		assertEquals(FOLHA_ID, id);
 		
-		String data = exportDocument.getResult().getRootElement().getAttributeValue("data");
+		String data = doc.getRootElement().getAttributeValue("data");
 		assertEquals(FOLHA_TESTE_DATA, data);
 		
 		FolhadeCalculo folha = getSpreadSheet(FOLHA_TESTE);
@@ -234,7 +307,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		
 		assertEquals(folha.getCelulaSet().size(), folha1.getCelulaSet().size());
 		
-		folha.importFromXML(exportDocument.getResult().getRootElement());
+		folha.importFromXML(doc.getRootElement());
 		
 		int cellCount = 0;
 		for(Celula cell : folha.getCelulaSet()){
@@ -252,50 +325,78 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 																// igual ao numero de celulas na folha
 		
 	}
-	
+	//4
 	@Test(expected = UnauthorizedOperationException.class)
 	public void unauthorizedExport() {
 		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_NO_ACCESS);
 		exportDocument.execute();
 	}
-	
+	//8
 	@Test(expected = InvalidTokenException.class)
 	public void emptyTokenExport () {
 		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, EMPTY_TOKEN);
 		exportDocument.execute();
 	}
-	 
+	 //7
 	@Test(expected = UserNotInSessionException.class)
 	public void invalidSessionExport () {
 		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_NOT_IN_SESSION);
 		exportDocument.execute();
 	}
 	
-	
+	//5
 	@Test(expected = SpreadSheetDoesNotExistException.class)
 	public void idDoesNotExistExport() {
 		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID_INEXISTENT, USER_TOKEN);
 		exportDocument.execute();
 	}
+	//6
 	@Test(expected = IdFolhaInvalidoException.class)
 	public void invalidIdExport() {
 		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID_NEGATIVE, USER_TOKEN);
 		exportDocument.execute();
 	}
+
+
+	//9
+	@Test(expected = UnavailableServiceException.class)
+	public void remoteCallFail () {
+		
+//		new MockUp <StoreRemoteServices>() {
+//    		@Mock
+//    		public void storeDocument (String user, String docName, byte[] document) {
+//    			throw new RemoteInvocationException();
+//    		}
+//    	};
+    	
+    	new StrictExpectations() {
+ 		   
+    		{
+    			remote = new StoreRemoteServices();
+    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+    			result = new RemoteInvocationException();
+		    }
+		};
+		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_ESCRITA);
+		exportDocument.execute();
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	}
+
+	public org.jdom2.Document byteToJdomDoc (ExportDocumentService service) throws UnsupportedEncodingException {  		// byte-> string -> outP -> doc
+
+		
+		org.jdom2.Document doc = null;
+		SAXBuilder saxBuilder = new SAXBuilder();
+		saxBuilder.setIgnoringElementContentWhitespace(true);
+		try {
+			doc = saxBuilder.build(new ByteArrayInputStream(service.getResult()));
+		} catch (JDOMException | IOException e) {
+			System.out.println("falhou a conversao de byte[] para jdom2 Doc: " + e);
+		}
+		
+		return doc;
+		
+	}
 	
 	
 }
