@@ -36,7 +36,7 @@ public class RenewPasswordService extends BubbleDocsService {
 		//Verifica se a pessoa aidna esta logada
 		if(bd.validSession(userToken)){
 			
-			refreshToken(userToken);
+			
 
 			Utilizador user = bd.getUserFromToken(userToken);
 			
@@ -48,16 +48,16 @@ public class RenewPasswordService extends BubbleDocsService {
 				
 				// invalidar a password
 				user.setPassword(null);
+				result = user.getPassword();
 				
 			} catch (RemoteInvocationException rie) {
 				throw new UnavailableServiceException();
 			}
-			
-		} else {
-			throw new UserNotInSessionException(userToken);
+		
+		refreshToken(userToken);
+		 
 		}
     }
-
     public String getResult() {
         return result;
     }
