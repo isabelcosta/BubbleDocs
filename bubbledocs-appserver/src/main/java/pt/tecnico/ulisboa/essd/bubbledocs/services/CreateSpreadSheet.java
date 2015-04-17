@@ -31,22 +31,19 @@ public class CreateSpreadSheet extends BubbleDocsService {
     	
     	Bubbledocs bd = Bubbledocs.getInstance();
     	
-		try {
-			if(bd.validSession(userToken)){
-				refreshToken(userToken);
-		    	
-				String dono = bd.getUsernameOfToken(userToken);
-				
-				FolhadeCalculo folha = new FolhadeCalculo(name, dono, rows, columns);
-				
-				bd.addFolhas(folha);
-				
-				result = bd.getIdOfFolha(name);
-				
-	    	}
-		} catch (SpreadSheetDoesNotExistException | UserNotInSessionException e) {
-			System.err.println("Couldn't create SpreadSheet: " + e);
-		}
+		
+		if(bd.validSession(userToken)){
+			refreshToken(userToken);
+	    	
+			String dono = bd.getUsernameOfToken(userToken);
+			
+			FolhadeCalculo folha = new FolhadeCalculo(name, dono, rows, columns);
+			
+			bd.addFolhas(folha);
+			
+			result = bd.getIdOfFolha(name);
+			
+    	}
 		
     }
     

@@ -6,6 +6,9 @@ public class DuplicateEmailException extends BubbleDocsException {
 	
 	private String conflictingEmail;
 	
+	public DuplicateEmailException() {
+	}
+	
 	public DuplicateEmailException(String conflictingEmail) {
 		this.conflictingEmail = conflictingEmail;
 	}
