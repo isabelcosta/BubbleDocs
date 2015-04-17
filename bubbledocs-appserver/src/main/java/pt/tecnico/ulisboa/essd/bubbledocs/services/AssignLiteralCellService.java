@@ -6,9 +6,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 
 
 public class AssignLiteralCellService extends BubbleDocsService {

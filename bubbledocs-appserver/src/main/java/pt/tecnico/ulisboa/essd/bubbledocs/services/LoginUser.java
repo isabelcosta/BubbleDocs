@@ -1,24 +1,14 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
-import java.util.Random;
-
-import org.joda.time.LocalTime;
-
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
-//import javax.servlet.http.HttpSessionEvent;
-//import javax.servlet.http.HttpSessionListener;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
- 
-
-// add needed import declarations
 
 public class LoginUser extends BubbleDocsService {
 

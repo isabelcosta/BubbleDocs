@@ -3,9 +3,6 @@ package pt.tecnico.ulisboa.essd.bubbledocs;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import mockit.Expectations;
-import mockit.Mock;
-import mockit.MockUp;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 
@@ -19,16 +16,10 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
-// add needed import declarations
-
 public class LoginUserTest extends BubbleDocsServiceTest {
-
-    private String jpa; // the token for user jp
-    private String root; // the token for user root
 
     private static final String USERNAME = "jpa";
     private static final String PASSWORD = "jp#";

@@ -17,8 +17,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.DeleteUser;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
-// add needed import declarations
-
 public class DeleteUserTest extends BubbleDocsServiceTest {
 
     private static final String USERNAME_TO_DELETE = "smf";

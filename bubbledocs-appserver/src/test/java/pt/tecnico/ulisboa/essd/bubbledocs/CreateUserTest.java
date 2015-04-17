@@ -1,12 +1,10 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import static org.junit.Assert.assertEquals;
-
 import mockit.Mocked;
 import mockit.StrictExpectations;
 
 import org.junit.Test;
-
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateEmailException;
@@ -20,8 +18,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateUser;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
-
-// add needed import declarations
 
 public class CreateUserTest extends BubbleDocsServiceTest {
 

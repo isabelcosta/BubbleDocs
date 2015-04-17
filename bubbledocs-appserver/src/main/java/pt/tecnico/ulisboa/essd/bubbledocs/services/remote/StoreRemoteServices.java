@@ -1,7 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.remote;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotStoreDocumentException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotLoadDocumentException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 
 

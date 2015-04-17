@@ -1,30 +1,22 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.rmi.RemoteException;
 
-import mockit.Mock;
-import mockit.MockUp;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-import org.jdom2.output.Format;
-import org.jdom2.output.XMLOutputter;
-import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotStoreDocumentException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
@@ -32,30 +24,13 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistExcep
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheet;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.ExportDocumentService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
 
 public class ExportDocumentTest extends BubbleDocsServiceTest{
 	
-	// the tokens
-    private String root;
-    private String ars;
-
-    private static final String USERNAME = "pff";
-    private static final String PASSWORD = "sub";
-    private static final String ROOT_USERNAME = "root";
-    private static final String USERNAME_DOES_NOT_EXIST = "no-one";
-    private static final String NOT_REFERENCE = "noReference";
-    private static final String REFERENCE = "=5;7";
-    private static final String SPREADSHEET_NAME = "Notas ES";
     private static int FOLHA_ID;
-    private static int FOLHA_ID_SEM_PERMISSAO;
-    private static final String CELL_ID = "4;2";
     private static String USER_TOKEN;
-    private static String USER_TOKEN_PODE_ESCREVER;
     private static String USER_TOKEN_NO_ACCESS;
     private static String USER_TOKEN_NOT_IN_SESSION;
     private static String EMPTY_TOKEN;
@@ -361,13 +336,6 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 	//9
 	@Test(expected = UnavailableServiceException.class)
 	public void remoteCallFail () {
-		
-//		new MockUp <StoreRemoteServices>() {
-//    		@Mock
-//    		public void storeDocument (String user, String docName, byte[] document) {
-//    			throw new RemoteInvocationException();
-//    		}
-//    	};
     	
     	new StrictExpectations() {
  		   

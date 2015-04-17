@@ -1,7 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
 import org.joda.time.LocalTime;
-import org.joda.time.Minutes;
 
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;

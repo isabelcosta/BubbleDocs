@@ -8,7 +8,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheet;
 
 
@@ -30,7 +29,7 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
   public void populate4Test() {
 	  
 	  	Utilizador user = createUser(USERNAME, PASSWORD, "Fabio Carvalho");     //so usado para ser adicionado a sessao
-	  	token = addUserToSession("frc");
+	  	token = addUserToSession(USERNAME);
   	
   }
 

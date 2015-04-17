@@ -5,24 +5,15 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.ProtectedCellException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.ProtectedCellException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.BubbleDocsService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
 
 
 

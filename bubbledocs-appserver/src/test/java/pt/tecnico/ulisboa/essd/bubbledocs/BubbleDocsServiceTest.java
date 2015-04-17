@@ -134,7 +134,7 @@ public class BubbleDocsServiceTest {
     	}
     }
 
-//    // return the user registered in session whose token is equal to token
+    // return the user registered in session whose token is equal to token
     public Utilizador getUserFromSession(String token) {
     	
     	Bubbledocs bd = Bubbledocs.getInstance();
