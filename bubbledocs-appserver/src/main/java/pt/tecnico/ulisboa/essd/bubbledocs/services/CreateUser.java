@@ -8,17 +8,15 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 
-public class CreateUser extends BubbleDocsService {
+public class CreateUser extends IsRoot {
 
-
-	private String userToken;
 	private String newUsername;
 	private String email;
 	private String name;
 
 	public CreateUser(String userToken, String newUsername, String email, String name) {
 
-		this.userToken = userToken;
+		_userToken = userToken;
 		this.newUsername = newUsername;
 		this.email = email;
 		this.name = name;
@@ -28,20 +26,18 @@ public class CreateUser extends BubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
-		Bubbledocs bd = Bubbledocs.getInstance();
+		super.dispatch();
+		
 		IDRemoteServices remote = new IDRemoteServices();
+		_bd.isRoot(_userToken);
 		
-		if(bd.validSession(userToken) && bd.isRoot(userToken)){
-			refreshToken(userToken);
-		
-			try {
-				remote.createUser(newUsername, email);
-			}catch (RemoteInvocationException e) {
-				throw new UnavailableServiceException();	
-				
-			}	
-			Utilizador user = new Utilizador(name, newUsername, email);
-			bd.addUtilizadores(user);
-		}
+		try {
+			remote.createUser(newUsername, email);
+		}catch (RemoteInvocationException e) {
+			throw new UnavailableServiceException();	
+			
+		}	
+		Utilizador user = new Utilizador(name, newUsername, email);
+		_bd.addUtilizadores(user);
 	}
 }

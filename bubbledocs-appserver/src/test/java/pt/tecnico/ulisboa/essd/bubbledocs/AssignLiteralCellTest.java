@@ -142,7 +142,7 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     	 removeUserFromSession(USER_TOKEN);
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
          service.execute();
-    }    
+    }
     
     @Test(expected = NotLiteralException.class)
     public void notLiteral() {

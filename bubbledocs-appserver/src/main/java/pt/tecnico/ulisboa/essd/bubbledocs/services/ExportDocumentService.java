@@ -15,10 +15,9 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
 
-public class ExportDocumentService extends BubbleDocsService{
+public class ExportDocumentService extends ValidSessionsService{
     private byte[] _result;
     private int _sheetId;
-    private String _userToken;
     private FolhadeCalculo _folha;
     
     
@@ -31,26 +30,22 @@ public class ExportDocumentService extends BubbleDocsService{
 	@Override
 	protected void dispatch() throws UserNotInSessionException {
 
-		Bubbledocs bd = Bubbledocs.getInstance();
+		super.dispatch();
 		StoreRemoteServices remote = new StoreRemoteServices();
 		byte[] resultTemp = null;
 		try {
 
-//VERIFICAR SE A SESSÃƒO Ã‰ VÃ�LIDA
-			if(bd.validSession(_userToken)){
-				refreshToken(_userToken);
-			}
 				
 //VERIFICAR SE O USER TEM PERMISSÃ•ES PARA EXPORTAR		
-			_folha = bd.getFolhaOfId(_sheetId);
+			_folha = _bd.getFolhaOfId(_sheetId);
 			
-			String userNameOfToken = bd.getUsernameOfToken(_userToken);
+			String userNameOfToken = _bd.getUsernameOfToken(_userToken);
 	    	if(_folha.podeLer(userNameOfToken) || _folha.podeEscrever(userNameOfToken)){
 //EXPORTAR A FOLHA    	
 	    		//fazer chamada remota
 	    		
 //CONVERTER A FOLHA EM BYTES
-				org.jdom2.Document sheetDoc = bd.exportSheet(_folha);
+				org.jdom2.Document sheetDoc = _bd.exportSheet(_folha);
 				
 				XMLOutputter xmlOutput = new XMLOutputter();
 				xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());

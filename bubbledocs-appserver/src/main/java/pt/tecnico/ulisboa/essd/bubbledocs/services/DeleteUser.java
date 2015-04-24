@@ -10,14 +10,13 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 
-public class DeleteUser extends BubbleDocsService {
+public class DeleteUser extends IsRoot {
 
-	private String userToken;
 	private String toDeleteUsername;
 
 	public DeleteUser(String userToken, String toDeleteUsername) {
 
-		this.userToken = userToken;
+		_userToken = userToken;
 		this.toDeleteUsername = toDeleteUsername;
 
 	}
@@ -25,19 +24,21 @@ public class DeleteUser extends BubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
-		
-		Bubbledocs bd = Bubbledocs.getInstance();
 		IDRemoteServices remote = new IDRemoteServices();
 		
 		try {
 			//invoke some method on remote if pass local verifications
-			bd.emptyUsername(toDeleteUsername);
-			bd.validSession(userToken);
-			bd.isRoot(userToken);
+			_bd.emptyUsername(toDeleteUsername);
+			
+			// verificar
+			super.dispatch();
+			// verificar
+			
+			_bd.isRoot(_userToken);
 			remote.removeUser(toDeleteUsername);
 			
 			//invoke same method locally, supposing no exceptions caught
-			bd.removeUtilizadores(bd.getUserOfName(toDeleteUsername));
+			_bd.removeUtilizadores(_bd.getUserOfName(toDeleteUsername));
 		
 		} catch (EmptyUsernameException | UnauthorizedOperationException | UserNotInSessionException exc){
 				throw exc;

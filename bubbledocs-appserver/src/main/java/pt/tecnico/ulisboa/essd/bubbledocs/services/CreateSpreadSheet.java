@@ -4,19 +4,18 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
-public class CreateSpreadSheet extends BubbleDocsService {
+public class CreateSpreadSheet extends ValidSessionsService {
 	
 	private int rows;
 	private int columns;
 	private String name;
-	private String userToken;
 	private int result;
     
     
 
     public CreateSpreadSheet(String userToken, String name, int rows, int columns) {
     	
-    	this.userToken = userToken;
+    	_userToken = userToken;
     	this.name = name;
     	this.rows = rows;
     	this.columns = columns;
@@ -25,21 +24,15 @@ public class CreateSpreadSheet extends BubbleDocsService {
     @Override
     protected void dispatch() throws BubbleDocsException {
     	
-    	Bubbledocs bd = Bubbledocs.getInstance();
-    	
+		super.dispatch();
 		
-		if(bd.validSession(userToken)){
-			refreshToken(userToken);
-	    	
-			String dono = bd.getUsernameOfToken(userToken);
-			
-			FolhadeCalculo folha = new FolhadeCalculo(name, dono, rows, columns);
-			
-			bd.addFolhas(folha);
-			
-			result = bd.getIdOfFolha(name);
-			
-    	}
+    	String dono = _bd.getUsernameOfToken(_userToken);
+    	
+    	FolhadeCalculo folha = new FolhadeCalculo(name, dono, rows, columns);
+    	
+    	_bd.addFolhas(folha);
+    	
+    	result = _bd.getIdOfFolha(name);
 		
     }
     
