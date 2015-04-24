@@ -1,6 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 

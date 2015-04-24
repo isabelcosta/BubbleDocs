@@ -16,7 +16,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateUser;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 public class CreateUserTest extends BubbleDocsServiceTest {
@@ -41,7 +41,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     
     @Test
     public void success() {
-        CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST, EMAIL,
+        CreateUserService service = new CreateUserService(root, USERNAME_DOES_NOT_EXIST, EMAIL,
                 "José Ferreira");
         service.execute();
 
@@ -65,7 +65,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     	}; 
     	
     	
-        CreateUser service = new CreateUser(root, USERNAME, EMAIL,"José Ferreira");
+        CreateUserService service = new CreateUserService(root, USERNAME, EMAIL,"José Ferreira");
         service.execute();
     }
 
@@ -81,7 +81,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     		}
     	}; 
     	
-        CreateUser service = new CreateUser(root, "", EMAIL,"José Ferreira");
+        CreateUserService service = new CreateUserService(root, "", EMAIL,"José Ferreira");
         service.execute();
     }
     
@@ -90,7 +90,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     public void unauthorizedUserCreation() {
     	
     	
-        CreateUser service = new CreateUser(ars, USERNAME, EMAIL,
+        CreateUserService service = new CreateUserService(ars, USERNAME, EMAIL,
                 "José Ferreira");
         service.execute();
     }
@@ -99,7 +99,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     public void accessUsernameNotExist() {
     	
         removeUserFromSession(root);
-        CreateUser service = new CreateUser(root, USERNAME_DOES_NOT_EXIST, EMAIL,
+        CreateUserService service = new CreateUserService(root, USERNAME_DOES_NOT_EXIST, EMAIL,
                 "José Ferreira");
         service.execute();
     }
@@ -116,7 +116,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     		}
     	}; 
     	
-        CreateUser service = new CreateUser(root,"fabio",EMAIL,
+        CreateUserService service = new CreateUserService(root,"fabio",EMAIL,
                 "José Ferreira");
         service.execute();
     }
@@ -133,7 +133,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     		}
     	}; 
     	
-        CreateUser service = new CreateUser(root,USERNAME,"júlio",
+        CreateUserService service = new CreateUserService(root,USERNAME,"júlio",
                 "José Ferreira");
         service.execute();
     }
@@ -149,7 +149,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     		}
     	}; 
     	
-        CreateUser service = new CreateUser(root,USERNAME, EMAIL,
+        CreateUserService service = new CreateUserService(root,USERNAME, EMAIL,
                 "José Ferreira");
         service.execute();
     }
@@ -166,7 +166,7 @@ public class CreateUserTest extends BubbleDocsServiceTest {
     		}
     	}; 
     	
-        CreateUser service = new CreateUser(root,USERNAME,EMAIL,
+        CreateUserService service = new CreateUserService(root,USERNAME,EMAIL,
                 "José Ferreira");
         service.execute();
     }

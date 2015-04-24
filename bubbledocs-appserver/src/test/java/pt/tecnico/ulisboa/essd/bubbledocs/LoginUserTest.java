@@ -16,7 +16,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 public class LoginUserTest extends BubbleDocsServiceTest {
@@ -56,7 +56,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 		};
     	
     	
-    	LoginUser service = new LoginUser(USERNAME, PASSWORD);
+    	LoginUserService service = new LoginUserService(USERNAME, PASSWORD);
         service.execute();
         
         
@@ -89,7 +89,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     	
     	
     	
-        LoginUser service = new LoginUser(USERNAME, PASSWORD);
+        LoginUserService service = new LoginUserService(USERNAME, PASSWORD);
         service.execute();
         
         String token1 = service.getUserToken();
@@ -131,7 +131,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     		};
     		
     		
-        LoginUser service = new LoginUser(USERNAME, PASSWORD);
+        LoginUserService service = new LoginUserService(USERNAME, PASSWORD);
         service.execute();
         
         String token1 = service.getUserToken();
@@ -160,7 +160,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 		};
     		
     		
-        LoginUser service = new LoginUser("jp2", PASSWORD);
+        LoginUserService service = new LoginUserService("jp2", PASSWORD);
         service.execute();	// o remote tem que lancar a excessao, logo -> mockit
     }
     
@@ -180,7 +180,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     	
     	
     	
-        LoginUser service = new LoginUser(USERNAME, "jp2");
+        LoginUserService service = new LoginUserService(USERNAME, "jp2");
         service.execute();
     }
     
@@ -198,7 +198,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     		
     	
     	
-        LoginUser service = new LoginUser(USERNAME, PASSWORD);
+        LoginUserService service = new LoginUserService(USERNAME, PASSWORD);
         service.execute();
         
         new StrictExpectations() {
@@ -209,7 +209,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     			result = new RemoteInvocationException();
 		    }
 		};
-    	LoginUser service1 = new LoginUser(USERNAME, "errada");
+    	LoginUserService service1 = new LoginUserService(USERNAME, "errada");
         service1.execute();
     }
 
@@ -226,7 +226,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
     			result = new RemoteInvocationException();
 		    }
 		};
-        LoginUser service = new LoginUser(USERNAME, PASSWORD);
+        LoginUserService service = new LoginUserService(USERNAME, PASSWORD);
         service.execute();
     }
     

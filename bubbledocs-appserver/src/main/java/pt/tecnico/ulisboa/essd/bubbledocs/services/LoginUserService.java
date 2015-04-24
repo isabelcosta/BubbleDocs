@@ -10,7 +10,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 
-public class LoginUser extends BubbleDocsService {
+public class LoginUserService extends BubbleDocsService {
 
     private String _result;
     private String _username;
@@ -18,7 +18,7 @@ public class LoginUser extends BubbleDocsService {
     private Bubbledocs _bd;
     
 
-    public LoginUser(String username, String password) throws LoginBubbleDocsException, UnavailableServiceException {
+    public LoginUserService(String username, String password) throws LoginBubbleDocsException, UnavailableServiceException {
 		_username = username;
 		_password = password;
     	
@@ -57,7 +57,7 @@ public class LoginUser extends BubbleDocsService {
 		}
  		
  		if (!_bd.checkLocalPassword(utilizador, _password)) {
- 			utilizador.setPassword(_password);
+ 			_bd.setUserPassword(_username,_password);
 		}
  		
  		//eliminei o ciclo getUtilizadoresSet()

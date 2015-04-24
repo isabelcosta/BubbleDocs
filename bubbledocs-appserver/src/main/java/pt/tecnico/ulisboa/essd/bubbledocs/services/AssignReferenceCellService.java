@@ -32,6 +32,7 @@ public class AssignReferenceCellService extends ValidSessionsService {
     protected void dispatch() throws OutOfBoundsException, UnauthorizedOperationException  {
 
     		super.dispatch();
+    		
 			FolhadeCalculo folha = _bd.getFolhaOfId(idFolha);
 			
 			

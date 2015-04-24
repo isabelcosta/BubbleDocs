@@ -14,7 +14,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.DeleteUser;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.DeleteUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 public class DeleteUserTest extends BubbleDocsServiceTest {
@@ -49,7 +49,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     		remote.removeUser(USERNAME_TO_DELETE);
     	}};
     	
-        DeleteUser service = new DeleteUser(root, USERNAME_TO_DELETE);
+        DeleteUserService service = new DeleteUserService(root, USERNAME_TO_DELETE);
         service.execute();
 
         boolean deleted = getUserFromUsername(USERNAME_TO_DELETE) == null;
@@ -93,7 +93,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     		result = new RemoteInvocationException();
     	}};
     
-    	new DeleteUser(root, USERNAME_TO_DELETE).execute();	
+    	new DeleteUserService(root, USERNAME_TO_DELETE).execute();	
     }
 
    
@@ -109,7 +109,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     		result = new LoginBubbleDocsException();
     	}};
     	
-        new DeleteUser(root, USERNAME_DOES_NOT_EXIST).execute();
+        new DeleteUserService(root, USERNAME_DOES_NOT_EXIST).execute();
     }
 
 
@@ -117,7 +117,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     public void notRootUser() {
     	
         String ars = addUserToSession(USERNAME);
-        new DeleteUser(ars, USERNAME_TO_DELETE).execute();
+        new DeleteUserService(ars, USERNAME_TO_DELETE).execute();
     }
 
     
@@ -125,7 +125,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     public void rootNotInSession() {
         removeUserFromSession(root);
         
-        new DeleteUser(root, USERNAME_TO_DELETE).execute();
+        new DeleteUserService(root, USERNAME_TO_DELETE).execute();
     }
     
     
@@ -134,19 +134,19 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
         String ars = addUserToSession(USERNAME);
         removeUserFromSession(ars);
         
-        new DeleteUser(ars, USERNAME_TO_DELETE).execute();
+        new DeleteUserService(ars, USERNAME_TO_DELETE).execute();
     }
 
     
     @Test(expected = UserNotInSessionException.class)
     public void accessUserDoesNotExist() {
     	
-        new DeleteUser(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
+        new DeleteUserService(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
     }
     
     @Test(expected = EmptyUsernameException.class)
     public void userToDeleteIsEmpty(){
     	
-        new DeleteUser(root, "").execute();
+        new DeleteUserService(root, "").execute();
     }
 }

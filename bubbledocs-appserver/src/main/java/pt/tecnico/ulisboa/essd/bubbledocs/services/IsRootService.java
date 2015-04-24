@@ -3,7 +3,7 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
-public class IsRoot extends BubbleDocsService {
+public class IsRootService extends BubbleDocsService {
 	
 	protected Bubbledocs _bd = Bubbledocs.getInstance();
 	protected String _userToken;

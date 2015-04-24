@@ -22,9 +22,9 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheet;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateUser;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.ExportDocumentService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUser;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUserService;
 
 
 
@@ -338,7 +338,7 @@ public class BubbleApplication {
         // setup the initial state if bubbledocs is empty
         
         //faz login da root
-        LoginUser loginRoot = new LoginUser("root", "root");
+        LoginUserService loginRoot = new LoginUserService("root", "root");
         loginRoot.execute();
         Bubbledocs.getInstance().addTokens(new Token("root", loginRoot.getUserToken()));
         
@@ -352,10 +352,10 @@ public class BubbleApplication {
         
         
         //cria os utilizadores
-        CreateUser serviceUser1 = new CreateUser(rootToken, "pfa", "sub", "Paul Door");
+        CreateUserService serviceUser1 = new CreateUserService(rootToken, "pfa", "sub", "Paul Door");
         serviceUser1.execute();
         		
-        CreateUser serviceUser2 = new CreateUser(rootToken, "rad", "cor", "Step Rabbit");
+        CreateUserService serviceUser2 = new CreateUserService(rootToken, "rad", "cor", "Step Rabbit");
         serviceUser2.execute();
 	
     	
@@ -368,7 +368,7 @@ public class BubbleApplication {
 		}
     	
     	if(!existsToken){
-    		LoginUser login = new LoginUser("pfa", "sub");
+    		LoginUserService login = new LoginUserService("pfa", "sub");
         	login.execute(); //	-> cria o result
         	Bubbledocs.getInstance().addTokens(new Token("pfa", login.getUserToken()));
     	}

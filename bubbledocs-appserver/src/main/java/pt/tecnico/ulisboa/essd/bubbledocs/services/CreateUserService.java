@@ -8,13 +8,13 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 
-public class CreateUser extends IsRoot {
+public class CreateUserService extends IsRootService {
 
 	private String newUsername;
 	private String email;
 	private String name;
 
-	public CreateUser(String userToken, String newUsername, String email, String name) {
+	public CreateUserService(String userToken, String newUsername, String email, String name) {
 
 		_userToken = userToken;
 		this.newUsername = newUsername;
