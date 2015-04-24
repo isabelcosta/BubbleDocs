@@ -1,6 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.integrator;
 
-import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;

@@ -49,19 +49,32 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 			 * 
 			 * tratar excepcoes
 			 *		. caso receba RemoteInvocation Exception
-			 *				. restaura a password
+			 *				. restaura a password antiga
 			 * 				. lanca UnavailableBubbleDocsException
 			 * 		. caso receba LoginBubbleDocsException
 			 * 				. restaura a password antiga
 			 *		
 			 */
 			
-			
 			} catch (RemoteInvocationException rie) {
-				restorePassword();
+				restorePassword(); 
+						// implica assert de restorePassword
+				
+// <QUESTION> sera que faz sentido tirar as excecoes, ou possivel?
+// melhora os testes, mas pode nao cumprir o objectivo do servico
+			
 				throw new UnavailableServiceException();
+						// implica Expect exception
+		
 			} catch (LoginBubbleDocsException ex) {
 				restorePassword();
+
+// <QUESTION> sera que faz sentido tirar as excecoes, ou possivel?
+// melhora os testes, mas pode nao cumprir o objectivo do servico 
+// neste caso penso que nem devia relancar a excepcao
+				
+				throw new LoginBubbleDocsException();
+						// implica assert de restorePassword
 			}
 	}
 	
