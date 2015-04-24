@@ -17,6 +17,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotStoreDocumentException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
@@ -349,6 +350,26 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		exportDocument.execute();
 	
 	}
+	
+	//10
+		@Test(expected = CannotStoreDocumentException.class)
+		public void cannotStoreDocTest () {
+	    	
+	    	new StrictExpectations() {
+	 		   
+	    		{
+	    			remote = new StoreRemoteServices();
+	    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+	    			result = new CannotStoreDocumentException("terFolha");
+			    }
+			};
+			ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_ESCRITA);
+			exportDocument.execute();
+		
+		}
+	
+	
+	
 
 	public org.jdom2.Document byteToJdomDoc (ExportDocumentService service) throws UnsupportedEncodingException {  		// byte-> string -> outP -> doc
 
