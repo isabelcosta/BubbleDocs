@@ -8,7 +8,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 
 public class RenewPasswordService extends ValidSessionsService {
-    private String result;
     
     
     public RenewPasswordService(String tokenUser) {  	
@@ -20,17 +19,15 @@ public class RenewPasswordService extends ValidSessionsService {
     	
     	super.dispatch();
 		//Verifica se a pessoa aidna esta logada
-		Utilizador user = _bd.getUserFromToken(_userToken);
 		
 		IDRemoteServices remote = new IDRemoteServices();
 
 		try {
 			// invoke some method on remote
-			remote.renewPassword(user.getUsername());
+			remote.renewPassword(_bd.getUsernameOfToken(_userToken));
 			
 			// invalidar a password
-			user.setPassword(null);
-			result = user.getPassword();
+			_bd.userSetPasswordNull(_userToken);
 			
 		} catch (RemoteInvocationException rie) {
 			throw new UnavailableServiceException();
@@ -38,9 +35,6 @@ public class RenewPasswordService extends ValidSessionsService {
 		
 //		refreshToken(_userToken);
 		 
-    }
-    public String getResult() {
-        return result;
     }
 
 }

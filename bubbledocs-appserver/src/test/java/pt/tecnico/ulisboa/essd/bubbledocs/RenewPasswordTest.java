@@ -19,7 +19,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 public class RenewPasswordTest extends BubbleDocsServiceTest {
 
 	private static String USER_TOKEN;
-	private static  String USER_TOKEN_NOT_LOGGED;
+	private static String USER_TOKEN_NOT_LOGGED;
 	private static String USERNAME;
 	private static String USER_TOKEN_INVALID=""; 
 	private static String USER_LOCAL;
@@ -61,7 +61,9 @@ public class RenewPasswordTest extends BubbleDocsServiceTest {
 	    RenewPasswordService service = new RenewPasswordService(USER_TOKEN);
 	    service.execute();
 	    
-	    assertNull("O serviço retorna", service.getResult());
+	    Utilizador user = getUserFromSession(USER_TOKEN);
+	    
+	    assertNull("Password do User", user.getPassword());
     }
     
     
