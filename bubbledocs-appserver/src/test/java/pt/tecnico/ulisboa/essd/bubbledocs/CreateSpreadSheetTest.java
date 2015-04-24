@@ -8,7 +8,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgColunaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ArgLinhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheet;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheetService;
 
 
 
@@ -37,7 +37,7 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
   public void success() {
 	  
 	
-	  CreateSpreadSheet service = new CreateSpreadSheet( token, SPREADSHEET_NAME, ROWS, COLUMNS);
+	  CreateSpreadSheetService service = new CreateSpreadSheetService( token, SPREADSHEET_NAME, ROWS, COLUMNS);
       service.execute();
       
       String sheetName = getSpreadSheet(SPREADSHEET_NAME).getNomeFolha();
@@ -47,19 +47,19 @@ public class CreateSpreadSheetTest extends BubbleDocsServiceTest {
   
   @Test (expected = UserNotInSessionException.class)
   public void invalidToken(){
-	  CreateSpreadSheet service = new CreateSpreadSheet( BAD_USER_TOKEN, SPREADSHEET_NAME, ROWS, COLUMNS);
+	  CreateSpreadSheetService service = new CreateSpreadSheetService( BAD_USER_TOKEN, SPREADSHEET_NAME, ROWS, COLUMNS);
       service.execute();
   } 
   
   @Test (expected = ArgColunaInvalidoException.class)
   public void invalidColumn(){
-	  CreateSpreadSheet service = new CreateSpreadSheet( token, SPREADSHEET_NAME, ROWS, BAD_COLUMN);
+	  CreateSpreadSheetService service = new CreateSpreadSheetService( token, SPREADSHEET_NAME, ROWS, BAD_COLUMN);
       service.execute();
   }
   
   @Test (expected = ArgLinhaInvalidoException.class)
   public void invalidRow(){
-	  CreateSpreadSheet service = new CreateSpreadSheet( token, SPREADSHEET_NAME, BAD_ROW, COLUMNS);
+	  CreateSpreadSheetService service = new CreateSpreadSheetService( token, SPREADSHEET_NAME, BAD_ROW, COLUMNS);
       service.execute();
   }
   

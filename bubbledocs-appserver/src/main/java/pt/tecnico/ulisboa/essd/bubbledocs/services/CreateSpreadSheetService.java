@@ -3,7 +3,7 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
-public class CreateSpreadSheet extends ValidSessionsService {
+public class CreateSpreadSheetService extends ValidSessionsService {
 	
 	private int rows;
 	private int columns;
@@ -12,7 +12,7 @@ public class CreateSpreadSheet extends ValidSessionsService {
     
     
 
-    public CreateSpreadSheet(String userToken, String name, int rows, int columns) {
+    public CreateSpreadSheetService(String userToken, String name, int rows, int columns) {
     	
     	_userToken = userToken;
     	this.name = name;

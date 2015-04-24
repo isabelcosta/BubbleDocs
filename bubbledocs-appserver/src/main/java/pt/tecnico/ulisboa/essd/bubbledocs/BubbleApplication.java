@@ -21,7 +21,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheet;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheetService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.ExportDocumentService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUserService;
@@ -293,7 +293,7 @@ public class BubbleApplication {
     	
     	
     	//caso nao tenha encontrado a folha cria uma nova
- 		CreateSpreadSheet serviceFolha = new CreateSpreadSheet(donoFolhaToken, nomeFolha, linhas, colunas);
+ 		CreateSpreadSheetService serviceFolha = new CreateSpreadSheetService(donoFolhaToken, nomeFolha, linhas, colunas);
  		serviceFolha.execute();
     	
     	for (FolhadeCalculo folha : bd.getFolhasSet())
@@ -392,7 +392,7 @@ public class BubbleApplication {
         
  		
         //cria a folha 
- 		CreateSpreadSheet serviceFolha = new CreateSpreadSheet(pfToken, "Notas ES", 300, 20);
+ 		CreateSpreadSheetService serviceFolha = new CreateSpreadSheetService(pfToken, "Notas ES", 300, 20);
  		serviceFolha.execute();
     
  		
