@@ -27,7 +27,7 @@ public class RenewPasswordService extends ValidSessionsService {
 			remote.renewPassword(_bd.getUsernameOfToken(_userToken));
 			
 			// invalidar a password
-			_bd.userSetPasswordNull(_userToken);
+			_bd.invalidateUserPassword(_userToken);
 			
 		} catch (RemoteInvocationException rie) {
 			throw new UnavailableServiceException();
