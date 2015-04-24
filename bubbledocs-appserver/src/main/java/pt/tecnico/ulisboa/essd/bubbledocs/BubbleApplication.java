@@ -19,12 +19,12 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignLiteralCellService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateSpreadSheetService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.CreateUserService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.ExportDocumentService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUserService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.AssignLiteralCellService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.AssignReferenceCellService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CreateSpreadSheetService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CreateUserService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.ExportDocumentService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.LoginUserService;
 
 
 

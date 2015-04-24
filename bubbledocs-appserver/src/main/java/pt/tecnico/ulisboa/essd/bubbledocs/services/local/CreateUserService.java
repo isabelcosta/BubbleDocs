@@ -1,4 +1,4 @@
-package pt.tecnico.ulisboa.essd.bubbledocs.services;
+package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;

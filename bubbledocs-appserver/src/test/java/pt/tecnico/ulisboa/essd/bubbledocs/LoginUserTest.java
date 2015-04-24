@@ -16,7 +16,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.LoginUserService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.LoginUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 public class LoginUserTest extends BubbleDocsServiceTest {

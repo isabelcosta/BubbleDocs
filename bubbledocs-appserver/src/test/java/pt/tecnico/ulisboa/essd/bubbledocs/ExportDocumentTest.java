@@ -25,7 +25,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistExcep
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.ExportDocumentService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.ExportDocumentService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
 
 public class ExportDocumentTest extends BubbleDocsServiceTest{

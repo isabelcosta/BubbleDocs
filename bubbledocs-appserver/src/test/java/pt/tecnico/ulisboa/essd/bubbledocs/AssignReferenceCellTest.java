@@ -13,7 +13,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.AssignReferenceCellService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.AssignReferenceCellService;
 
 
 

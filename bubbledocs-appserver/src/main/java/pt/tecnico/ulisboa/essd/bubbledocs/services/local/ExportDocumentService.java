@@ -1,4 +1,4 @@
-package pt.tecnico.ulisboa.essd.bubbledocs.services;
+package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
 import java.io.UnsupportedEncodingException;
 

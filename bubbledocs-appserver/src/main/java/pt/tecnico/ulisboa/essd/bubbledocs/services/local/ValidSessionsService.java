@@ -1,11 +1,11 @@
-package pt.tecnico.ulisboa.essd.bubbledocs.services;
+package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
 public abstract class ValidSessionsService extends BubbleDocsService {
 	
-	protected Bubbledocs _bd = Bubbledocs.getInstance();
+	protected Bubbledocs _bd = getBubbleDocs();
 	protected String _userToken;
 	
 	public ValidSessionsService(String userToken) {
