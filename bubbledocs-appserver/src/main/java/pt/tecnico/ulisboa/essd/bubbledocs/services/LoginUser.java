@@ -38,6 +38,9 @@ public class LoginUser extends BubbleDocsService {
  			
  			//verificacao da pass local
  			Utilizador utilizador = bd.getUserOfName(_username);
+ 			if (utilizador == null) {
+ 				throw new LoginBubbleDocsException();
+ 			}
  			if(!bd.checkLocalPassword(utilizador, _password)) {
  				throw new UnavailableServiceException();
  			}
