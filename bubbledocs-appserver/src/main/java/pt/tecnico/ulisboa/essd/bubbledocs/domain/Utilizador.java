@@ -4,9 +4,8 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 
 
 public class Utilizador extends Utilizador_Base {
-    
+	
     public Utilizador(String nomeUtilizador, String userName, String email) {
-        super();
         
         try {
         	if (nameIsValid(userName)){
@@ -16,7 +15,6 @@ public class Utilizador extends Utilizador_Base {
         	}	
         }catch (UtilizadorInvalidoException ex) {
 			System.err.println("O username tem de ter entre 3 e 8 caracteres");
-        	
         }
     }
     
@@ -29,7 +27,15 @@ public class Utilizador extends Utilizador_Base {
     	else
     		throw new UtilizadorInvalidoException();
     }
+    
+    @Override
+    public void setUsername (String username){
+    	if (nameIsValid(username)) {
+    		super.setUsername(username);
+    	}
     	
+    }
+    
 }
     		
     		
