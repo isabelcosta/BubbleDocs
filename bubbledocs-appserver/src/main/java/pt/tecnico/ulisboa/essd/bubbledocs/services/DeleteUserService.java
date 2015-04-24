@@ -1,6 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
@@ -15,22 +14,19 @@ public class DeleteUserService extends IsRootService {
 	private String toDeleteUsername;
 
 	public DeleteUserService(String userToken, String toDeleteUsername) {
-
-		_userToken = userToken;
+		super(userToken);
 		this.toDeleteUsername = toDeleteUsername;
 
 	}
 
 	@Override
-	protected void dispatch() throws BubbleDocsException {
+	protected void dispatch_root() throws BubbleDocsException {
 		
 		IDRemoteServices remote = new IDRemoteServices();
 		
 		try {
 			//invoke some method on remote if pass local verifications
 			_bd.emptyUsername(toDeleteUsername);
-			
-			super.dispatch();
 			
 			_bd.isRoot(_userToken);
 			remote.removeUser(toDeleteUsername);

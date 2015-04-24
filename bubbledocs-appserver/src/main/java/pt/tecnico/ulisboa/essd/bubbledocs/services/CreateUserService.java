@@ -1,6 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
@@ -16,7 +15,8 @@ public class CreateUserService extends IsRootService {
 
 	public CreateUserService(String userToken, String newUsername, String email, String name) {
 
-		_userToken = userToken;
+		
+		super(userToken);
 		this.newUsername = newUsername;
 		this.email = email;
 		this.name = name;
@@ -24,12 +24,9 @@ public class CreateUserService extends IsRootService {
 	}
 
 	@Override
-	protected void dispatch() throws BubbleDocsException {
-		
-		super.dispatch();
+	protected void dispatch_root() throws BubbleDocsException {
 		
 		IDRemoteServices remote = new IDRemoteServices();
-		_bd.isRoot(_userToken);
 		
 		try {
 			remote.createUser(newUsername, email);

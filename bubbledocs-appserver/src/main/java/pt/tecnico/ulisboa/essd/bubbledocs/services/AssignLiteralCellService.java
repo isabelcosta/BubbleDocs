@@ -14,17 +14,16 @@ public class AssignLiteralCellService extends ValidSessionsService {
     private String cellToFill;
     private int folhaId;
     
-    public AssignLiteralCellService(String tokenUser, int docId, String cellId, String literal) {
+    public AssignLiteralCellService(String userToken, int docId, String cellId, String literal) {
 	
+    	super(userToken);
     	this.literalToAssign = literal;
         this.cellToFill = cellId;
         this.folhaId = docId;
-        _userToken = tokenUser;
     }
 
     @Override
-    protected void dispatch() throws BubbleDocsException {
-    		super.dispatch();
+    protected void dispatch_session() throws BubbleDocsException {
     		
 			FolhadeCalculo folha = _bd.getFolhaOfId(folhaId);
 			

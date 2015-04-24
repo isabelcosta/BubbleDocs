@@ -11,13 +11,12 @@ public class RenewPasswordService extends ValidSessionsService {
     
     
     public RenewPasswordService(String tokenUser) {  	
-    	_userToken = tokenUser;
+    	super(tokenUser);
     }
  
     @Override
-    protected void dispatch() throws BubbleDocsException {
+    protected void dispatch_session() throws BubbleDocsException {
     	
-    	super.dispatch();
 		//Verifica se a pessoa aidna esta logada
 		
 		IDRemoteServices remote = new IDRemoteServices();

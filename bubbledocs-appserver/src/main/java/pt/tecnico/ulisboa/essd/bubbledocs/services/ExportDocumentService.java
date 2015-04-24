@@ -23,14 +23,13 @@ public class ExportDocumentService extends ValidSessionsService{
     
     
     public ExportDocumentService(int sheetId, String userToken) {
+    	super(userToken);
 		_sheetId = sheetId;
-		_userToken = userToken;
 	}
     
 	@Override
-	protected void dispatch() throws UserNotInSessionException {
+	protected void dispatch_session() throws UserNotInSessionException {
 
-		super.dispatch();
 		StoreRemoteServices remote = new StoreRemoteServices();
 		byte[] resultTemp = null;
 		try {

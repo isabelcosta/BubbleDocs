@@ -19,9 +19,8 @@ public class AssignReferenceCellService extends ValidSessionsService {
 
 
 
-    public AssignReferenceCellService(String tokenUser, int docId, String cellId, String reference) {
-	
-        setuserToken(tokenUser);
+    public AssignReferenceCellService(String userToken, int docId, String cellId, String reference) {
+    	super(userToken);
         this.idFolha = docId;
         this.idCelula = cellId;
         this.referencia = reference;
@@ -29,9 +28,8 @@ public class AssignReferenceCellService extends ValidSessionsService {
     }
 
     @Override
-    protected void dispatch() throws OutOfBoundsException, UnauthorizedOperationException  {
+    protected void dispatch_session() throws OutOfBoundsException, UnauthorizedOperationException  {
 
-    		super.dispatch();
     		
 			FolhadeCalculo folha = _bd.getFolhaOfId(idFolha);
 			

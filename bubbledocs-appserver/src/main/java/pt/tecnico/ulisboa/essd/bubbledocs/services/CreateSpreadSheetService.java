@@ -13,17 +13,16 @@ public class CreateSpreadSheetService extends ValidSessionsService {
     
 
     public CreateSpreadSheetService(String userToken, String name, int rows, int columns) {
-    	
-    	_userToken = userToken;
+
+    	super(userToken);
     	this.name = name;
     	this.rows = rows;
     	this.columns = columns;
     }
 
     @Override
-    protected void dispatch() throws BubbleDocsException {
+    protected void dispatch_session() throws BubbleDocsException {
     	
-		super.dispatch();
 		
     	String dono = _bd.getUsernameOfToken(_userToken);
     	
