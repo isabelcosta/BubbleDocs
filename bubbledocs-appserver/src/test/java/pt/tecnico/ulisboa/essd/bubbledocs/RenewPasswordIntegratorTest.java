@@ -43,6 +43,8 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	   	
 	   	USER_TOKEN_NOT_LOGGED = addUserToSession("dip");
     	turnTokenInvalid(USER_TOKEN_NOT_LOGGED);
+    	
+    	user.setPassword("123");
 	 }
 	 
 	@Mocked
@@ -70,15 +72,12 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
     	
     }
     
+
+    //aFALTA TESTE PARA RESTAURO DA PPASS NO CASO DA EXCEPCAO DO LOGIN
     
-	@Test(expected = UnavailableServiceException.class)
+	//@Test(expected = UnavailableServiceException.class)
 	public void remoteFails() {
 
-    	
-    	
-    	
-    	
-    	
     	
     	/*
     	 * <QUESTION> 
@@ -86,9 +85,6 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
     	 * 		!!		que a password foi restaurada e que lancou a excecao
     	 * 
     	 */
-    	
-    	
-    	
     	
     	
 		new StrictExpectations(){
@@ -104,15 +100,18 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    
 	    String oldPassword = user.getPassword();
 	    String newPassword;
-
+	    boolean flag = false;
 	    try {
 	    	RenewPasswordIntegrator local = new RenewPasswordIntegrator(USER_TOKEN);
 	    	local.execute();
 	    }catch(UnavailableServiceException e) {
+	    	flag = true;
+		    //throw new UnavailableServiceException();
+	    } finally {
 		    newPassword = user.getPassword();
-		    assertEquals(oldPassword, newPassword);
-		    throw new UnavailableServiceException();
-	    }
+		    assertEquals(oldPassword, newPassword);	 
+		    assertEquals(flag, true);
+	    } 
     }
     
     
