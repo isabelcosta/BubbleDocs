@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidFunctionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 
 public class Parser {
@@ -68,8 +69,39 @@ public class Parser {
     	return funcao.substring(funcao.indexOf("(") + 1, funcao.indexOf(")"));
     }
     
+    /*
+     * Parse de uma funcao binaria isolada
+     * contem repeticao de codigo para corrijir!!!!!
+     * 
+     */
     
+    public static FuncaoBinaria parseBinaryFunction(FolhadeCalculo folha, String conteudo) throws OutOfBoundsException{
+    	if (!(conteudo.contains("(") && conteudo.contains(","))) {  // é uma função
+    		throw new InvalidFunctionException();
+    	}
+		    String funcao = conteudo.substring(1);    			// remove =
+		    String nomeFuncao = parseNomeFuncao(funcao);
+		    String Operando = parseOperandoFuncao(funcao);
 
+			String[] Operandos = Operando.split(",");
+			
+			Argumento arg1 = parseOperando(folha, Operandos[0]);
+			Argumento arg2 = parseOperando(folha, Operandos[1]);
+		
+			switch(nomeFuncao) {
+				case "MUL":
+				    return new MUL(arg1,arg2);
+				case "DIV":
+				    return new DIV(arg1,arg2);
+				case "SUB":
+				    return new SUB(arg1,arg2);
+				case "ADD":
+					return new ADD(arg1,arg2);
+			}
+			
+		return null;
+		    
+    }
     
     public static FuncaoBinaria parseFuncaoBinaria(FolhadeCalculo folha, String nomeFuncao, String Operando) throws OutOfBoundsException{
 		String[] Operandos = Operando.split(",");
