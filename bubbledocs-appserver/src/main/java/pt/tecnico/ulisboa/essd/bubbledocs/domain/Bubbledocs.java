@@ -294,4 +294,14 @@ public class Bubbledocs extends Bubbledocs_Base {
 	public String getUserPassword(String userToken){
 		return getUserFromToken(userToken).getPassword();
 	}
+
+	public Utilizador getUserfromUsername(String username) throws UserNotInSessionException{
+		
+		for(Utilizador user : getUtilizadoresSet()){
+			if(user.getUsername().equals(username)){
+				return user;
+			}
+    	}
+		throw new UserNotInSessionException(username);
+	}
 }
