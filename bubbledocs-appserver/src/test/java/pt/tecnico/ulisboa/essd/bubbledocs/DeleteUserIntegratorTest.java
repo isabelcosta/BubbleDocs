@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import mockit.Mocked;
@@ -7,6 +8,7 @@ import mockit.StrictExpectations;
 
 import org.junit.Test;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
@@ -14,10 +16,11 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.integrator.DeleteUserIntegrator;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.DeleteUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
-public class DeleteUserTest extends BubbleDocsServiceTest {
+public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
 
     private static final String USERNAME_TO_DELETE = "smf";
     private static final String USERNAME = "ars";
@@ -49,7 +52,7 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     		remote.removeUser(USERNAME_TO_DELETE);
     	}};
     	
-        DeleteUserService service = new DeleteUserService(root, USERNAME_TO_DELETE);
+        DeleteUserIntegrator service = new DeleteUserIntegrator(root, USERNAME_TO_DELETE);
         service.execute();
 
         boolean deleted = getUserFromUsername(USERNAME_TO_DELETE) == null;
@@ -93,10 +96,36 @@ public class DeleteUserTest extends BubbleDocsServiceTest {
     		result = new RemoteInvocationException();
     	}};
     
-    	new DeleteUserService(root, USERNAME_TO_DELETE).execute();	
+    	new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();	
     }
+    
+    /*
+     * remote invocation fails for some reason: connection, etc
+     * 	but user is restored locally
+     * 
+     */
+     @Test
+     public void restoreUserSucess() throws Exception{
+   	
+      	new StrictExpectations() {{
+     		remote = new IDRemoteServices();
+     		remote.removeUser(USERNAME_TO_DELETE);
+     		result = new RemoteInvocationException();
+     	}};
+     	
+     	//backup of user
+     	Bubbledocs bd = Bubbledocs.getInstance();
+     	Utilizador user = bd.getUserfromUsername(USERNAME_TO_DELETE);
+     			
+     	new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();
+     	
+     	Utilizador userRestored = bd.getUserfromUsername(USERNAME_TO_DELETE);
+     	
+     	assertEquals(user.getNome() , userRestored.getNome());
+     	
+     }
 
-   
+     
     /*
      * the user that we want delete doesn't exist remotely
      */

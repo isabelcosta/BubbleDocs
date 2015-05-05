@@ -13,8 +13,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetUserInfoService;
 public class GetUserInfoTest extends BubbleDocsServiceTest {
 	
 	private static String USERNAME_DOES_NOT_EXISTS = "frc";
-	private static String NAME_DOES_NOT_EXISTS = "Fabio Carvalho";
-	private static String EMAIL_DOES_NOT_EXISTS = "fabio@email.com";
 	
 	private Utilizador user;
 

@@ -187,6 +187,25 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     
 	}
     
+    /* 
+     * Devolver uma string com o conteudo de uma celula 
+     * 
+     * Recebe: dois inteiros (linha:coluna)
+     **/
+    public String contentToString(int linha,int coluna){
+    	for(Celula cell: getCelulaSet()){
+    		
+			int l = cell.getLinha();
+			int c = cell.getColuna();
+			
+			if (linha==l && coluna==c){
+				return cell.getConteudo().getValor().toString();
+			}
+    	}
+    	
+    	return "()";
+    }
+    
     
     // EXCEPCAO-CELULA
 	/* Verifica se a celula respeita os limites da folha */
