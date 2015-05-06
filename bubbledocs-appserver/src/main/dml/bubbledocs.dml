@@ -51,6 +51,8 @@ class Funcao extends Conteudo;
 
 class FuncaoIntervalo extends Funcao;
 
+class Intervalo extends Conteudo;
+
 class FuncaoBinaria extends Funcao;
 	
 class ADD extends FuncaoBinaria;
@@ -61,7 +63,9 @@ class SUB extends FuncaoBinaria;
 
 class MUL extends FuncaoBinaria;
 
+class AVG extends FuncaoIntervalo;
 
+class PRD extends FuncaoIntervalo;
 
 
 relation DomainRootHasBubbleApplication {
@@ -150,4 +154,29 @@ relation BubbleDocsContainsTokens {
 	}
 }
 
+relation FuncaoIntervaloContainsIntervalo {
+	FuncaoIntervalo playsRole funcaointervalo{
+		multiplicity *;
+	}
+	Intervalo playsRole intervalo{
+		multiplicity 1;
+	}
+}
 
+relation IntervaloContainsUpperLeftCell {
+	Intervalo playsRole intervalo1 {
+		multiplicity *;
+	}
+	Celula playsRole upperLeftCell{
+		multiplicity 1;
+	}
+}
+
+relation IntervaloContainsLowerRightCell {
+	Intervalo playsRole intervalo2 {
+		multiplicity *;
+	}
+	Celula playsRole lowerRightCell{
+		multiplicity 1;
+	}
+}
