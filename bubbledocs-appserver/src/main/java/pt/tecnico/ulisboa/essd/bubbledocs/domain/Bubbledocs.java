@@ -119,11 +119,8 @@ public class Bubbledocs extends Bubbledocs_Base {
     	}
     	
     	// chama folha
-    	FolhadeCalculo folha=null;
-    	for(FolhadeCalculo f : getFolhasSet()){
-    		if (f.getID() == folhaID)
-    			folha=f;
-    	}
+    	FolhadeCalculo folha= getSheetById(folhaID);
+    
     	
     	if (folha.getID() == folhaID && 
 			(utilizadorRetira.equals(folha.getDono()) || folha.podeEscrever(utilizadorRetira))){
@@ -140,6 +137,14 @@ public class Bubbledocs extends Bubbledocs_Base {
 
  	}
     
+    private FolhadeCalculo getSheetById(int docID){
+		
+		for(FolhadeCalculo f : getFolhasSet()){
+    		if (f.getID() == docID)
+    			return f;
+    	}
+		return null;		
+	}
     
     public Boolean validSession(String token) throws UserNotInSessionException, InvalidTokenException{
     	
@@ -304,4 +309,41 @@ public class Bubbledocs extends Bubbledocs_Base {
     	}
 		throw new UserNotInSessionException(username);
 	}
+	
+	/*
+	 *  Funcoes que permitem verificar nos servicos a permissao de leitura e escrita
+	 * 		sem ter de aceder directamente a folha
+	 */
+	public boolean canRead(String token, int docID) throws UnauthorizedOperationException{
+		
+		boolean result = false;
+		
+		FolhadeCalculo folha = getSheetById(docID);
+		String username = getUsernameOfToken(token);
+		
+		try{ 
+			result = folha.podeLer(username);	
+		} catch (UnauthorizedOperationException ex) {
+			throw ex;
+		}
+		
+		return result;
+	}
+	
+	public boolean canWrite(String token, int docID) throws UnauthorizedOperationException{
+		
+		boolean result = false;
+		
+		FolhadeCalculo folha = getSheetById(docID);
+		String username = getUsernameOfToken(token);
+		
+		try{ 
+			result = folha.podeEscrever(username);	
+		} catch (UnauthorizedOperationException ex) {
+			throw ex;
+		}
+		
+		return result;
+	}
+ 
 }
