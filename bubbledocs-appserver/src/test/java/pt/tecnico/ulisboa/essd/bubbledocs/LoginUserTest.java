@@ -65,8 +65,10 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         LocalTime currentTime = new LocalTime();
 		
         Utilizador user = getUserFromSession(service.getUserToken());
-        assertEquals(USERNAME, user.getUsername());
 
+        assertEquals(USERNAME, user.getUsername());
+        assertEquals(PASSWORD, user.getPassword());
+        
 		int difference = Seconds.secondsBetween(getLastAccessTimeInSession(token), currentTime).getSeconds();
 		
 		
@@ -94,12 +96,16 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         
         String token1 = service.getUserToken();
         
+        Utilizador user = getUserFromSession(token1);
+        assertEquals(PASSWORD, user.getPassword());
+        
     	
     	new StrictExpectations() {
  		   
     		{
     			remote = new IDRemoteServices();
     			remote.loginUser(USERNAME, PASSWORD);
+    			result = new RemoteInvocationException();
 		    }
 		};
     		
@@ -109,10 +115,11 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         
         String token2 = service.getUserToken();
 
-        Utilizador user = getUserFromSession(token1);
-        assertNull(user);
-        user = getUserFromSession(token2);
-        assertEquals(USERNAME, user.getUsername());
+        Utilizador user1 = getUserFromSession(token1);
+        assertNull(user1);
+        user1 = getUserFromSession(token2);
+        assertEquals(USERNAME, user1.getUsername());
+        assertEquals(PASSWORD, user1.getPassword());
     }
     
     //2
@@ -144,6 +151,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         assertNull(user);
         user = getUserFromSession(token2);
         assertEquals(USERNAME, user.getUsername());
+        assertEquals(PASSWORD, user.getPassword());
     }
     
     //4
