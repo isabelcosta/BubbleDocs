@@ -103,7 +103,7 @@ public class Parser {
 		    
     }
     
-    public static FuncaoBinaria parseFuncaoBinaria(FolhadeCalculo folha, String nomeFuncao, String Operando) throws OutOfBoundsException{
+    public static FuncaoBinaria parseFuncaoBinaria(FolhadeCalculo folha, String nomeFuncao, String Operando) throws OutOfBoundsException, InvalidFunctionException{
 		String[] Operandos = Operando.split(",");
 	
 		Argumento arg1 = parseOperando(folha, Operandos[0]);
@@ -120,7 +120,7 @@ public class Parser {
 				return new ADD(arg1,arg2);
 			}
 		
-		return null;
+		throw new InvalidFunctionException();
     }
 
     
