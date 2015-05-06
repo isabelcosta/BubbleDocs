@@ -70,38 +70,37 @@ public class Parser {
     }
     
     /*
-     * Parse de uma funcao binaria isolada
-     * contem repeticao de codigo para corrijir!!!!!
+     * Acho que nao faz sentido
      * 
      */
     
-    public static FuncaoBinaria parseBinaryFunction(FolhadeCalculo folha, String conteudo) throws OutOfBoundsException{
-    	if (!(conteudo.contains("(") && conteudo.contains(","))) {  // é uma função
-    		throw new InvalidFunctionException();
-    	}
-		    String funcao = conteudo.substring(1);    			// remove =
-		    String nomeFuncao = parseNomeFuncao(funcao);
-		    String Operando = parseOperandoFuncao(funcao);
-
-			String[] Operandos = Operando.split(",");
-			
-			Argumento arg1 = parseOperando(folha, Operandos[0]);
-			Argumento arg2 = parseOperando(folha, Operandos[1]);
-		
-			switch(nomeFuncao) {
-				case "MUL":
-				    return new MUL(arg1,arg2);
-				case "DIV":
-				    return new DIV(arg1,arg2);
-				case "SUB":
-				    return new SUB(arg1,arg2);
-				case "ADD":
-					return new ADD(arg1,arg2);
-			}
-			
-		return null;
-		    
-    }
+//    public static FuncaoBinaria parseBinaryFunction(FolhadeCalculo folha, String conteudo) throws OutOfBoundsException{
+//    	if (!(conteudo.contains("(") && conteudo.contains(","))) {  // é uma função
+//    		throw new InvalidFunctionException();
+//    	}
+//		    String funcao = conteudo.substring(1);    			// remove =
+//		    String nomeFuncao = parseNomeFuncao(funcao);
+//		    String Operando = parseOperandoFuncao(funcao);
+//
+//			String[] Operandos = Operando.split(",");
+//			
+//			Argumento arg1 = parseOperando(folha, Operandos[0]);
+//			Argumento arg2 = parseOperando(folha, Operandos[1]);
+//		
+//			switch(nomeFuncao) {
+//				case "MUL":
+//				    return new MUL(arg1,arg2);
+//				case "DIV":
+//				    return new DIV(arg1,arg2);
+//				case "SUB":
+//				    return new SUB(arg1,arg2);
+//				case "ADD":
+//					return new ADD(arg1,arg2);
+//			}
+//			
+//		return null;
+//		    
+//    }
     
     public static FuncaoBinaria parseFuncaoBinaria(FolhadeCalculo folha, String nomeFuncao, String Operando) throws OutOfBoundsException, InvalidFunctionException{
 		String[] Operandos = Operando.split(",");
