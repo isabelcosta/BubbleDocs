@@ -21,6 +21,7 @@ public class GetSpreadSheetContentTest extends BubbleDocsServiceTest {
 	private static String USER_TOKEN_CANT_READ; 
 	
 	private FolhadeCalculo sheet;
+	private String[][] matrix;
 
 	 @Override
 	 public void populate4Test() {
@@ -38,7 +39,7 @@ public class GetSpreadSheetContentTest extends BubbleDocsServiceTest {
 	    	USER_TOKEN_CANT_READ = addUserToSession("mit");
 	    	
 	    	//cria folha
-	    	sheet = createSpreadSheet(user, "teFolha", 5, 5);
+	    	sheet = createSpreadSheet(user, "teFolha", 10, 10);
 			
 			//Preenche a folha (sheet) do user "tep"
 			DOC_ID = sheet.getID();
@@ -56,17 +57,29 @@ public class GetSpreadSheetContentTest extends BubbleDocsServiceTest {
 	        GetSpreadSheetContentService service = new GetSpreadSheetContentService(USER_TOKEN, DOC_ID);
 	        service.execute();            
 	    	
-	        for(int i=0; i < 5+1; i++){
-				for(int k=0; k < 5+1; k++){
-					if ( i!= 3 && k != 2){
-						assertEquals("()", service.getResult()[i][k]);
-					}
-				}
-			}
+	      
 	        assertEquals("4", service.getResult()[3][2]);
-	        assertEquals("6", service.getResult()[3][2]);
+	        assertEquals("6", service.getResult()[5][7]);
 	    }
 	   
+	   @Test
+	   public void contentNotSetEmpty() {
+		   
+		   GetSpreadSheetContentService service = new GetSpreadSheetContentService(USER_TOKEN, DOC_ID);
+	       service.execute();
+	       
+	       matrix = new String[11][11];
+	       matrix = service.getResult();
+	       matrix[3][2] = "()";
+	       matrix[5][7] = "()";
+	  
+		   for(int i=1; i < 11; i++){
+			   for(int k=1; k < 11; k++){
+				   assertEquals("()", matrix[i][k]);
+			   }
+		   }
+		   
+	   }
 	   
 	   @Test(expected = UserNotInSessionException.class)
 	    public void userNotLogged() {

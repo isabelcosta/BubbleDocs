@@ -17,22 +17,26 @@ public class GetSpreadSheetContentService extends ValidSessionsService {
 	//@Override
     protected void dispatch_session() throws BubbleDocsException {    
     		
-		FolhadeCalculo folha = _bd.getFolhaOfId(folhaId);     
+		FolhadeCalculo folha = _bd.getFolhaOfId(folhaId);  
+		
+		if(folha.podeLer(_bd.getUsernameOfToken(_userToken))){     //melhorar esta parte depois
 			
 		/* 
 		 * Filling the matrix matrix
 		 * 		
 		 */
-			int maxLinha = folha.getLinhas();
-			int maxColuna = folha.getColunas();
+			int maxLinha = folha.getLinhas() + 1;
+			int maxColuna = folha.getColunas() + 1;
 			
 			result = new String[maxLinha][maxColuna];
 			
-			for(int i=0; i < maxLinha+1; i++){
-				for(int k=0; k < maxColuna+1; k++){
+			for(int i=1; i < maxLinha; i++){
+				for(int k=1; k < maxColuna; k++){
 					result[i][k]= folha.contentToString(i, k);
 				}
-			}  	
+			}
+			
+		}
     }
     
     public String[][] getResult() {
