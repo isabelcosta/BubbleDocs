@@ -119,7 +119,7 @@ public class Bubbledocs extends Bubbledocs_Base {
     	}
     	
     	// chama folha
-    	FolhadeCalculo folha= getSheetById(folhaID);
+    	FolhadeCalculo folha= getFolhaOfId(folhaID);
     
     	
     	if (folha.getID() == folhaID && 
@@ -136,15 +136,6 @@ public class Bubbledocs extends Bubbledocs_Base {
     	
 
  	}
-    
-    private FolhadeCalculo getSheetById(int docID){
-		
-		for(FolhadeCalculo f : getFolhasSet()){
-    		if (f.getID() == docID)
-    			return f;
-    	}
-		return null;		
-	}
     
     public Boolean validSession(String token) throws UserNotInSessionException, InvalidTokenException{
     	
@@ -321,7 +312,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 		
 		boolean result = false;
 		
-		FolhadeCalculo folha = getSheetById(docID);
+		FolhadeCalculo folha = getFolhaOfId(docID);
 		String username = getUsernameOfToken(token);
 		
 		try{ 
@@ -337,7 +328,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 		
 		boolean result = false;
 		
-		FolhadeCalculo folha = getSheetById(docID);
+		FolhadeCalculo folha = getFolhaOfId(docID);
 		String username = getUsernameOfToken(token);
 		
 		try{ 

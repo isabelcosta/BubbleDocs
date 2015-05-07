@@ -3,23 +3,21 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
-public class GetSpreadSheetContentService extends ValidSessionsService {  
+public class GetSpreadSheetContentService extends ReadingPermissionService {  
 	
 	private String[][] result;
 	private int folhaId;
 	
 	public GetSpreadSheetContentService(String userToken, int docId){
 		
-		super(userToken);
+		super(userToken,docId);
     	folhaId = docId;
 	}
 	
 	//@Override
-    protected void dispatch_session() throws BubbleDocsException {    
+    protected void dispatch_read() throws BubbleDocsException {    
     		
 		FolhadeCalculo folha = _bd.getFolhaOfId(folhaId);  
-		
-		if(folha.podeLer(_bd.getUsernameOfToken(_userToken))){     //melhorar esta parte depois
 			
 		/* 
 		 * Filling the matrix matrix
@@ -36,7 +34,6 @@ public class GetSpreadSheetContentService extends ValidSessionsService {
 				}
 			}
 			
-		}
     }
     
     public String[][] getResult() {
