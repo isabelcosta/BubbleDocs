@@ -21,7 +21,6 @@ public class ExportDocumentService extends ValidSessionsService{
     private FolhadeCalculo _folha;
     
     
-    
     public ExportDocumentService(int sheetId, String userToken) {
     	super(userToken);
 		_sheetId = sheetId;
@@ -30,7 +29,6 @@ public class ExportDocumentService extends ValidSessionsService{
 	@Override
 	protected void dispatch_session() throws UserNotInSessionException {
 
-		StoreRemoteServices remote = new StoreRemoteServices();
 		byte[] resultTemp = null;
 		try {
 
@@ -40,8 +38,6 @@ public class ExportDocumentService extends ValidSessionsService{
 			
 			String userNameOfToken = _bd.getUsernameOfToken(_userToken);
 	    	if(_folha.podeLer(userNameOfToken) || _folha.podeEscrever(userNameOfToken)){
-//EXPORTAR A FOLHA    	
-	    		//fazer chamada remota
 	    		
 //CONVERTER A FOLHA EM BYTES
 				org.jdom2.Document sheetDoc = _bd.exportSheet(_folha);
@@ -57,20 +53,10 @@ public class ExportDocumentService extends ValidSessionsService{
 					System.out.println("export falhou: " + e);
 				}
 				
-// CHAMAR O SERVICO REMOTO, SO ACTULIZANDO O RESULT CASO A CHAMADA REMOTA SEJA VALIDA
-				try{
-					remote.storeDocument(userNameOfToken, _folha.getNomeFolha(), resultTemp);
-				} catch (RemoteInvocationException e){
-					throw new UnavailableServiceException();
-				}
 				_result = resultTemp;
 	    	}
 		} catch (ReferenciaInvalidaException | OutOfBoundsException e) {
 			System.err.println("Couldn't export Sheet: " + e);
-		} catch (UnauthorizedOperationException e ){
-			throw new UnauthorizedOperationException();
-		} catch (SpreadSheetDoesNotExistException e ){
-			throw new SpreadSheetDoesNotExistException();
 		}
 	}
 	

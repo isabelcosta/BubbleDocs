@@ -2,9 +2,11 @@ package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import java.util.Random;
 
+import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 import org.joda.time.Minutes;
 
+import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
@@ -14,6 +16,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CreateSpreadSheetService;
 
 
 public class Bubbledocs extends Bubbledocs_Base {
@@ -249,6 +252,19 @@ public class Bubbledocs extends Bubbledocs_Base {
     	throw new SpreadSheetDoesNotExistException();
     }
     
+	 public String getSpreadsheetName4Id(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
+	    	
+	    	if(id < 0 || id == null){
+				throw new IdFolhaInvalidoException();
+			}
+	    	
+	    	for( FolhadeCalculo folhaIter : getFolhasSet()  ){
+	    		if(folhaIter.getID() == id){
+	    			return folhaIter.getNomeFolha();
+	    		}
+	    	}
+	    	throw new SpreadSheetDoesNotExistException();
+	    }
     
     public org.jdom2.Document exportSheet(FolhadeCalculo folha){
     	org.jdom2.Document jdomDoc = new org.jdom2.Document();
@@ -340,4 +356,59 @@ public class Bubbledocs extends Bubbledocs_Base {
 		return result;
 	}
  
+	public String renewUserToken(String username, String password) {
+		String token = "";
+		
+		String temp;
+		do {
+			temp = username + generateToken();
+		} while (temp.equals(token));
+		token  = temp;
+		refreshTokenTotal(token, username);
+		addTokens(new Token(username, token));
+		
+		return token;
+	}
+	
+	@Atomic
+    public void recoverFromBackup(org.jdom2.Document jdomDoc) {
+    	String donoFolha = jdomDoc.getRootElement().getAttributeValue("dono");
+    	String nomeFolha = jdomDoc.getRootElement().getAttributeValue("nome");
+    	int linhas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("linhas"));
+    	int colunas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("colunas"));
+    	int id = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("id"));
+    	String data = jdomDoc.getRootElement().getAttributeValue("data");
+    	
+    	
+    	for(FolhadeCalculo folha : getFolhasSet())
+	    	if(folha.getNomeFolha().equals(nomeFolha)) {
+	    		folha.setDataCriacao(new LocalDate(data));
+    			folha.setID(id);
+	    		folha.importFromXML(jdomDoc.getRootElement());
+	    		return;
+	    	}
+    	
+    	//procura o token do pfa
+    	String donoFolhaToken = null;
+        for(Token token : getTokensSet()){
+        	if(token.getUsername().equals(donoFolha)){
+        		donoFolhaToken = token.getToken();
+        	}	
+        }
+    	
+    	
+    	//caso nao tenha encontrado a folha cria uma nova
+ 		CreateSpreadSheetService serviceFolha = new CreateSpreadSheetService(donoFolhaToken, nomeFolha, linhas, colunas);
+ 		serviceFolha.execute();
+    	
+    	for (FolhadeCalculo folha : getFolhasSet())
+    		if(folha.getNomeFolha().equals(nomeFolha)){
+    			
+    			folha.setDataCriacao(new LocalDate(data));
+    			folha.setID(id);
+	    		folha.importFromXML(jdomDoc.getRootElement());
+    		}
+    	
+    }
+	
 }

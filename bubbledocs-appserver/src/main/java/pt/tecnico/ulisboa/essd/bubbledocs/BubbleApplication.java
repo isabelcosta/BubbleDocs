@@ -189,7 +189,8 @@ public class BubbleApplication {
 
 			System.out.println("7.Utilizar a funcionalidade de importacao para criar uma folha de calculo.");
 	 		
-			recoverFromBackup(doc, bd);	
+			// chamar servico remoto
+			//recoverFromBackup(doc, bd);	
 			
 			//--------------------------------------------------------------------------
 			//8. Escrever os nomes e ids de todas as folhas de calculo do utilizador pfa.
@@ -265,46 +266,52 @@ public class BubbleApplication {
 		System.out.println(xml.outputString(jdomDoc));
     }
     
-    @Atomic
-    private static void recoverFromBackup(org.jdom2.Document jdomDoc, Bubbledocs bd) {
-    	String donoFolha = jdomDoc.getRootElement().getAttributeValue("dono");
-    	String nomeFolha = jdomDoc.getRootElement().getAttributeValue("nome");
-    	int linhas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("linhas"));
-    	int colunas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("colunas"));
-    	int id = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("id"));
-    	String data = jdomDoc.getRootElement().getAttributeValue("data");
-    	
-    	
-    	for(FolhadeCalculo folha : bd.getFolhasSet())
-	    	if(folha.getNomeFolha().equals(nomeFolha)) {
-	    		folha.setDataCriacao(new LocalDate(data));
-    			folha.setID(id);
-	    		folha.importFromXML(jdomDoc.getRootElement());
-	    		return;
-	    	}
-    	
-    	//procura o token do pfa
-    	String donoFolhaToken = null;
-        for(Token token : bd.getTokensSet()){
-        	if(token.getUsername().equals(donoFolha)){
-        		donoFolhaToken = token.getToken();
-        	}	
-        }
-    	
-    	
-    	//caso nao tenha encontrado a folha cria uma nova
- 		CreateSpreadSheetService serviceFolha = new CreateSpreadSheetService(donoFolhaToken, nomeFolha, linhas, colunas);
- 		serviceFolha.execute();
-    	
-    	for (FolhadeCalculo folha : bd.getFolhasSet())
-    		if(folha.getNomeFolha().equals(nomeFolha)){
-    			
-    			folha.setDataCriacao(new LocalDate(data));
-    			folha.setID(id);
-	    		folha.importFromXML(jdomDoc.getRootElement());
-    		}
-    	
-    }
+    
+    /*
+     * 
+     *   recoverFromBackup passa a ser o servico de importacao
+     * 
+     */
+//    @Atomic
+//    private static void recoverFromBackup(org.jdom2.Document jdomDoc, Bubbledocs bd) {
+//    	String donoFolha = jdomDoc.getRootElement().getAttributeValue("dono");
+//    	String nomeFolha = jdomDoc.getRootElement().getAttributeValue("nome");
+//    	int linhas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("linhas"));
+//    	int colunas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("colunas"));
+//    	int id = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("id"));
+//    	String data = jdomDoc.getRootElement().getAttributeValue("data");
+//    	
+//    	
+//    	for(FolhadeCalculo folha : bd.getFolhasSet())
+//	    	if(folha.getNomeFolha().equals(nomeFolha)) {
+//	    		folha.setDataCriacao(new LocalDate(data));
+//    			folha.setID(id);
+//	    		folha.importFromXML(jdomDoc.getRootElement());
+//	    		return;
+//	    	}
+//    	
+//    	//procura o token do pfa
+//    	String donoFolhaToken = null;
+//        for(Token token : bd.getTokensSet()){
+//        	if(token.getUsername().equals(donoFolha)){
+//        		donoFolhaToken = token.getToken();
+//        	}	
+//        }
+//    	
+//    	
+//    	//caso nao tenha encontrado a folha cria uma nova
+// 		CreateSpreadSheetService serviceFolha = new CreateSpreadSheetService(donoFolhaToken, nomeFolha, linhas, colunas);
+// 		serviceFolha.execute();
+//    	
+//    	for (FolhadeCalculo folha : bd.getFolhasSet())
+//    		if(folha.getNomeFolha().equals(nomeFolha)){
+//    			
+//    			folha.setDataCriacao(new LocalDate(data));
+//    			folha.setID(id);
+//	    		folha.importFromXML(jdomDoc.getRootElement());
+//    		}
+//    	
+//    }
     
     @Atomic
     private static boolean isInicialized(Bubbledocs bd) {

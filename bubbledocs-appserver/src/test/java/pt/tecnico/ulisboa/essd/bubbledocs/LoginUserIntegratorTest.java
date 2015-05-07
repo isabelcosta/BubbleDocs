@@ -16,10 +16,11 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.integrator.LoginUserIntegrator;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.LoginUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
-public class LoginUserTest extends BubbleDocsServiceTest {
+public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
 
     private static final String USERNAME = "jpa";
     private static final String PASSWORD = "jp#";
@@ -56,7 +57,7 @@ public class LoginUserTest extends BubbleDocsServiceTest {
 		};
     	
     	
-    	LoginUserService service = new LoginUserService(USERNAME, PASSWORD);
+    	LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
         service.execute();
         
         
@@ -65,10 +66,8 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         LocalTime currentTime = new LocalTime();
 		
         Utilizador user = getUserFromSession(service.getUserToken());
-
         assertEquals(USERNAME, user.getUsername());
-        assertEquals(PASSWORD, user.getPassword());
-        
+
 		int difference = Seconds.secondsBetween(getLastAccessTimeInSession(token), currentTime).getSeconds();
 		
 		
@@ -96,16 +95,12 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         
         String token1 = service.getUserToken();
         
-        Utilizador user = getUserFromSession(token1);
-        assertEquals(PASSWORD, user.getPassword());
-        
     	
     	new StrictExpectations() {
  		   
     		{
     			remote = new IDRemoteServices();
     			remote.loginUser(USERNAME, PASSWORD);
-    			result = new RemoteInvocationException();
 		    }
 		};
     		
@@ -115,11 +110,10 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         
         String token2 = service.getUserToken();
 
-        Utilizador user1 = getUserFromSession(token1);
-        assertNull(user1);
-        user1 = getUserFromSession(token2);
-        assertEquals(USERNAME, user1.getUsername());
-        assertEquals(PASSWORD, user1.getPassword());
+        Utilizador user = getUserFromSession(token1);
+        assertNull(user);
+        user = getUserFromSession(token2);
+        assertEquals(USERNAME, user.getUsername());
     }
     
     //2
@@ -151,7 +145,6 @@ public class LoginUserTest extends BubbleDocsServiceTest {
         assertNull(user);
         user = getUserFromSession(token2);
         assertEquals(USERNAME, user.getUsername());
-        assertEquals(PASSWORD, user.getPassword());
     }
     
     //4

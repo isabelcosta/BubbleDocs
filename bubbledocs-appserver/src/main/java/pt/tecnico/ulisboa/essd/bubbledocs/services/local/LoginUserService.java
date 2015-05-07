@@ -28,28 +28,7 @@ public class LoginUserService extends BubbleDocsService {
     @Override
     protected void dispatch() throws BubbleDocsException {
     	
- 		_bd = Bubbledocs.getInstance();
- 		IDRemoteServices remote = new IDRemoteServices();
- 		
-     	
- 		try {
- 			remote.loginUser(_username,_password);
- 		}catch(RemoteInvocationException e){
- 			
- 			//verificacao da pass local
- 			Utilizador utilizador = _bd.getUserOfName(_username);
- 			
- 			if (utilizador == null) {
- 				throw new LoginBubbleDocsException();
- 			}
- 			
- 			if(!_bd.checkLocalPassword(utilizador, _password)) {
- 				throw new UnavailableServiceException();
- 			}
- 		}
- 		
- 		// aqui, a verificao remota ocorreu sem problemas
- 		// entao actualiza-se a password local se for diferente
+    	
  		Utilizador utilizador = _bd.getUserOfName(_username);
  		
  		if (utilizador == null) {
@@ -60,16 +39,8 @@ public class LoginUserService extends BubbleDocsService {
  			_bd.setUserPassword(_username,_password);
 		}
  		
- 		//eliminei o ciclo getUtilizadoresSet()
- 		
-		String temp;
-		do {
-			temp = _username + _bd.generateToken();
-		} while (temp.equals(_result));
-		_result = temp;
-		_bd.refreshTokenTotal(_result, _username);
-		_bd.addTokens(new Token(_username, _result));
-		return ;
+		_result = _bd.renewUserToken(_username, _password);
+	
     } 
 
     public final String getUserToken() {

@@ -25,10 +25,10 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistExcep
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.local.ExportDocumentService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.integrator.ExportDocumentIntegrator;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
 
-public class ExportDocumentTest extends BubbleDocsServiceTest{
+public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 	
     private static int FOLHA_ID;
     private static String USER_TOKEN;
@@ -121,7 +121,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		};
 		
 		
-		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN);
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN);
 		exportDocument.execute();
 		
 		org.jdom2.Document doc = null;
@@ -185,7 +185,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		    }
 		};
 		
-		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_LEITURA);
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_LEITURA);
 		exportDocument.execute();
 		
 		org.jdom2.Document doc = null;
@@ -249,7 +249,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 		};
 		
 		
-		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_ESCRITA);
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
 		exportDocument.execute();
 		
 		org.jdom2.Document doc = null;
@@ -304,32 +304,32 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 	//4
 	@Test(expected = UnauthorizedOperationException.class)
 	public void unauthorizedExport() {
-		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_NO_ACCESS);
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_NO_ACCESS);
 		exportDocument.execute();
 	}
 	//8
 	@Test(expected = InvalidTokenException.class)
 	public void emptyTokenExport () {
-		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, EMPTY_TOKEN);
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, EMPTY_TOKEN);
 		exportDocument.execute();
 	}
 	 //7
 	@Test(expected = UserNotInSessionException.class)
 	public void invalidSessionExport () {
-		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_NOT_IN_SESSION);
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_NOT_IN_SESSION);
 		exportDocument.execute();
 	}
 	
 	//5
 	@Test(expected = SpreadSheetDoesNotExistException.class)
 	public void idDoesNotExistExport() {
-		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID_INEXISTENT, USER_TOKEN);
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID_INEXISTENT, USER_TOKEN);
 		exportDocument.execute();
 	}
 	//6
 	@Test(expected = IdFolhaInvalidoException.class)
 	public void invalidIdExport() {
-		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID_NEGATIVE, USER_TOKEN);
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID_NEGATIVE, USER_TOKEN);
 		exportDocument.execute();
 	}
 
@@ -346,7 +346,7 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
     			result = new RemoteInvocationException();
 		    }
 		};
-		ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_ESCRITA);
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
 		exportDocument.execute();
 	
 	}
@@ -363,15 +363,30 @@ public class ExportDocumentTest extends BubbleDocsServiceTest{
 	    			result = new CannotStoreDocumentException("terFolha");
 			    }
 			};
-			ExportDocumentService exportDocument = new ExportDocumentService(FOLHA_ID, USER_TOKEN_ESCRITA);
+			ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
 			exportDocument.execute();
 		
 		}
 	
 	
+	//11
+	@Test(expected = CannotStoreDocumentException.class)
+	public void cannotStoreTest () {
+    	
+    	new StrictExpectations() {
+ 		   
+    		{
+    			remote = new StoreRemoteServices();
+    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+    			result = new CannotStoreDocumentException("terFolha");
+		    }
+		};
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
+		exportDocument.execute();
 	
+	}
 
-	public org.jdom2.Document byteToJdomDoc (ExportDocumentService service) throws UnsupportedEncodingException {  		// byte-> string -> outP -> doc
+	public org.jdom2.Document byteToJdomDoc (ExportDocumentIntegrator service) throws UnsupportedEncodingException {  		// byte-> string -> outP -> doc
 
 		
 		org.jdom2.Document doc = null;
