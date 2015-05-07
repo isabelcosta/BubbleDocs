@@ -11,13 +11,11 @@ import org.junit.Test;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.integrator.DeleteUserIntegrator;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.local.DeleteUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
@@ -116,29 +114,25 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
      	//backup of user
      	Bubbledocs bd = Bubbledocs.getInstance();
      	Utilizador user = bd.getUserfromUsername(USERNAME_TO_DELETE);
-     			
-     	new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();
      	
-     	Utilizador userRestored = bd.getUserfromUsername(USERNAME_TO_DELETE);
-     	
-     	assertEquals(user.getNome() , userRestored.getNome());
-     	
+     	try{
+     		new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();
+     		
+     	} catch (UnavailableServiceException ue) {
+     		
+     		Utilizador userRestored = bd.getUserfromUsername(USERNAME_TO_DELETE);
+     		assertEquals(user.getNome() , userRestored.getNome());
+     	}
      }
 
      
     /*
-     * the user that we want delete doesn't exist remotely
+     * the user that we want delete doesn't exist 
      */
-    @Test(expected = LoginBubbleDocsException.class)
+    @Test(expected = UserNotInSessionException.class)
     public void userToDeleteDoesNotExist() {
    
-     	new StrictExpectations() {{
-    		remote = new IDRemoteServices();
-    		remote.removeUser(USERNAME_DOES_NOT_EXIST);
-    		result = new LoginBubbleDocsException();
-    	}};
-    	
-        new DeleteUserService(root, USERNAME_DOES_NOT_EXIST).execute();
+        new DeleteUserIntegrator(root, USERNAME_DOES_NOT_EXIST).execute();
     }
 
 
@@ -146,7 +140,7 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
     public void notRootUser() {
     	
         String ars = addUserToSession(USERNAME);
-        new DeleteUserService(ars, USERNAME_TO_DELETE).execute();
+        new DeleteUserIntegrator(ars, USERNAME_TO_DELETE).execute();
     }
 
     
@@ -154,7 +148,7 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
     public void rootNotInSession() {
         removeUserFromSession(root);
         
-        new DeleteUserService(root, USERNAME_TO_DELETE).execute();
+        new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();
     }
     
     
@@ -163,19 +157,19 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
         String ars = addUserToSession(USERNAME);
         removeUserFromSession(ars);
         
-        new DeleteUserService(ars, USERNAME_TO_DELETE).execute();
+        new DeleteUserIntegrator(ars, USERNAME_TO_DELETE).execute();
     }
 
     
     @Test(expected = UserNotInSessionException.class)
     public void accessUserDoesNotExist() {
     	
-        new DeleteUserService(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
+        new DeleteUserIntegrator(USERNAME_DOES_NOT_EXIST, USERNAME_TO_DELETE).execute();
     }
     
     @Test(expected = EmptyUsernameException.class)
     public void userToDeleteIsEmpty(){
     	
-        new DeleteUserService(root, "").execute();
+        new DeleteUserIntegrator(root, "").execute();
     }
 }

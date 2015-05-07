@@ -302,6 +302,9 @@ public class Bubbledocs extends Bubbledocs_Base {
 
 	public Utilizador getUserfromUsername(String username) throws UserNotInSessionException{
 		
+		//Verifica primeiro se é vazio
+		emptyUsername(username);
+		
 		for(Utilizador user : getUtilizadoresSet()){
 			if(user.getUsername().equals(username)){
 				return user;

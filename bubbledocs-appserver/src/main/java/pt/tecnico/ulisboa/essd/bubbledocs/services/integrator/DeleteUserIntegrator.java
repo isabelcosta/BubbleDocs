@@ -38,7 +38,7 @@ public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 		 * 
 		 * 
 		 */
-
+				
 		_local = new DeleteUserService(_userToken,_toDeleteUsername);
 		_local.execute();
 		
@@ -73,9 +73,9 @@ public class DeleteUserIntegrator extends BubbleDocsIntegrator {
 		 * Pelo enunciado, nao e necessario a recuperacao das folhas apagadas do utilizador
 		 */
 		CreateUserService restore = new CreateUserService(_userToken,
-															backupUser.getName(),
-																backupUser.getUsername(),
-																	backupUser.getEmail()); 
+															backupUser.getUsername(),
+																backupUser.getEmail(),
+																	backupUser.getName());
 		restore.execute();
 	
 	}
