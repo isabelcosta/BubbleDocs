@@ -1,9 +1,14 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+import java.util.ArrayList;
+
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 
 
 public class Utilizador extends Utilizador_Base {
+	
+	private ArrayList<Integer> _folhasExportadas;
 	
     public Utilizador(String nomeUtilizador, String userName, String email) {
         
@@ -34,6 +39,19 @@ public class Utilizador extends Utilizador_Base {
     		super.setUsername(username);
     	}
     	
+    }
+    
+    public void addFolhaExportada(Integer id) {
+    	
+    	if (id== null || id < 0) {
+    		throw new IdFolhaInvalidoException();
+    	}
+    	
+    	_folhasExportadas.add(id);
+    }
+    
+    public ArrayList<Integer> getFolhasExportadas() {
+    	return _folhasExportadas;
     }
     
 }

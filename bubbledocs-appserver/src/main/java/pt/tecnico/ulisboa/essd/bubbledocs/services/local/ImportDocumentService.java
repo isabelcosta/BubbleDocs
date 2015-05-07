@@ -12,21 +12,29 @@ import org.xml.sax.InputSource;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotLoadDocumentException;
 
 public class ImportDocumentService extends BubbleDocsService {
 
 	private org.jdom2.Document _jdomDoc;
 	private Bubbledocs _bd = Bubbledocs.getInstance();
 	private byte[] _folha;
+	private String _userToken;
 	
-	public ImportDocumentService(byte[] folha) {
+	public ImportDocumentService(byte[] folha, String userToken) {
 		_folha = folha;
-	
+		_userToken = userToken;
 	}
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-
+		
+//		if (_folha == null) {
+//			throw new CannotLoadDocumentException("folha");
+//		}
+			
+	// verifica se user exportou a folha
+		
 		/*
 		 *  converter de byte[] para jdomDoc
 		 */
@@ -51,8 +59,8 @@ public class ImportDocumentService extends BubbleDocsService {
 		/*
 		 * chamar a funcao que importa o jdomDoc para a base de dados do programa
 		 */
-
-		_bd.recoverFromBackup(_jdomDoc);
+		
+		_bd.recoverFromBackup(_jdomDoc, _userToken);
 		
 	}
 	

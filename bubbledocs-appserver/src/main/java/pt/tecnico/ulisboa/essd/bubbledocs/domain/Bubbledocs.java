@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import org.joda.time.LocalDate;
@@ -371,44 +372,41 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	@Atomic
-    public void recoverFromBackup(org.jdom2.Document jdomDoc) {
-    	String donoFolha = jdomDoc.getRootElement().getAttributeValue("dono");
+    public void recoverFromBackup(org.jdom2.Document jdomDoc, String userToken) {
     	String nomeFolha = jdomDoc.getRootElement().getAttributeValue("nome");
     	int linhas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("linhas"));
     	int colunas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("colunas"));
-    	int id = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("id"));
     	String data = jdomDoc.getRootElement().getAttributeValue("data");
     	
-    	
-    	for(FolhadeCalculo folha : getFolhasSet())
-	    	if(folha.getNomeFolha().equals(nomeFolha)) {
-	    		folha.setDataCriacao(new LocalDate(data));
-    			folha.setID(id);
-	    		folha.importFromXML(jdomDoc.getRootElement());
-	    		return;
-	    	}
-    	
-    	//procura o token do pfa
-    	String donoFolhaToken = null;
-        for(Token token : getTokensSet()){
-        	if(token.getUsername().equals(donoFolha)){
-        		donoFolhaToken = token.getToken();
-        	}	
-        }
-    	
+    	  	
     	
     	//caso nao tenha encontrado a folha cria uma nova
- 		CreateSpreadSheetService serviceFolha = new CreateSpreadSheetService(donoFolhaToken, nomeFolha, linhas, colunas);
+ 		CreateSpreadSheetService serviceFolha = new CreateSpreadSheetService(userToken, nomeFolha, linhas, colunas);
  		serviceFolha.execute();
     	
     	for (FolhadeCalculo folha : getFolhasSet())
     		if(folha.getNomeFolha().equals(nomeFolha)){
     			
     			folha.setDataCriacao(new LocalDate(data));
-    			folha.setID(id);
 	    		folha.importFromXML(jdomDoc.getRootElement());
     		}
     	
     }
 	
+	public void addFolhaExportada4User (Integer id, String token) {
+		
+		getUserFromToken(token).addFolhaExportada(id);
+	}
+	
+	public Boolean checkFolhaExportada4User (Integer id, String token) {
+	
+		ArrayList<Integer> listaFolhasExportadas = getUserFromToken(token).getFolhasExportadas();
+		
+		for (Integer folhaExportadaId : listaFolhasExportadas) {
+			if (folhaExportadaId == id) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

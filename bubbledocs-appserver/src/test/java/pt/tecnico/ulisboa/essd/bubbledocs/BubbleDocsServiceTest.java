@@ -1,10 +1,12 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Random;
 
 import javax.transaction.NotSupportedException;
 import javax.transaction.SystemException;
 
+import org.jdom2.output.XMLOutputter;
 import org.junit.After;
 import org.junit.Before;
 
@@ -14,6 +16,8 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
 
 public class BubbleDocsServiceTest {
 
@@ -164,5 +168,43 @@ public class BubbleDocsServiceTest {
 				t.setTime(t.getTime().minusHours(2));
 			}
     	}
+    }
+    
+    public byte[] exportFolhadeCalculo(Integer sheetId, String userToken){
+    	byte[] resultTemp = null;
+    	Bubbledocs bd = Bubbledocs.getInstance();
+    	FolhadeCalculo folha;
+    	
+		try {
+
+				
+//VERIFICAR SE O USER TEM PERMISSÃ•ES PARA EXPORTAR		
+			folha = bd.getFolhaOfId(sheetId);
+			
+			String userNameOfToken = bd.getUsernameOfToken(userToken);
+	    	if(folha.podeLer(userNameOfToken) || folha.podeEscrever(userNameOfToken)){
+	    		
+//CONVERTER A FOLHA EM BYTES
+				org.jdom2.Document sheetDoc = bd.exportSheet(folha);
+				
+				XMLOutputter xmlOutput = new XMLOutputter();
+				xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
+				String docString = xmlOutput.outputString(sheetDoc);
+				
+				
+				try {
+					resultTemp = docString.getBytes("UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					System.out.println("export falhou: " + e);
+				}
+//ADICIONAR AO USER ID DA FOLHA QUE EXPORTOU
+				bd.addFolhaExportada4User(sheetId, userToken);
+				
+				
+	    	}
+		} catch (ReferenciaInvalidaException | OutOfBoundsException e) {
+			System.err.println("Couldn't export Sheet: " + e);
+		}
+		return resultTemp;
     }
 }

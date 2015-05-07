@@ -53,9 +53,7 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
         DeleteUserIntegrator service = new DeleteUserIntegrator(root, USERNAME_TO_DELETE);
         service.execute();
 
-        boolean deleted = getUserFromUsername(USERNAME_TO_DELETE) == null;
-
-        assertTrue("user was not deleted", deleted);
+        assertNull(getUserFromUsername(USERNAME_TO_DELETE));
 
         assertNull("Spreadsheet was not deleted",
                 getSpreadSheet(SPREADSHEET_NAME));
