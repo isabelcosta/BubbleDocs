@@ -175,8 +175,8 @@ public class Parser {
 		int[] end1 = parseEndereco(enderecos[0], folha);
 		int[] end2 = parseEndereco(enderecos[1], folha);
 		
-		if (end1[0] != end2[0] && end1[1] != end2[1])
-			throw new OutOfBoundsException(end2[0], end1[0]);
+//		if (end1[0] != end2[0] && end1[1] != end2[1])//3;4
+//			throw new OutOfBoundsException(end2[0], end1[0]);
 		
 		return new Intervalo(folha.getCelulaEspecifica(end1[0],end1[1]), folha.getCelulaEspecifica(end2[0],end2[1]), folha);
     }

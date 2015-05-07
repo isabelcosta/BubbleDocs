@@ -15,16 +15,22 @@ public class PRD extends PRD_Base {
     	int sum = 0;
     	ArrayList<Integer> lista = getIntervalo().getValorListaCelulas();
     	
-    	 if (getIntervalo().getListaCelulas() == null || getIntervalo().getListaCelulas() == null){
+    	 if (getIntervalo().getValorListaCelulas() == null || getIntervalo().getValorListaCelulas() == null){
      		return null;
      	}
 
     	for(int i=0; i< lista.size();i++){
     		sum*=i;
     	}
-    	return sum / lista.size();
+    	return sum;
     	
     }
+    
+	public String toString(){
+		String res = "=PRD(" + getIntervalo().toString() + ")";
+		
+		return res;
+	}
     
     
 }

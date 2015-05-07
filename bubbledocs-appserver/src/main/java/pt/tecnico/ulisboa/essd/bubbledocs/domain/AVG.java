@@ -25,4 +25,10 @@ public class AVG extends AVG_Base {
     	return sum / lista.size();
     	
     }
+    
+	public String toString(){
+		String res = "=AVG(" + getIntervalo().toString() + ")";
+		
+		return res;
+	}
 }

@@ -11,7 +11,9 @@ public class Intervalo extends Intervalo_Base {
 	
     public Intervalo(Celula upperLeftCell, Celula lowerRightCell, FolhadeCalculo folha) {
     
-    	_folha = upperLeftCell.getFolhadecalculoC();
+    	//se a celula pertence ao intervalo mas nao esta no getcelulaset, cria se a celula vazia e adicionas a lista
+    	
+    	//_folha = upperLeftCell.getFolhadecalculoC();
     	
     	setLowerRightCell(lowerRightCell);
     	setUpperLeftCell(upperLeftCell);
@@ -23,7 +25,7 @@ public class Intervalo extends Intervalo_Base {
     	int lowerColumn = lowerRightCell.getColuna();
     	   	
     	
-    	for(Celula c : _folha.getCelulaSet()){
+    	for(Celula c : folha.getCelulaSet()){
     		if (c.getLinha() >= upperRow && c.getColuna() >= upperColumn 
  				&& c.getLinha() <= lowerRow && c.getColuna() <= lowerColumn) {
     				_listaCelulas.add(c);
@@ -39,12 +41,12 @@ public class Intervalo extends Intervalo_Base {
     	
     }
     
-    public ArrayList<Integer> getValorListaCelulas() {		//???????????????????
+    public ArrayList<Integer> getValorListaCelulas() {		
     	ArrayList<Integer> listaValores = new ArrayList<Integer>();
     	Integer conteudo;
     	
     	
-    	for(Celula cell : ){     		//Partindo do pressuposto que as celulas tem conteudos inteiros
+    	for(Celula cell : getListaCelulas()){     		//Partindo do pressuposto que as celulas tem conteudos inteiros
     		if(cell.getConteudo().getValor()== null){
     			return null;
     		}
@@ -53,5 +55,12 @@ public class Intervalo extends Intervalo_Base {
     	}	
     	return listaValores;
     }
+    
+	public String toString(){
+		String res = getUpperLeftCell().getLinha() + ";" + getUpperLeftCell().getColuna() + ":" + getLowerRightCell().getLinha() + ";" + getLowerRightCell().getColuna();
+		
+		return res;
+	}
+    
     
 }
