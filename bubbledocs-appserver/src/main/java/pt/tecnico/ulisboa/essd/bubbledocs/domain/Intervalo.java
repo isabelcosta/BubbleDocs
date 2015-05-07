@@ -39,19 +39,19 @@ public class Intervalo extends Intervalo_Base {
     	
     }
     
-//    public ArrayList<Integer> getValorListaCelulas() {		//???????????????????
-//    	ArrayList<Integer> listaValores = new ArrayList<Integer>();
-//    	Integer conteudo;
-//    	
-//    	
-//    	for(Celula cell : listaCell.getListaCelulas()){     		//Partindo do pressuposto que as celulas tem conteudos inteiros
-//    		if(cell.getConteudo().getValor()== null){
-//    			return null;
-//    		}
-//    		conteudo = cell.getConteudo().getValor();
-//    		listaValores.add(conteudo);
-//    	}	
-//    	return listaValores;
-//    }
+    public ArrayList<Integer> getValorListaCelulas() {		//???????????????????
+    	ArrayList<Integer> listaValores = new ArrayList<Integer>();
+    	Integer conteudo;
+    	
+    	
+    	for(Celula cell : ){     		//Partindo do pressuposto que as celulas tem conteudos inteiros
+    		if(cell.getConteudo().getValor()== null){
+    			return null;
+    		}
+    		conteudo = cell.getConteudo().getValor();
+    		listaValores.add(conteudo);
+    	}	
+    	return listaValores;
+    }
     
 }

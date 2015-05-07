@@ -31,7 +31,6 @@ public class AssignRangeFunctionToCellService extends ValidSessionsService {
 				linhaColuna = Parser.parseEndereco(_cellToFill, folha);
 				
 				try{
-//					Parser.parseBinaryFunction(folha, _functionToAssign);
 					folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);		//=AVG(1;2 : 1;10)		
 				}catch(Exception e){
 					throw new InvalidFunctionException(_functionToAssign);

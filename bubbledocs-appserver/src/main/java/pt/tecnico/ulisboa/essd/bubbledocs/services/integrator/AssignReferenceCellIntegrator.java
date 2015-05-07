@@ -3,7 +3,9 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services.integrator;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.AssignReferenceCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.RenewPasswordService;
@@ -28,12 +30,11 @@ public class AssignReferenceCellIntegrator extends BubbleDocsIntegrator{
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
-		//Instancia local
-
+		/*Instancia local*/
+		
 		_local = new AssignReferenceCellService(_userToken, _docId, _idCelula, _referencia);
 		_local.execute();
 		
-		//tratar as excepçoes
 	}
 	
 }
