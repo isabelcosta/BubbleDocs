@@ -18,14 +18,13 @@ public class DeleteUserService extends IsRootService {
 
 	@Override
 	protected void dispatch_root() throws BubbleDocsException {
-				
-		try {
+			
+		
+		
+			
 			//invoke same method locally, supposing no exceptions caught
 			_bd.removeUtilizadores(_bd.getUserOfName(toDeleteUsername));
 		
-		} catch (EmptyUsernameException | UnauthorizedOperationException | UserNotInSessionException exc){
-				throw exc;
-		}	
 	}
 	
 }
