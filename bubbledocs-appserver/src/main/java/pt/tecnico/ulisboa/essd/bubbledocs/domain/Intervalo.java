@@ -8,7 +8,7 @@ public class Intervalo extends Intervalo_Base {
 	Bubbledocs _bd = Bubbledocs.getInstance();
 	FolhadeCalculo _folha;
 	
-    public Intervalo(Celula upperLeftCell, Celula lowerRightCell) {
+    public Intervalo(Celula upperLeftCell, Celula lowerRightCell, FolhadeCalculo folha) {
     
     	_folha = upperLeftCell.getFolhadecalculoC();
     	

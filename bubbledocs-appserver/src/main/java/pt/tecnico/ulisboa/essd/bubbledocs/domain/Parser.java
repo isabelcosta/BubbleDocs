@@ -2,6 +2,7 @@ package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidFunctionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Intervalo;
 
 public class Parser {
 
@@ -44,16 +45,14 @@ public class Parser {
 		    if (conteudo.contains(","))
 		    	return parseFuncaoBinaria(folha, nomeFuncao, Operando);
 		    	
-		    /*else
-		    	return parseFuncaoIntervalo(folha, nomeFuncao, Operando); */
+		    else
+		    	return parseFuncaoIntervalo(folha, nomeFuncao, Operando); 
 		    
 		} else if (conteudo.contains("=")) {          			 // é uma referencia 
 		    return parseReferencia(folha, conteudo.substring(1));
 		
 		} else
-		    return parseLiteral(conteudo);
-    	
-    	return null; 
+		    return parseLiteral(conteudo); 
     }
 
     
@@ -122,19 +121,20 @@ public class Parser {
 		throw new InvalidFunctionException();
     }
 
-    
-   /* public static IntervaloFunction parseFuncaoIntervalo(FolhadeCalculo folha, String nomeFuncao, String Operando) throws Exception{
-		Intervalo intervalo = parseIntervalo(folha, Operando);
+    																					//AVG         (1;2:1;4)
+    public static FuncaoIntervalo parseFuncaoIntervalo(FolhadeCalculo folha, String nomeFuncao, String Operando) throws OutOfBoundsException, InvalidFunctionException{
+
+    	Intervalo intervalo = parseIntervalo(folha, Operando);
 	
 		switch(nomeFuncao) {
 			case "PRD":
-			    return new Prd(intervalo);
+			    return new PRD(intervalo);
 			case "AVG":
-			    return new Avg(intervalo);
+			    return new AVG(intervalo);
 			}
 		
 		return null;
-    } */
+    } 
 
     
     public static Argumento parseOperando(FolhadeCalculo folha, String Operando) throws OutOfBoundsException {
@@ -169,5 +169,16 @@ public class Parser {
     		return ref;
     }
     
+    public static Intervalo parseIntervalo(FolhadeCalculo folha, String intervalo) throws OutOfBoundsException{
+		String[] enderecos = intervalo.split(":");
+		
+		int[] end1 = parseEndereco(enderecos[0], folha);
+		int[] end2 = parseEndereco(enderecos[1], folha);
+		
+		if (end1[0] != end2[0] && end1[1] != end2[1])
+			throw new OutOfBoundsException(end2[0], end1[0]);
+		
+		return new Intervalo(folha.getCelulaEspecifica(end1[0],end1[1]), folha.getCelulaEspecifica(end2[0],end2[1]), folha);
+    }
 
 }

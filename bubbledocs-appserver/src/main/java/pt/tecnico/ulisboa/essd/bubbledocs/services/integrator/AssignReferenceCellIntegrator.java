@@ -28,14 +28,8 @@ public class AssignReferenceCellIntegrator extends BubbleDocsIntegrator{
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
-		/*
-		 * 
-		 *  Instância local
-		 * 
-		 * 
-		 */
+		//Instancia local
 
-				
 		_local = new AssignReferenceCellService(_userToken, _docId, _idCelula, _referencia);
 		_local.execute();
 		

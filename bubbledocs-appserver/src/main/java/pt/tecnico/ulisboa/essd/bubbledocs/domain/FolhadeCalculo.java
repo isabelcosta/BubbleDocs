@@ -214,6 +214,19 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     		throw new OutOfBoundsException(linha, coluna);
     	return true;
     }
-
+    
+    public Celula getCelulaEspecifica(int linha, int coluna) throws OutOfBoundsException{
+    	
+    	for(Celula cell: getCelulaSet()){
+    		
+    		int l = cell.getLinha();
+			int c = cell.getColuna();
+			
+			if(linha==l && coluna==c ){
+			return cell;
+			}
+    	}
+    	throw new OutOfBoundsException(linha, coluna);
+    }
     
 }
