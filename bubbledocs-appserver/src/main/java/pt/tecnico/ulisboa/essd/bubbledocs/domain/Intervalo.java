@@ -1,6 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Intervalo extends Intervalo_Base {
     
@@ -37,5 +38,20 @@ public class Intervalo extends Intervalo_Base {
     	return _listaCelulas;
     	
     }
+    
+//    public ArrayList<Integer> getValorListaCelulas() {		//???????????????????
+//    	ArrayList<Integer> listaValores = new ArrayList<Integer>();
+//    	Integer conteudo;
+//    	
+//    	
+//    	for(Celula cell : listaCell.getListaCelulas()){     		//Partindo do pressuposto que as celulas tem conteudos inteiros
+//    		if(cell.getConteudo().getValor()== null){
+//    			return null;
+//    		}
+//    		conteudo = cell.getConteudo().getValor();
+//    		listaValores.add(conteudo);
+//    	}	
+//    	return listaValores;
+//    }
     
 }
