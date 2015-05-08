@@ -29,22 +29,13 @@ public class AssignBinaryFunctionToCellService extends ValidSessionsService {
 		    	int[] linhaColuna = null;
 		
 				linhaColuna = Parser.parseEndereco(_cellToFill, folha);
-				
-				try{
-//					Parser.parseBinaryFunction(folha, _functionToAssign);
-					folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);				
-				}catch(Exception e){
-					throw new InvalidFunctionException(_functionToAssign);
-				}
-				
-/*
- * 
- * criar uma funcao pra buscar o conteudo pra nao expor a logica de negocio
- * 
- */
+
+				folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);				
+
 		    	for(Celula cell: folha.getCelulaSet()){
 		    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
-		    			_result = cell.getConteudo().getValor().toString();
+//		    			_result = cell.getConteudo().getValor().toString();
+		    			_result = cell.getConteudo().toString();
 		    		} 
 		    	}
 		    }

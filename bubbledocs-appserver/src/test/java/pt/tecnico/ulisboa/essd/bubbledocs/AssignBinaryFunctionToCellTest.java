@@ -21,7 +21,8 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
 	// FUNCAO BINARIA
     private static final String FUNCAO_BINARIA_COM_LITERAIS_VALIDOS = "=MUL(3,4)";
     private static final String FUNCAO_BINARIA_COM_OPERANDOS_INVALIDOS = "=ADD( " + ",4)";
-    private static final String FUNCAO_BINARIA_COM_REFERENCIA_VALIDAS = "=ADD(3;3,2)";    
+    private static final String FUNCAO_BINARIA_COM_REFERENCIA_VALIDA = "=ADD(3;3,2)";  
+    private static final String FUNCAO_BINARIA_COM_REFERENCIA_VAZIA = "=DIV(3;3,19)"; 
     private static final String FUNCAO_BINARIA_INEXISTENTE = "=FILADELFIA(3;3,2)"; 
     
     // CELULAS
@@ -71,8 +72,10 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
 		String conteudoRef = "=3;2";
     	folha2.modificarCelula(2,7,conteudoRef);   			
     	
-    	//da "ab" da permissoes de escrita a "pi" para preencher a sua folha
+    	//"tep" da permissoes de escrita a "mit" para preencher a sua folha
     	bd.darPermissoes("escrita", "tep", "mit", DOC_ID);
+    	
+    	bd.darPermissoes("leitura", "mit", "tep", DOC_ID_SEM_PERMISSAO);
     	
     }
 
@@ -80,7 +83,7 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
      * Testes de sucesso
      */
     @Test
-    public void success() {
+    public void successAssignToFilledCell() {
     	
     	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID, FUNCAO_BINARIA_COM_LITERAIS_VALIDOS);
         service.execute();
@@ -90,7 +93,7 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
     
     @Test
     public void successAssignToEmptyCell() {
-    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN_PODE_ESCREVER, DOC_ID, CELL_ID_VAZIA, FUNCAO_BINARIA_COM_LITERAIS_VALIDOS);
+    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID_VAZIA, FUNCAO_BINARIA_COM_LITERAIS_VALIDOS);
         service.execute();
     	
         assertEquals(FUNCAO_BINARIA_COM_LITERAIS_VALIDOS, service.getResult());
@@ -103,7 +106,14 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
 
 		assertEquals(FUNCAO_BINARIA_COM_LITERAIS_VALIDOS, service.getResult());
     }
-    
+
+    @Test
+    public void successWithReference() {
+    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID, FUNCAO_BINARIA_COM_REFERENCIA_VALIDA);
+        service.execute();
+
+		assertEquals(FUNCAO_BINARIA_COM_REFERENCIA_VALIDA, service.getResult());
+    }
     /*
      * Testes falhados limites da folha
      */
@@ -152,6 +162,13 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
     	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID_SEM_PERMISSAO, CELL_ID, FUNCAO_BINARIA_COM_LITERAIS_VALIDOS);
          service.execute();
     }
+
+    @Test(expected = UnauthorizedOperationException.class)
+    public void userCanOnlyRead() {
+    	
+    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID_SEM_PERMISSAO, CELL_ID, FUNCAO_BINARIA_COM_LITERAIS_VALIDOS);
+         service.execute();
+    }    
     
     @Test(expected = UserNotInSessionException.class)
     public void userNotLogged() {

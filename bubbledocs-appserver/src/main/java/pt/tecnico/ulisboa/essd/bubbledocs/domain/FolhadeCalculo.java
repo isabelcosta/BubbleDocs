@@ -141,12 +141,12 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     //CELULAS
 
     public void modificarCelula(int linha, int coluna, String conteudoAcriar) throws ProtectedCellException{
-    	Conteudo conteudo = this.criaConteudo(conteudoAcriar);
     	
     	//se a celula existir so vai alterar o conteudo
     	for (Celula existeCelula : this.getCelulaSet()){
     		if (existeCelula.getLinha() == linha && existeCelula.getColuna() == coluna){
     			if(!existeCelula.getProtegida()){
+    		    	Conteudo conteudo = this.criaConteudo(conteudoAcriar);
 	    			existeCelula.setConteudo(conteudo);
 	    			return;
     			}	
@@ -155,6 +155,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
 				}    			
 			} 
     	}
+    	Conteudo conteudo = this.criaConteudo(conteudoAcriar);
 		Celula novaCelula = new Celula(linha, coluna, conteudo);
 		this.addCelula(novaCelula);
 
@@ -177,11 +178,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     private Conteudo criaConteudo(String conteudoAcriar) {
     	Conteudo c = null;
     	
-    	try {
-			 c= Parser.parseConteudo(this, conteudoAcriar);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		c= Parser.parseConteudo(this, conteudoAcriar);
     	
     	return c;
     
