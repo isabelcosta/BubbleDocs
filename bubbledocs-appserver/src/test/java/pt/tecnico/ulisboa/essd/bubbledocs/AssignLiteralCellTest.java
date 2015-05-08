@@ -64,13 +64,16 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
 		String conteudoRef = "=3;2";
     	folha2.modificarCelula(2,7,conteudoRef);   			
     	
-    	//da "ab" da permissoes de escrita a "pi" para preencher a sua folha
+    	//da "tep" da permissoes de escrita a "mit" para preencher a sua folha
     	bd.darPermissoes("escrita", "tep", "mit", DOC_ID);
+  
+    	//da "mit" da permissoes de leitura a "tep" para preencher a sua folha
+    	bd.darPermissoes("leitura", "mit", "tep", DOC_ID_SEM_PERMISSAO);
     	
     }
 
     @Test
-    public void success() {
+    public void successAssignToFilledCell() {
     	
         AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, LITERAL);
         service.execute();
@@ -136,6 +139,13 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
          service.execute();
     }
     
+    @Test(expected = UnauthorizedOperationException.class)
+    public void userCanOnlyRead() {
+    	
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID_SEM_PERMISSAO, CELL_ID, LITERAL);
+         service.execute();
+    }
+    
     @Test(expected = UserNotInSessionException.class)
     public void userNotLogged() {
     	
@@ -148,6 +158,13 @@ public class AssignLiteralCellTest extends BubbleDocsServiceTest {
     public void notLiteral() {
     	
     	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, "AB4");
+         service.execute();
+    }
+    
+    @Test(expected = NotLiteralException.class)
+    public void emptyLiteral() {
+    	
+    	 AssignLiteralCellService service = new AssignLiteralCellService( USER_TOKEN, DOC_ID, CELL_ID, "");
          service.execute();
     }
     
