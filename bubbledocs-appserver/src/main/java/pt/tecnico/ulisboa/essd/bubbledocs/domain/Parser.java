@@ -142,7 +142,12 @@ public class Parser {
 		    return parseReferencia(folha, Operando);
 		}
 		
-		return parseLiteral(Operando);
+		try{
+			return parseLiteral(Operando);
+		} catch(Exception e){
+			throw new InvalidFunctionException();
+		}
+
 		
     }
 
