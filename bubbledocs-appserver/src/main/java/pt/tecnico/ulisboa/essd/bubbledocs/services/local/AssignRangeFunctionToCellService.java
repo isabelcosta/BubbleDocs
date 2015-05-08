@@ -33,16 +33,7 @@ public class AssignRangeFunctionToCellService extends ValidSessionsService {
 				
 				folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);
 				
-				/*
-				 * 
-				 * criar uma funcao pra buscar o conteudo pra nao expor a logica de negocio
-				 * 
-				 */
-		    	for(Celula cell: folha.getCelulaSet()){
-		    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
-		    			_result = cell.getConteudo().toString();
-		    		} 
-		    	}
+				_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
 		    }
 								
 		}
