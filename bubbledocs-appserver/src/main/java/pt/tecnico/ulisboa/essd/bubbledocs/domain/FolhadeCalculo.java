@@ -184,23 +184,41 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     
 	}
     
+    public Celula getCell(int linha, int coluna){
+    	for(Celula cell: this.getCelulaSet()){
+    		if(cell.getLinha() == linha && cell.getColuna() == coluna){
+    			return cell;
+    		} 
+    	}
+		Celula novaCelula = new Celula(linha, coluna, null);
+		this.addCelula(novaCelula);    	
+		return novaCelula;
+    }
+    
     /* 
      * Devolver uma string com o conteudo de uma celula 
      * 
      * Recebe: dois inteiros (linha:coluna)
      **/
-    public String contentToString(int linha,int coluna){
-    	for(Celula cell: getCelulaSet()){
-    		
-			int l = cell.getLinha();
-			int c = cell.getColuna();
-			
-			if (linha==l && coluna==c){
-				return cell.getConteudo().getValor().toString();
-			}
-    	}
+    public String getCellContentToString(int linha,int coluna){
+    	Celula cell = this.getCell(linha, coluna);
     	
-    	return "()";
+    	if(cell.getConteudo() != null){
+    		return cell.getConteudo().toString();
+    	} else {
+        	return "()";
+    	}
+//    	for(Celula cell: getCelulaSet()){
+//    		
+//			int l = cell.getLinha();
+//			int c = cell.getColuna();
+//			
+//			if (linha==l && coluna==c){
+//				
+//			}
+//    	}
+//    	
+//    	return "()";
     }
     
     

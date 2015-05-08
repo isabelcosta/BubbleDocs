@@ -9,49 +9,45 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 
 
 public class AssignLiteralCellService extends ValidSessionsService {
-    private String result;
-    private String literalToAssign;
-    private String cellToFill;
-    private int folhaId;
+    private String _result;
+    private String _literalToAssign;
+    private String _cellToFill;
+    private int _folhaId;
     
     public AssignLiteralCellService(String userToken, int docId, String cellId, String literal) {
 	
     	super(userToken);
-    	this.literalToAssign = literal;
-        this.cellToFill = cellId;
-        this.folhaId = docId;
+    	this._literalToAssign = literal;
+        this._cellToFill = cellId;
+        this._folhaId = docId;
     }
 
     @Override
     protected void dispatch_session() throws BubbleDocsException {
     		
-			FolhadeCalculo folha = _bd.getFolhaOfId(folhaId);
+			FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
 			
 			if(folha.podeEscrever(_bd.getUsernameOfToken(_userToken))){
 		    	int[] linhaColuna = null;
 		
-				linhaColuna = Parser.parseEndereco(cellToFill, folha);
+				linhaColuna = Parser.parseEndereco(_cellToFill, folha);
 				
 				//Verifica se o literal e um inteiro
 				try{
-					Integer.parseInt(literalToAssign);
+					Integer.parseInt(_literalToAssign);
 				}catch(Exception e){
-					throw new NotLiteralException(literalToAssign);
+					throw new NotLiteralException(_literalToAssign);
 				}
 				
-		    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], literalToAssign);
+		    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], _literalToAssign);
 				
-		    	for(Celula cell: folha.getCelulaSet()){
-		    		if(cell.getLinha() == linhaColuna[0] && cell.getColuna() == linhaColuna[1]){
-		    			result = cell.getConteudo().getValor().toString();
-		    		} 
-		    	}
+    			_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
 		    }
 				
     }
 
     public String getResult() {
-        return result;
+        return _result;
     }
 
 }
