@@ -7,6 +7,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.LoginUserService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.UpdateUserPasswordService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 public class LoginUserIntegrator extends BubbleDocsIntegrator {
@@ -66,11 +67,6 @@ public class LoginUserIntegrator extends BubbleDocsIntegrator {
 	public LoginUserIntegrator(String username, String password) {
 		_username = username;
 		_password = password;
-		
-		
-	
-	
-	
 	}
 
 	@Override
@@ -81,41 +77,14 @@ public class LoginUserIntegrator extends BubbleDocsIntegrator {
      	
  		try {
  			remote.loginUser(_username,_password);
+ 			UpdateUserPasswordService updatePassword = new UpdateUserPasswordService(_username, _password);
+ 			updatePassword.execute();
  		}catch(RemoteInvocationException e){
- 			
  			_local = new LoginUserService(_username, _password);
  			_local.execute();
- 			
- 			
- 			
- 			
-// 			
-// 			//verificacao da pass local
-// 			Utilizador utilizador = _bd.getUserOfName(_username);
-// 			
-// 			if (utilizador == null) {
-// 				throw new LoginBubbleDocsException();
-// 			}
- 			
-// 			if(!_bd.checkLocalPassword(utilizador, _password)) {
-// 				throw new UnavailableServiceException();
-// 			}
- 			
-// 			Get user info? 
-// 						se nao encontrar lanca excepcao?
-<<<<<<< Upstream, based on origin/master
- 								
-=======
-// 								
->>>>>>> 7de76dc closes #101, #79, #78, #62
+
  		}
-
-		
-
-		
-		
-		
-		
+ 		
 	}
 
 	public final String getUserToken() {

@@ -36,7 +36,7 @@ public class LoginUserService extends BubbleDocsService {
 		}
  		
  		if (!_bd.checkLocalPassword(utilizador, _password)) {
- 			_bd.setUserPassword(_username,_password);
+ 			throw new LoginBubbleDocsException();
 		}
  		
 		_result = _bd.renewUserToken(_username, _password);

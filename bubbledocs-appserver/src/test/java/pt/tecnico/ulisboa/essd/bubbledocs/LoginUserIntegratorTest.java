@@ -24,10 +24,11 @@ public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
 
     private static final String USERNAME = "jpa";
     private static final String PASSWORD = "jp#";
+    private static final String NAME = "João Pereira";
 
     @Override
     public void populate4Test() {
-        createUser(USERNAME, PASSWORD, "João Pereira");
+        createUser(USERNAME, PASSWORD, NAME);
     }
 
     // returns the time of the last access for the user with token userToken.
