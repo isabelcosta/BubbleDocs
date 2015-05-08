@@ -101,8 +101,8 @@ public class LoginUserIntegrator extends BubbleDocsIntegrator {
 // 				throw new UnavailableServiceException();
 // 			}
  			
- 			Get user info? 
- 						se nao encontrar lanca excepcao?
+// 			Get user info? 
+// 						se nao encontrar lanca excepcao?
  								
  		}
 

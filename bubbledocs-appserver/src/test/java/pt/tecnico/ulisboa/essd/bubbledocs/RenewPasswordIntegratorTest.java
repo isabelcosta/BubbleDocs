@@ -1,8 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import static org.junit.Assert.*;
-import mockit.Mocked;
-import mockit.StrictExpectations;
+import mockit.*;
 
 import org.junit.Test;
 
@@ -72,23 +71,10 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
     	
     }
     
-
-    //aFALTA TESTE PARA RESTAURO DA PPASS NO CASO DA EXCEPCAO DO LOGIN
-    
-	//@Test(expected = UnavailableServiceException.class)
+	@Test
 	public void remoteFails() {
 
-    	
-    	/*
-    	 * <QUESTION> 
-    	 * 		!!		Verificar se existe uma maneira melhor de verificar 
-    	 * 		!!		que a password foi restaurada e que lancou a excecao
-    	 * 
-    	 */
-    	
-    	
 		new StrictExpectations(){
-	    	
 	    	{
 	    		remote = new IDRemoteServices();
 	    		remote.renewPassword(USERNAME);
@@ -100,20 +86,46 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    
 	    String oldPassword = user.getPassword();
 	    String newPassword;
-	    boolean flag = false;
+
 	    try {
-	    	RenewPasswordIntegrator local = new RenewPasswordIntegrator(USER_TOKEN);
-	    	local.execute();
-	    }catch(UnavailableServiceException e) {
-	    	flag = true;
-		    //throw new UnavailableServiceException();
-	    } finally {
-		    newPassword = user.getPassword();
-		    assertEquals(oldPassword, newPassword);	 
-		    assertEquals(flag, true);
-	    } 
-    }
-    
+	    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(USER_TOKEN);
+	    	service.execute();
+	    	fail();
+	    } catch(UnavailableServiceException exs) {
+	    	newPassword = user.getPassword();
+	    	assertEquals(oldPassword, newPassword);	 
+	    }
+	    
+	}
+ 
+	@Test
+	public void loginFails() {
+
+		new StrictExpectations(){
+	    	{
+	    		remote = new IDRemoteServices();
+	    		remote.renewPassword(USERNAME);
+	    		result = new LoginBubbleDocsException();
+	    	}
+	    };
+	    
+	    Utilizador user = getUserFromSession(USER_TOKEN);
+	    
+	    String oldPassword = user.getPassword();
+	    String newPassword;
+
+	    
+	    try {
+	    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(USER_TOKEN);
+		    removeUserFromSession(USER_TOKEN);	    	
+	    	service.execute();
+	    	fail();
+	    } catch(LoginBubbleDocsException exs) {
+	    	newPassword = user.getPassword();
+	    	assertEquals(oldPassword, newPassword);	 
+	    }
+	    
+	}
     
     @Test(expected = UserNotInSessionException.class)
     public void userNotLogged() {
@@ -136,18 +148,12 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
     @Test(expected = LoginBubbleDocsException.class)
     public void userNotFoundInRemoteService() {
     
-    	
-    	
-    	
     	/*
     	 * <QUESTION> 
     	 * 		!!		Verificar se existe uma maneira melhor de verificar 
     	 * 		!!		que a password foi restaurada e que lancou a excecao
     	 * 
     	 */
-    	
-    	
-    	
     	
     	new StrictExpectations(){
 	    	

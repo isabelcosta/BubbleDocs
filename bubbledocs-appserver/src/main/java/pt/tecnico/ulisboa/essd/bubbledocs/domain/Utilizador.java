@@ -23,7 +23,6 @@ public class Utilizador extends Utilizador_Base {
         }
     }
     
-
     private boolean nameIsValid(String username) throws UtilizadorInvalidoException{
     	int size = username.length();
     	
@@ -38,7 +37,6 @@ public class Utilizador extends Utilizador_Base {
     	if (nameIsValid(username)) {
     		super.setUsername(username);
     	}
-    	
     }
     
     public void addFolhaExportada(Integer id) {

@@ -17,32 +17,8 @@ public class RenewPasswordService extends ValidSessionsService {
     @Override
     protected void dispatch_session() throws BubbleDocsException {
     	
-		//Verifica se a pessoa ainda esta logada
-		
-//		IDRemoteServices remote = new IDRemoteServices();
-
-//		try {
-			// invoke some method on remote
-//			remote.renewPassword(_bd.getUsernameOfToken(_userToken));
-			
-		
-    	
-    		// invalidar a password
-    		_oldPassword = _bd.getUserPassword(_userToken);
 			_bd.invalidateUserPassword(_userToken);
-			
-			
-			
-//		} catch (RemoteInvocationException rie) {
-//			throw new UnavailableServiceException();
-//		}
-		
-//n		refreshToken(_userToken);
 		 
     }
-
-	public String getOldPassword() {
-		return _oldPassword;
-	}
 
 }

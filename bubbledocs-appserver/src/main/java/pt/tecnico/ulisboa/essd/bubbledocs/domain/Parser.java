@@ -20,7 +20,6 @@ public class Parser {
     }
 
     
-    
     public static int[] parseEndereco(String endereco, FolhadeCalculo folha) throws OutOfBoundsException{
 		String[] args = endereco.split(";");
 		
