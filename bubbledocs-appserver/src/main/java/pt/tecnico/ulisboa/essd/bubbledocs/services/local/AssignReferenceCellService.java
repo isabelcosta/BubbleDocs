@@ -12,18 +12,18 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationExcepti
 
 public class AssignReferenceCellService extends ValidSessionsService {
     
-    private String result;
-    private int idFolha;
-    private String idCelula;
-    private String referencia;
+    private String _result;
+    private int _idFolha;
+    private String _idCelula;
+    private String _referencia;
 
 
 
     public AssignReferenceCellService(String userToken, int docId, String cellId, String reference) {
     	super(userToken);
-        this.idFolha = docId;
-        this.idCelula = cellId;
-        this.referencia = reference;
+        this._idFolha = docId;
+        this._idCelula = cellId;
+        this._referencia = reference;
 
     }
 
@@ -31,37 +31,33 @@ public class AssignReferenceCellService extends ValidSessionsService {
     protected void dispatch_session() throws OutOfBoundsException, UnauthorizedOperationException  {
 
     		
-			FolhadeCalculo folha = _bd.getFolhaOfId(idFolha);
+			FolhadeCalculo folha = _bd.getFolhaOfId(_idFolha);
 			
 			
 	    	int[] linhaEcoluna = null;
 	    	
 	    	if(folha.podeEscrever(_bd.getUsernameOfToken(_userToken))){
-	    		linhaEcoluna = Parser.parseEndereco(idCelula, folha);	// lanca OutOfBounds
+	    		linhaEcoluna = Parser.parseEndereco(_idCelula, folha);	// lanca OutOfBounds
 				
 	    		try{
-	    			if(referencia.contains("=")){
-	    				Parser.parseConteudo(folha, referencia);
+	    			if(_referencia.contains("=")){
+	    				Parser.parseConteudo(folha, _referencia);
 	    			}
 	    			else
-	    				throw new ReferenciaInvalidaException(folha,referencia);
+	    				throw new ReferenciaInvalidaException(folha,_referencia);
 				}catch(Exception e){
-					throw new ReferenciaInvalidaException(folha, referencia);
+					throw new ReferenciaInvalidaException(folha, _referencia);
 				}
 	    		
 	    		
-    			folha.modificarCelula( linhaEcoluna[0], linhaEcoluna[1], referencia);
+    			folha.modificarCelula( linhaEcoluna[0], linhaEcoluna[1], _referencia);
     			
-    			for(Celula celula : folha.getCelulaSet()){
-    				if(celula.getLinha() ==  linhaEcoluna[0] && celula.getColuna() == linhaEcoluna[1])
-    					result = celula.getConteudo().toString();
-    			}
-				
+    			_result = folha.getCellContentToString(linhaEcoluna[0], linhaEcoluna[1]);
 			}
 	}
   
 
     public final String getResult() {
-        return result;
+        return _result;
     }
 }
