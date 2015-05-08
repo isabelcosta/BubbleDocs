@@ -75,7 +75,7 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 
     //aFALTA TESTE PARA RESTAURO DA PPASS NO CASO DA EXCEPCAO DO LOGIN
     
-	@Test//(expected = UnavailableServiceException.class)
+	//@Test(expected = UnavailableServiceException.class)
 	public void remoteFails() {
 
     	
@@ -97,9 +97,6 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    };
 	    
 	    Utilizador user = getUserFromSession(USER_TOKEN);
-	    
-	    //set password ?????
-	    user.setPassword("asdf");
 	    
 	    String oldPassword = user.getPassword();
 	    String newPassword;
@@ -162,7 +159,6 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    };
 	    
 	    Utilizador user = getUserFromSession(USER_LOCAL_TOKEN);
-	    user.setPassword("asdf");
 	    
 	    String oldPassword = user.getPassword();
 	    String newPassword = null;
