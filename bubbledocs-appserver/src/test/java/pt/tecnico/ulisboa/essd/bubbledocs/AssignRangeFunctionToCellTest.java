@@ -104,64 +104,59 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
         assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
     }
     
-//    @Test
-//    public void successAssignToEmptyCell() {
-//    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID_VAZIA, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
-//        service.execute();
-//    	
-//        assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
-//    }   
-//    
-//    @Test
-//    public void successPodeEscrever() {
-//    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
-//        service.execute();
-//
-//		assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
-//    }
-//    
-//    /*
-//     * Testes falhados limites da folha
-//     */
-//    @Test(expected = OutOfBoundsException.class)
-//    public void LineOutOfBoundOfSpreadSheet() {
-//    	
-//    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN, FOLHA_ID, "10000;10", FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
-//    	 service.execute();
-//    }
-//    
-//    @Test(expected = OutOfBoundsException.class)
-//    public void LineNegative() {
-//    	
-//    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN, FOLHA_ID, "-9;2", FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
-//    	 service.execute();
-//    }
-//
-//    @Test(expected = OutOfBoundsException.class)
-//    public void ColumnOutOfBoundOfSpreadSheet() {
-//    	
-//    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService( USER_TOKEN, FOLHA_ID, "4;3457", FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
-//         service.execute();
-//    }
-//    
-//    @Test(expected = OutOfBoundsException.class)
-//    public void ColumnNegative() {
-//    	
-//    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService( USER_TOKEN, FOLHA_ID, "4;-0", FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
-//         service.execute();
-//    }
-//     
-//    /*
-//     * Testes de falha nas permissoes e no login
-//     */
-//    
-//    @Test(expected = ProtectedCellException.class)
-//    public void unauthorizedUserForProtectedCell() {
-//    	
-//    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService( USER_TOKEN, FOLHA_ID, CELL_ID_PROTEGIDA, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
-//         service.execute();
-//    }
-//
+    @Test
+    public void successAssignToEmptyCell() {
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID_VAZIA, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+        service.execute();
+    	
+        assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
+    }   
+    
+    @Test
+    public void successPodeEscrever() {
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+        service.execute();
+
+		assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
+    }
+    
+    
+    @Test(expected = OutOfBoundsException.class)
+    public void LineOutOfBoundOfSpreadSheet() {
+    	
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN, FOLHA_ID, "10000;10", FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+    	 service.execute();
+    }
+    
+    @Test(expected = OutOfBoundsException.class)
+    public void LineNegative() {
+    	
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN, FOLHA_ID, "-9;2", FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+    	 service.execute();
+    }
+
+    @Test(expected = OutOfBoundsException.class)
+    public void ColumnOutOfBoundOfSpreadSheet() {
+    	
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService( USER_TOKEN, FOLHA_ID, "4;3457", FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+         service.execute();
+    }
+    
+    @Test(expected = OutOfBoundsException.class)
+    public void ColumnNegative() {
+    	
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService( USER_TOKEN, FOLHA_ID, "4;-0", FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+         service.execute();
+    }
+
+    
+    @Test(expected = ProtectedCellException.class)
+    public void unauthorizedUserForProtectedCell() {
+    	
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService( USER_TOKEN, FOLHA_ID, CELL_ID_PROTEGIDA, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+         service.execute();
+    }
+
 //    @Test(expected = UnauthorizedOperationException.class)
 //    public void unauthorizedUserForWriting() {
 //    	

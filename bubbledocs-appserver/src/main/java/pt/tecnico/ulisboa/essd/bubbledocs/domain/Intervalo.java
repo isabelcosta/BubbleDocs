@@ -24,7 +24,7 @@ public class Intervalo extends Intervalo_Base {
     	int lowerRow = lowerRightCell.getLinha();
     	int lowerColumn = lowerRightCell.getColuna();
     	   	
-    	
+    	_listaCelulas = new ArrayList<Celula>();
     	for(Celula c : folha.getCelulaSet()){
     		if (c.getLinha() >= upperRow && c.getColuna() >= upperColumn 
  				&& c.getLinha() <= lowerRow && c.getColuna() <= lowerColumn) {
