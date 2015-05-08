@@ -31,12 +31,8 @@ public class AssignRangeFunctionToCellService extends ValidSessionsService {
 		
 				linhaColuna = Parser.parseEndereco(_cellToFill, folha);
 				
-				try{
-					folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);				
-				}catch(Exception e){
-					throw new InvalidFunctionException(_functionToAssign);
-				}
-			
+				folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);
+				
 				/*
 				 * 
 				 * criar uma funcao pra buscar o conteudo pra nao expor a logica de negocio

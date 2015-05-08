@@ -103,7 +103,11 @@ public class LoginUserIntegrator extends BubbleDocsIntegrator {
  			
 // 			Get user info? 
 // 						se nao encontrar lanca excepcao?
+<<<<<<< Upstream, based on origin/master
  								
+=======
+// 								
+>>>>>>> 7de76dc closes #101, #79, #78, #62
  		}
 
 		

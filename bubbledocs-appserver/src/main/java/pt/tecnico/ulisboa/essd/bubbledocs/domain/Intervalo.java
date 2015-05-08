@@ -45,7 +45,6 @@ public class Intervalo extends Intervalo_Base {
     	ArrayList<Integer> listaValores = new ArrayList<Integer>();
     	Integer conteudo;
     	
-    	
     	for(Celula cell : getListaCelulas()){     		//Partindo do pressuposto que as celulas tem conteudos inteiros
     		if(cell.getConteudo().getValor()== null){
     			return null;
@@ -57,8 +56,8 @@ public class Intervalo extends Intervalo_Base {
     }
     
 	public String toString(){
-		String res = getUpperLeftCell().getLinha() + ";" + getUpperLeftCell().getColuna() + ":" + getLowerRightCell().getLinha() + ";" + getLowerRightCell().getColuna();
 		
+		String res = getUpperLeftCell().getLinha() + ";" + getUpperLeftCell().getColuna() + ":" + getLowerRightCell().getLinha() + ";" + getLowerRightCell().getColuna();
 		return res;
 	}
     
