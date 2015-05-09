@@ -333,34 +333,19 @@ public class Bubbledocs extends Bubbledocs_Base {
 	 */
 	public boolean canRead(String token, int docID) throws UnauthorizedOperationException{
 		
-		boolean result = false;
 		
 		FolhadeCalculo folha = getFolhaOfId(docID);
 		String username = getUsernameOfToken(token);
 		
-		try{ 
-			result = folha.podeLer(username);	
-		} catch (UnauthorizedOperationException ex) {
-			throw ex;
-		}
-		
-		return result;
+		return folha.podeLer(username);	
 	}
 	
 	public boolean canWrite(String token, int docID) throws UnauthorizedOperationException{
 		
-		boolean result = false;
-		
 		FolhadeCalculo folha = getFolhaOfId(docID);
 		String username = getUsernameOfToken(token);
-		
-		try{ 
-			result = folha.podeEscrever(username);	
-		} catch (UnauthorizedOperationException ex) {
-			throw ex;
-		}
-		
-		return result;
+		return folha.podeEscrever(username);	
+
 	}
  
 	public String renewUserToken(String username, String password) {
