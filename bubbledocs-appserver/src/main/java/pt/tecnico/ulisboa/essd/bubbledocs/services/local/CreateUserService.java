@@ -6,10 +6,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateEmailException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidEmailException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidUsernameException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
-
 
 public class CreateUserService extends IsRootService {
 
@@ -31,9 +27,9 @@ public class CreateUserService extends IsRootService {
 	protected void dispatch_root() throws BubbleDocsException {
 		
 		if(this.newUsername == null || this.newUsername.equals("")){
-			throw new InvalidUsernameException() ;
-			
-		}	
+			throw new InvalidUsernameException() ;	
+		}
+		
 		if(this.email == null || this.email.equals("")){
 			throw new InvalidEmailException();
 		}
@@ -42,13 +38,13 @@ public class CreateUserService extends IsRootService {
 			
 			if(user.getEmail().equals(this.email)){
 				throw new DuplicateEmailException();
-				}
+			}
 			
 			
 			
 			if(user.getUsername().equals(this.newUsername)){
 				throw new DuplicateUsernameException(newUsername);
-				}
+			}
 			
 			
 		}

@@ -1,12 +1,11 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidFunctionException;
 
 public class AssignBinaryFunctionToCellService extends ReadAndWritePermissionsService {
+	
     private String _result;
     private String _functionToAssign;
     private String _cellToFill;
@@ -23,15 +22,15 @@ public class AssignBinaryFunctionToCellService extends ReadAndWritePermissionsSe
     @Override
     protected void dispatch_read_and_write() throws BubbleDocsException {
     		
-			FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
+		FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
 
-	    	int[] linhaColuna = null;
-	
-			linhaColuna = Parser.parseEndereco(_cellToFill, folha);
+    	int[] linhaColuna = null;
 
-			folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);				
+		linhaColuna = Parser.parseEndereco(_cellToFill, folha);
 
-			_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
+		folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);				
+
+		_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
 				
     }
 

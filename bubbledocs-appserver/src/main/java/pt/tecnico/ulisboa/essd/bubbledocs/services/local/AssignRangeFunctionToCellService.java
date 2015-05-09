@@ -1,11 +1,8 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidFunctionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.ProtectedCellException;
 
 public class AssignRangeFunctionToCellService extends ValidSessionsService {
     private String _result;

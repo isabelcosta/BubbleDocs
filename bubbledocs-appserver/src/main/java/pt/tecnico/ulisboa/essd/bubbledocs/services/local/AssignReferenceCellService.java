@@ -1,14 +1,10 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
-
-// add needed import declarations
 
 public class AssignReferenceCellService extends ReadAndWritePermissionsService {
     
@@ -16,8 +12,7 @@ public class AssignReferenceCellService extends ReadAndWritePermissionsService {
     private int _idFolha;
     private String _idCelula;
     private String _referencia;
-
-
+    
 
     public AssignReferenceCellService(String userToken, int docId, String cellId, String reference) {
     	super(userToken, docId, true);
@@ -33,7 +28,6 @@ public class AssignReferenceCellService extends ReadAndWritePermissionsService {
     		
 			FolhadeCalculo folha = _bd.getFolhaOfId(_idFolha);
 			
-			
 	    	int[] linhaEcoluna = null;
 	    	
     		linhaEcoluna = Parser.parseEndereco(_idCelula, folha);	// lanca OutOfBounds
@@ -41,13 +35,12 @@ public class AssignReferenceCellService extends ReadAndWritePermissionsService {
     		try{
     			if(_referencia.contains("=")){
     				Parser.parseConteudo(folha, _referencia);
-    			}
-    			else
+    			} else {
     				throw new ReferenciaInvalidaException(folha,_referencia);
-			}catch(Exception e){
+    			}
+    		} catch(Exception e){
 				throw new ReferenciaInvalidaException(folha, _referencia);
 			}
-    		
     		
 			folha.modificarCelula( linhaEcoluna[0], linhaEcoluna[1], _referencia);
 			

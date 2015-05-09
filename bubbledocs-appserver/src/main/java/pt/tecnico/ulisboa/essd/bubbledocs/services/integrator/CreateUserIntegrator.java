@@ -1,17 +1,15 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.integrator;
 
-
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidEmailException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CreateUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.DeleteUserService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 public class CreateUserIntegrator extends BubbleDocsIntegrator{
 	
