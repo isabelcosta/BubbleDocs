@@ -21,7 +21,7 @@ public abstract class ReadAndWritePermissionsService extends ValidSessionsServic
 	}
 
 	protected void dispatch_session() throws BubbleDocsException {
-		if(!_flag){ //pode ler
+		if(_flag){ //pode ler
 			_bd.canWrite(_userToken,_docId);
 		} else { //pode escrever ou ler
 			
