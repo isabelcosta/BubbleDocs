@@ -297,7 +297,7 @@ public class Bubbledocs extends Bubbledocs_Base {
     }
 
 	public void invalidateUserPassword(String userToken) {
-		getUserFromToken(userToken).setPassword(null);;
+		getUserFromToken(userToken).setPassword(null);
 	}
 
 	public void setUserPassword(String username, String password) {

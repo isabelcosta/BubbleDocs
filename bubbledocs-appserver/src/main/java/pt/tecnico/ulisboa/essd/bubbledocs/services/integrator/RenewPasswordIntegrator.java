@@ -21,7 +21,6 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 	protected void dispatch() throws BubbleDocsException {
 		
 		/*
-		 * 
 		 *  Instância Remota
 		 * 
 		 */
@@ -54,6 +53,7 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 		
 		/*
 		 *  Instância local
+		 *  
 		 * 
 		 */
 
