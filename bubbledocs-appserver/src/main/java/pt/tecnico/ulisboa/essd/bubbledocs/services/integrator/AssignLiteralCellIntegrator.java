@@ -12,10 +12,10 @@ public class AssignLiteralCellIntegrator extends BubbleDocsIntegrator{
 	private int _folhaId;
     
 	public AssignLiteralCellIntegrator(String userToken, int docId, String cellId, String literal) {
-		this._userToken = userToken;
-    	this._literalToAssign = literal;
-        this._cellToFill = cellId;
-        this._folhaId = docId;
+		_userToken = userToken;
+    	_literalToAssign = literal;
+        _cellToFill = cellId;
+        _folhaId = docId;
 	}
 
 	@Override

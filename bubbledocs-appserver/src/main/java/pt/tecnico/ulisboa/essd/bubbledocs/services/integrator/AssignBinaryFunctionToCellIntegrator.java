@@ -12,10 +12,10 @@ public class AssignBinaryFunctionToCellIntegrator extends BubbleDocsIntegrator{
 	private int _folhaId;
     
 	public AssignBinaryFunctionToCellIntegrator(String userToken, int docId, String cellId, String binaryFunction) {
-		this._userToken = userToken;
-    	this._binaryFunctionToAssign = binaryFunction;
-        this._cellToFill = cellId;
-        this._folhaId = docId;
+		_userToken = userToken;
+    	_binaryFunctionToAssign = binaryFunction;
+        _cellToFill = cellId;
+        _folhaId = docId;
 	}
 
 	@Override
