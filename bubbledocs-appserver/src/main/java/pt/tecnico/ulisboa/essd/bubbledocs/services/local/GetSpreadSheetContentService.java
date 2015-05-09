@@ -3,19 +3,19 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
-public class GetSpreadSheetContentService extends ReadingPermissionService {  
+public class GetSpreadSheetContentService extends ReadAndWritePermissionsService {  
 	
 	private String[][] result;
 	private int folhaId;
 	
 	public GetSpreadSheetContentService(String userToken, int docId){
 		
-		super(userToken,docId);
+    	super(userToken, docId, false);
     	folhaId = docId;
 	}
 	
 	//@Override
-    protected void dispatch_read() throws BubbleDocsException {    
+    protected void dispatch_read_and_write() throws BubbleDocsException {    
     		
 		FolhadeCalculo folha = _bd.getFolhaOfId(folhaId);  
 			

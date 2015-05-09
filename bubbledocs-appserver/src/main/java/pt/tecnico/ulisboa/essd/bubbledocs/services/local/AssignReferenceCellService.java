@@ -10,7 +10,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationExcepti
 
 // add needed import declarations
 
-public class AssignReferenceCellService extends ValidSessionsService {
+public class AssignReferenceCellService extends ReadAndWritePermissionsService {
     
     private String _result;
     private int _idFolha;
@@ -20,7 +20,7 @@ public class AssignReferenceCellService extends ValidSessionsService {
 
 
     public AssignReferenceCellService(String userToken, int docId, String cellId, String reference) {
-    	super(userToken);
+    	super(userToken, docId, true);
         this._idFolha = docId;
         this._idCelula = cellId;
         this._referencia = reference;
@@ -28,7 +28,7 @@ public class AssignReferenceCellService extends ValidSessionsService {
     }
 
     @Override
-    protected void dispatch_session() throws OutOfBoundsException, UnauthorizedOperationException  {
+    protected void dispatch_read_and_write() throws OutOfBoundsException, UnauthorizedOperationException  {
 
     		
 			FolhadeCalculo folha = _bd.getFolhaOfId(_idFolha);
@@ -36,24 +36,22 @@ public class AssignReferenceCellService extends ValidSessionsService {
 			
 	    	int[] linhaEcoluna = null;
 	    	
-	    	if(folha.podeEscrever(_bd.getUsernameOfToken(_userToken))){
-	    		linhaEcoluna = Parser.parseEndereco(_idCelula, folha);	// lanca OutOfBounds
-				
-	    		try{
-	    			if(_referencia.contains("=")){
-	    				Parser.parseConteudo(folha, _referencia);
-	    			}
-	    			else
-	    				throw new ReferenciaInvalidaException(folha,_referencia);
-				}catch(Exception e){
-					throw new ReferenciaInvalidaException(folha, _referencia);
-				}
-	    		
-	    		
-    			folha.modificarCelula( linhaEcoluna[0], linhaEcoluna[1], _referencia);
-    			
-    			_result = folha.getCellContentToString(linhaEcoluna[0], linhaEcoluna[1]);
+    		linhaEcoluna = Parser.parseEndereco(_idCelula, folha);	// lanca OutOfBounds
+			
+    		try{
+    			if(_referencia.contains("=")){
+    				Parser.parseConteudo(folha, _referencia);
+    			}
+    			else
+    				throw new ReferenciaInvalidaException(folha,_referencia);
+			}catch(Exception e){
+				throw new ReferenciaInvalidaException(folha, _referencia);
 			}
+    		
+    		
+			folha.modificarCelula( linhaEcoluna[0], linhaEcoluna[1], _referencia);
+			
+			_result = folha.getCellContentToString(linhaEcoluna[0], linhaEcoluna[1]);
 	}
   
 

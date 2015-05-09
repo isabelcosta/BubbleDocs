@@ -8,7 +8,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 
 
-public class AssignLiteralCellService extends ValidSessionsService {
+public class AssignLiteralCellService extends ReadAndWritePermissionsService {
     private String _result;
     private String _literalToAssign;
     private String _cellToFill;
@@ -16,34 +16,32 @@ public class AssignLiteralCellService extends ValidSessionsService {
     
     public AssignLiteralCellService(String userToken, int docId, String cellId, String literal) {
 	
-    	super(userToken);
+    	super(userToken, docId, true);
     	this._literalToAssign = literal;
         this._cellToFill = cellId;
         this._folhaId = docId;
     }
 
     @Override
-    protected void dispatch_session() throws BubbleDocsException {
+    protected void dispatch_read_and_write() throws BubbleDocsException {
     		
 			FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
+
+	    	int[] linhaColuna = null;
+	
+			linhaColuna = Parser.parseEndereco(_cellToFill, folha);
 			
-			if(folha.podeEscrever(_bd.getUsernameOfToken(_userToken))){
-		    	int[] linhaColuna = null;
-		
-				linhaColuna = Parser.parseEndereco(_cellToFill, folha);
-				
-				//Verifica se o literal e um inteiro
-				try{
-					Integer.parseInt(_literalToAssign);
-				}catch(Exception e){
-					throw new NotLiteralException(_literalToAssign);
-				}
-				
-		    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], _literalToAssign);
-				
-    			_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
-		    }
-				
+			//Verifica se o literal e um inteiro
+			try{
+				Integer.parseInt(_literalToAssign);
+			}catch(Exception e){
+				throw new NotLiteralException(_literalToAssign);
+			}
+			
+	    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], _literalToAssign);
+			
+			_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
+		  
     }
 
     public String getResult() {

@@ -6,7 +6,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidFunctionException;
 
-public class AssignBinaryFunctionToCellService extends ValidSessionsService {
+public class AssignBinaryFunctionToCellService extends ReadAndWritePermissionsService {
     private String _result;
     private String _functionToAssign;
     private String _cellToFill;
@@ -14,26 +14,24 @@ public class AssignBinaryFunctionToCellService extends ValidSessionsService {
     
     public AssignBinaryFunctionToCellService(String userToken, int docId, String cellId, String binaryFunction) {
 	
-    	super(userToken);
+    	super(userToken, docId, true);
     	this._functionToAssign = binaryFunction;
         this._cellToFill = cellId;
         this._folhaId = docId;
     }
 
     @Override
-    protected void dispatch_session() throws BubbleDocsException {
+    protected void dispatch_read_and_write() throws BubbleDocsException {
     		
 			FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
-			
-			if(folha.podeEscrever(_bd.getUsernameOfToken(_userToken))){
-		    	int[] linhaColuna = null;
-		
-				linhaColuna = Parser.parseEndereco(_cellToFill, folha);
 
-				folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);				
+	    	int[] linhaColuna = null;
+	
+			linhaColuna = Parser.parseEndereco(_cellToFill, folha);
 
-				_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
-		    }
+			folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);				
+
+			_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
 				
     }
 
