@@ -29,19 +29,7 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 		Bubbledocs bd = getBubbleDocs();
 		
 		try {
-			// invoke some method on remote
 			remote.renewPassword(bd.getUsernameOfToken(_userToken));
-			
-			/*
-			 * 
-			 * tratar excepcoes
-			 *		. caso receba RemoteInvocation Exception
-			 *				. restaura a password antiga
-			 * 				. lanca UnavailableBubbleDocsException
-			 * 		. caso receba LoginBubbleDocsException
-			 * 				. restaura a password antiga
-			 *		
-			 */
 			
 			} catch (RemoteInvocationException rie) {
 				throw new UnavailableServiceException();
@@ -57,8 +45,6 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 		 * 
 		 */
 
-//ter atencao as excepcoes
-		
 		_local = new RenewPasswordService(_userToken);
 		_local.execute();
 		

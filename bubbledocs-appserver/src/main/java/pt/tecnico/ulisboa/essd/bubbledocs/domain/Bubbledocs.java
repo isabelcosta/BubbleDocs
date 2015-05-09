@@ -192,15 +192,21 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    return true;
     }
 
-    public String getUsernameOfToken(String token) throws UnauthorizedOperationException{
+    public String getUsernameOfToken(String token) throws UserNotInSessionException{
+    	if(token == null || token == ""){
+    		throw new InvalidTokenException();
+    	}
     	for(Token tokenObjecto : getTokensSet()){
     		if (tokenObjecto.getToken().equals(token))
     			return tokenObjecto.getUsername();
     	}
-    	throw new UnauthorizedOperationException();
+    	throw new UserNotInSessionException(token);
     }
 
-    public Utilizador getUserFromToken(String token) throws UnauthorizedOperationException{
+    public Utilizador getUserFromToken(String token) throws UserNotInSessionException{
+    	if(token == null || token == ""){
+    		throw new InvalidTokenException();
+    	}
     	for(Token tokenObjecto : getTokensSet()){
     		if (tokenObjecto.getToken().equals(token)){
     	    	for(Utilizador userObjecto : getUtilizadoresSet()){
@@ -209,7 +215,7 @@ public class Bubbledocs extends Bubbledocs_Base {
     	    	}
     		}
     	}
-    	throw new UnauthorizedOperationException();
+    	throw new UserNotInSessionException(token);
     }
     
     public Integer getIdOfFolha(String folha) throws SpreadSheetDoesNotExistException{

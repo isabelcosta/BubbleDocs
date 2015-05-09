@@ -8,7 +8,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 
 public class Utilizador extends Utilizador_Base {
 	
-	private ArrayList<Integer> _folhasExportadas;
+	private ArrayList<Integer> _folhasExportadas = new ArrayList<Integer>();
 	
     public Utilizador(String nomeUtilizador, String userName, String email) {
         

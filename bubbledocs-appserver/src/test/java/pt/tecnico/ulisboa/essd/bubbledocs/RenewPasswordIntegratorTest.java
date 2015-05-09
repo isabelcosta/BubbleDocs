@@ -98,35 +98,7 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    
 	}
  
-	@Test
-	public void loginFails() {
-
-		new StrictExpectations(){
-	    	{
-	    		remote = new IDRemoteServices();
-	    		remote.renewPassword(USERNAME);
-	    		result = new LoginBubbleDocsException();
-	    	}
-	    };
-	    
-	    Utilizador user = getUserFromSession(USER_TOKEN);
-	    
-	    String oldPassword = user.getPassword();
-	    String newPassword;
-
-	    
-	    try {
-	    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(USER_TOKEN);
-		    removeUserFromSession(USER_TOKEN);	    	
-	    	service.execute();
-	    	fail();
-	    } catch(LoginBubbleDocsException exs) {
-	    	newPassword = user.getPassword();
-	    	assertEquals(oldPassword, newPassword);	 
-	    }
-	    
-	}
-    
+   
     @Test(expected = UserNotInSessionException.class)
     public void userNotLogged() {
     	    
@@ -145,16 +117,9 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    local.execute();
     }
     
-    @Test(expected = LoginBubbleDocsException.class)
+    @Test
     public void userNotFoundInRemoteService() {
     
-    	/*
-    	 * <QUESTION> 
-    	 * 		!!		Verificar se existe uma maneira melhor de verificar 
-    	 * 		!!		que a password foi restaurada e que lancou a excecao
-    	 * 
-    	 */
-    	
     	new StrictExpectations(){
 	    	
 	    	{
@@ -164,28 +129,13 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    	}
 	    };
 	    
-	    Utilizador user = getUserFromSession(USER_LOCAL_TOKEN);
-	    
-	    String oldPassword = user.getPassword();
-	    String newPassword = null;
-	    
 	    try {
 	    	RenewPasswordIntegrator local = new RenewPasswordIntegrator(USER_LOCAL_TOKEN);
 	    	local.execute();
+	    	fail();
 	    } catch (LoginBubbleDocsException e) {
-	    	newPassword = user.getPassword();
-	    	assertEquals(oldPassword, newPassword);
-	    	throw new LoginBubbleDocsException();
 	    }
 	    
     }
-    
-    
-    
-    
-    
-    
-    
-    
     
 }

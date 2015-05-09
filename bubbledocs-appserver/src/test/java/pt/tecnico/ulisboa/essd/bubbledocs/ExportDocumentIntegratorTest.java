@@ -31,6 +31,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
 public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 	
     private static int FOLHA_ID;
+    private static String FOLHA_ID_STRING;
     private static String USER_TOKEN;
     private static String USER_TOKEN_NO_ACCESS;
     private static String USER_TOKEN_NOT_IN_SESSION;
@@ -79,6 +80,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		
 		//Preenche a folha (folha1) do user "ab"
 		FOLHA_ID = folha1.getID();
+		FOLHA_ID_STRING = Integer.toString(FOLHA_ID);
 		
 		String conteudoLiteral = "4";
 		folha1.modificarCelula(3,2,conteudoLiteral);
@@ -116,7 +118,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 	 		   
     		{
     			remote = new StoreRemoteServices();
-    			remote.storeDocument("ter", "terFolha",(byte[]) any);
+    			remote.storeDocument("ter", FOLHA_ID_STRING,(byte[]) any);
 		    }
 		};
 		
@@ -181,7 +183,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		new StrictExpectations() {
     		{
     			remote = new StoreRemoteServices();
-    			remote.storeDocument("faa", "terFolha",(byte[]) any);
+    			remote.storeDocument("faa", FOLHA_ID_STRING,(byte[]) any);
 		    }
 		};
 		
@@ -244,7 +246,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 	 		   
     		{
     			remote = new StoreRemoteServices();
-    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+    			remote.storeDocument("doo", FOLHA_ID_STRING,(byte[]) any);
 		    }
 		};
 		
@@ -342,7 +344,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
  		   
     		{
     			remote = new StoreRemoteServices();
-    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+    			remote.storeDocument("doo", FOLHA_ID_STRING,(byte[]) any);
     			result = new RemoteInvocationException();
 		    }
 		};
@@ -359,7 +361,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 	 		   
 	    		{
 	    			remote = new StoreRemoteServices();
-	    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+	    			remote.storeDocument("doo", FOLHA_ID_STRING,(byte[]) any);
 	    			result = new CannotStoreDocumentException("terFolha");
 			    }
 			};
@@ -377,7 +379,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
  		   
     		{
     			remote = new StoreRemoteServices();
-    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+    			remote.storeDocument("doo", FOLHA_ID_STRING,(byte[]) any);
     			result = new CannotStoreDocumentException("terFolha");
 		    }
 		};
