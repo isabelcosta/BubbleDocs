@@ -352,6 +352,13 @@ public class Bubbledocs extends Bubbledocs_Base {
 	public String renewUserToken(String username, String password) {
 		String token = "";
 		
+		try{
+			token = getUserToken(username);			
+		} catch (UserNotInSessionException e ) {
+			// para o caso de ser a primeira vez que é chamada a renewToken
+		}
+		
+		//ciclo que impede a repeticao do novo token com o token antigo
 		String temp;
 		do {
 			temp = username + generateToken();

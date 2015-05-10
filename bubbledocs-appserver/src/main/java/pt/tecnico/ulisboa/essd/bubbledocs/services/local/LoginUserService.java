@@ -27,12 +27,17 @@ public class LoginUserService extends BubbleDocsService {
     
     @Override
     protected void dispatch() throws BubbleDocsException {
+    	Utilizador utilizador;
     	
-    	
- 		Utilizador utilizador = _bd.getUserOfName(_username);
+    	try {
+    		utilizador = _bd.getUserOfName(_username);
+		} catch (LoginBubbleDocsException e) {
+			throw new UnavailableServiceException();
+		}
+ 		
  		
  		if (utilizador == null) {
-				throw new LoginBubbleDocsException();
+				throw new UnavailableServiceException();
 		}
  		
  		if (!_bd.checkLocalPassword(utilizador, _password)) {

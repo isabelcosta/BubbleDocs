@@ -1,8 +1,10 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 
@@ -67,53 +69,13 @@ public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
 		
         Utilizador user = getUserFromSession(service.getUserToken());
         assertEquals(USERNAME, user.getUsername());
+        assertEquals(PASSWORD, user.getPassword());
 
 		int difference = Seconds.secondsBetween(getLastAccessTimeInSession(token), currentTime).getSeconds();
 		
 		
 		assertTrue("Access time in session not correctly set", difference >= 0);
 		assertTrue("diference in seconds greater than expected", difference < 2);
-    }
-    
-    //3
-    @Test
-    public void successLoginTwiceLocal() {
-    	
-    	new StrictExpectations() {
- 		   
-    		
-    		{
-    			remote = new IDRemoteServices();
-    			remote.loginUser(USERNAME, PASSWORD);
-		    }
-		};
-    	
-    	
-    	
-        LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
-        service.execute();
-        
-        String token1 = service.getUserToken();
-        
-    	
-    	new StrictExpectations() {
- 		   
-    		{
-    			remote = new IDRemoteServices();
-    			remote.loginUser(USERNAME, PASSWORD);
-		    }
-		};
-    		
-    		
-    		
-        service.execute();
-        
-        String token2 = service.getUserToken();
-
-        Utilizador user = getUserFromSession(token1);
-        assertNull(user);
-        user = getUserFromSession(token2);
-        assertEquals(USERNAME, user.getUsername());
     }
     
     //2
@@ -145,48 +107,91 @@ public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
         assertNull(user);
         user = getUserFromSession(token2);
         assertEquals(USERNAME, user.getUsername());
+        assertEquals(PASSWORD, user.getPassword());
+    }
+    
+    //3
+    @Test
+    public void successLoginTwiceLocal() {
+    	
+    	new StrictExpectations() {
+ 		   
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, PASSWORD);
+		    }
+		};
+    	
+    	
+    	
+        LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
+        service.execute();
+        
+        String token1 = service.getUserToken();
+        
+        Utilizador user = getUserFromSession(token1);
+        user = getUserFromSession(token1);
+        assertEquals(PASSWORD, user.getPassword());
+        
+        
+    	
+    	new StrictExpectations() {
+ 		   
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, PASSWORD);
+    			result = new RemoteInvocationException();
+		    }
+		};
+    		
+    		
+    		
+        service.execute();
+        
+        String token2 = service.getUserToken();
+
+        user = getUserFromSession(token1);
+        assertNull(user);
+        user = getUserFromSession(token2);
+        assertEquals(USERNAME, user.getUsername());
+        assertEquals(PASSWORD, user.getPassword());
+        
     }
     
     //4
-    @Test(expected = LoginBubbleDocsException.class)	// dar um USER invalido
-    public void loginUnknownUser() {
+    @Test												 	// remote em baixo e não consegue
+    public void remoteExceptionOnce() {						// fazer login pois a pw nunca foi updated
     	
     	new StrictExpectations() {
-    		
-    		{
-    			remote = new IDRemoteServices();
-    			remote.loginUser("jp2", PASSWORD);
-    			result = new LoginBubbleDocsException();
-		    }
-		};
-    		
-    		
-        LoginUserIntegrator service = new LoginUserIntegrator("jp2", PASSWORD);
-        service.execute();	// o remote tem que lancar a excessao, logo -> mockit
-    }
-    
-    //7
-    @Test(expected = LoginBubbleDocsException.class)		// dar a PASSWORD errada
-    public void loginUserWithinWrongPassword() {
+ 		   
     	
-    	new StrictExpectations() {
-    		
     		{
     			remote = new IDRemoteServices();
-    			remote.loginUser(USERNAME, "jp2");
-    			result = new LoginBubbleDocsException();
+    			remote.loginUser(USERNAME, PASSWORD);
+    			result = new RemoteInvocationException();
 		    }
 		};
     	
     	
     	
-    	
-        LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, "jp2");
-        service.execute();
+        LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
+        try {
+        	service.execute();
+        	fail();
+        }catch (UnavailableServiceException e) {
+        	String token1 = service.getUserToken();
+            Utilizador user = getUserFromSession(token1);
+            assertNull("Verificar que o user não ficou logado", user);
+        }
+        
+        
+        
+        
     }
     
     //5
-    @Test(expected = UnavailableServiceException.class)		// quando faz a verificao da password usando a local e é diferente
+    @Test		// quando faz a verificao da password usando a local e é diferente
     public void loginWrongPasswordLocal() {
     	
     	new StrictExpectations() {
@@ -202,6 +207,12 @@ public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
         LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
         service.execute();
         
+        String token1 = service.getUserToken();
+        
+        Utilizador user = getUserFromSession(token1);
+        user = getUserFromSession(token1);
+        assertEquals(PASSWORD, user.getPassword());
+        
         new StrictExpectations() {
     		
     		{
@@ -211,26 +222,180 @@ public class LoginUserIntegratorTest extends BubbleDocsServiceTest {
 		    }
 		};
     	LoginUserIntegrator service1 = new LoginUserIntegrator(USERNAME, "errada");
-        service1.execute();
-    }
 
+    	try {
+        	service1.execute();
+        	fail();
+        }catch (UnavailableServiceException e) {
+        	token1 = service1.getUserToken();
+            user = getUserFromSession(token1);
+            assertNull("Verificar que o user não ficou logado", user);
+        }
+    }
     
     
-    @Test(expected = UnavailableServiceException.class)		// quando faz a verificao da password e nao tem password local
-    public void loginNoLocalPassword() {
+    
+    //6
+    @Test												// dar a PASSWORD null
+    public void loginUserWithinNullPassword() {
     	
     	new StrictExpectations() {
     		
     		{
     			remote = new IDRemoteServices();
-    			remote.loginUser(USERNAME, PASSWORD);
+    			remote.loginUser(USERNAME, null);
+    			result = new LoginBubbleDocsException();
+		    }
+		};
+    	
+    	
+    	
+ 
+        LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, null);
+        
+        try {
+        	service.execute();
+        	fail();
+        }catch (LoginBubbleDocsException e) {
+        	String token = service.getUserToken();
+            Utilizador user = getUserFromSession(token);
+            assertNull("Verificar que o user não ficou logado", user);
+        }
+    }
+    
+    //7
+    @Test												// dar a PASSWORD errada
+    public void loginUserWithinWrongPassword() {
+    	
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(USERNAME, "jp2");
+    			result = new LoginBubbleDocsException();
+		    }
+		};
+    	
+    	
+    	
+ 
+        LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, "jp2");
+        
+        try {
+        	service.execute();
+        	fail();
+        }catch (LoginBubbleDocsException e) {
+        	String token = service.getUserToken();
+            Utilizador user = getUserFromSession(token);
+            assertNull("Verificar que o user não ficou logado", user);
+        }
+    }
+    
+    //8
+    @Test											// dar um USER invalido
+    public void loginInvalidUserLocal() {
+    	
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(null, PASSWORD);
     			result = new RemoteInvocationException();
 		    }
 		};
-        LoginUserIntegrator service = new LoginUserIntegrator(USERNAME, PASSWORD);
-        service.execute();
+    		
+    		
+        LoginUserIntegrator service = new LoginUserIntegrator(null, PASSWORD);
+        
+        try {
+        	service.execute();
+        	fail();
+        }catch (UnavailableServiceException e) {
+        	String token = service.getUserToken();
+            Utilizador user = getUserFromSession(token);
+            assertNull("Verificar que não encontrou o user", user);
+        }
     }
     
     
+    //9
+    @Test											// dar um USER inexistente
+    public void loginUnknownUserLocal() {
+    	
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser("jp2", PASSWORD);
+    			result = new RemoteInvocationException();
+		    }
+		};
+    		
+    		
+        LoginUserIntegrator service = new LoginUserIntegrator("jp2", PASSWORD);
+        
+        try {
+        	service.execute();
+        	fail();
+        }catch (UnavailableServiceException e) {
+        	String token = service.getUserToken();
+            Utilizador user = getUserFromSession(token);
+            assertNull("Verificar que não encontrou o user", user);
+        }
+    }
+    
+  
+    
+    //10
+    @Test											// dar um USER inválido
+    public void loginInvalidUser() {
+    	
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser(null, PASSWORD);
+    			result = new LoginBubbleDocsException();
+		    }
+		};
+    		
+    		
+        LoginUserIntegrator service = new LoginUserIntegrator(null, PASSWORD);
+        
+        try {
+        	service.execute();
+        	fail();
+        }catch (LoginBubbleDocsException e) {
+        	String token = service.getUserToken();
+            Utilizador user = getUserFromSession(token);
+            assertNull("Verificar que não encontrou o user", user);
+        }
+    }
+    
+    //11
+    @Test											// dar um USER invalido
+    public void loginUnknownUser() {
+    	
+    	new StrictExpectations() {
+    		
+    		{
+    			remote = new IDRemoteServices();
+    			remote.loginUser("jp2", PASSWORD);
+    			result = new LoginBubbleDocsException();
+		    }
+		};
+    		
+    		
+        LoginUserIntegrator service = new LoginUserIntegrator("jp2", PASSWORD);
+        
+        try {
+        	service.execute();
+        	fail();
+        }catch (LoginBubbleDocsException e) {
+        	String token = service.getUserToken();
+            Utilizador user = getUserFromSession(token);
+            assertNull("Verificar que não encontrou o user", user);
+        }
+    }
     
 }
