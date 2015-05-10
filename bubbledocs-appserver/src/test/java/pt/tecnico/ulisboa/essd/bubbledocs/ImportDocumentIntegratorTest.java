@@ -11,6 +11,7 @@ import mockit.StrictExpectations;
 
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+import org.jdom2.output.XMLOutputter;
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
@@ -47,7 +48,10 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
     private static String USER_TOKEN_LEITURA;
     private static String USER_TOKEN_ESCRITA;
     private static byte[] _folha1Exportada;
-    private static Integer FOLHA1_ID;
+    private static String TESTE;
+    private static String CONTEUDO_LITERAL = "4";
+    private static String CONTEUDO_ADD = "=ADD(2,3;2)";
+    private static String CONTEUDO_REFERENCIA = "=3;2";
     
 	public void populate4Test() {
 
@@ -78,7 +82,7 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
     	FolhadeCalculo folha1 = createSpreadSheet(user1, "terFolha", 20, 30);
 		FolhadeCalculo folha2 = createSpreadSheet(user2, "migFolha", 40, 11);
 		FolhadeCalculo folhaTeste = createSpreadSheet(user1, "terFolha", 20, 30);
-		
+		bd.darPermissoes("escrita", "ter", "doo", FOLHA_ID);
 
 		/*
 		 * <QUESTION>
@@ -87,22 +91,23 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		 * 
 		 * */
 		
-		FOLHA1_ID = folha1.getID();
-		_folha1Exportada = exportFolhadeCalculo(FOLHA1_ID, USER_TOKEN);
+		FOLHA_ID = folha1.getID();
+		_folha1Exportada = exportFolhadeCalculo(FOLHA_ID, USER_TOKEN_ESCRITA);
+		
 		
 		
 		
 		//Preenche a folha (folha1) do user "ab"
-		FOLHA_ID = folha1.getID();
 		
-		String conteudoLiteral = "4";
-		folha1.modificarCelula(3,2,conteudoLiteral);
 		
-		String conteudoAdd = "=ADD(2,3;2)";
-		folha1.modificarCelula(5,7,conteudoAdd);
 		
-		String conteudoReferencia = "=3;2";
-		folha1.modificarCelula(1,1,conteudoReferencia);
+		folha1.modificarCelula(3,2,CONTEUDO_LITERAL);
+		
+		
+		folha1.modificarCelula(5,7,CONTEUDO_ADD);
+		
+		
+		folha1.modificarCelula(1,1,CONTEUDO_REFERENCIA);
 		
 		
     	//SUCESSDONO
@@ -119,42 +124,75 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
     	
     }
 	
+	public byte[] folhaToByte4Mock(Integer sheetId, String userToken) {
+		Bubbledocs bd = Bubbledocs.getInstance();
+		FolhadeCalculo folha;
+		
+		
+		folha = bd.getFolhaOfId(sheetId);
+		
+		String userNameOfToken = bd.getUsernameOfToken(userToken);
+    	if(folha.podeLer(userNameOfToken) || folha.podeEscrever(userNameOfToken)){
+    		
+//CONVERTER A FOLHA EM BYTES
+			org.jdom2.Document sheetDoc = bd.exportSheet(folha);
+			
+			XMLOutputter xmlOutput = new XMLOutputter();
+			xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
+			String docString = xmlOutput.outputString(sheetDoc);
+			
+			try {
+				return docString.getBytes("UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				System.out.println("export falhou: " + e);
+			}
+    	}
+		return null;
+		
+	}
 	
-	 @Mocked StoreRemoteServices remote;
+	
+	@Mocked StoreRemoteServices remote;
 	 
 	//1
 	@Test
 	public void successDonoExport () {
-		
+		Bubbledocs _bd = Bubbledocs.getInstance();
+		byte[] folhaByte;
+		folhaByte = folhaToByte4Mock(FOLHA_ID, USER_TOKEN_ESCRITA); //guardar a folha em bytes para usar no mock do import
+		//removeSpreadsheet(FOLHA_ID); 						//remover a folha para importar sem estar na bd
 		
 		new StrictExpectations() {
 	 		   
     		{
     			remote = new StoreRemoteServices();
-    			remote.loadDocument("ter", "terFolha");
+    			remote.loadDocument("doo", "terFolha");
+    			result = folhaByte;
 		    }
 		};
 		
-		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA1_ID, USER_TOKEN);
+		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
 		importDocument.execute();
 		
+		Integer newSheetId = importDocument.getResult();
+		FolhadeCalculo folhaImportada = _bd.getFolhaOfId(newSheetId);
 		
-		/*
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN);
-		exportDocument.execute();
+		assertEquals(folhaImportada.getDono(), "doo");
+		assertEquals(folhaImportada.getNomeFolha(), "terFolha");
+		assertEquals(folhaImportada.getLinhas().toString(), "20");
+		assertEquals(folhaImportada.getColunas().toString(), "30");
+		assertEquals(folhaImportada.getDataCriacao().toString(), FOLHA_TESTE_DATA);
+		assertEquals(folhaImportada.getCelulaEspecifica(3, 2).getConteudo().toString(), CONTEUDO_LITERAL);
+		assertEquals(folhaImportada.getCelulaEspecifica(1, 1).getConteudo().toString(), CONTEUDO_REFERENCIA);
+		assertEquals(folhaImportada.getCelulaEspecifica(5, 7).getConteudo().toString(), CONTEUDO_ADD);
+		assertEquals(folhaImportada.getCelulaSet().size(), 3);
 		
-		org.jdom2.Document doc = null;
 		
-		try {
-			doc = byteToJdomDoc(exportDocument);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		*/
+		
 		
 			
 	}
-	//2
+	/*//2
 	@Test
 	public void successUserReadExport () {
 		
@@ -383,4 +421,5 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
 	}
 	
 	
+*/
 }

@@ -15,6 +15,7 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 	private String _username;
 	private String _userToken;
 	private byte[] _doc;
+	private Integer _result;
 	
 	public ImportDocumentIntegrator(Integer sheetId, String userToken) {
 		_sheetId = sheetId;
@@ -61,5 +62,10 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 														// _doc esta sempre a NULL
 		ImportDocumentService local = new ImportDocumentService(_doc, _userToken);
 		local.execute(); // se _doc Null lanca CannotLoad..
+		_result = local.getResult();
+	}
+	
+	public Integer getResult() {
+		return _result;
 	}
 }

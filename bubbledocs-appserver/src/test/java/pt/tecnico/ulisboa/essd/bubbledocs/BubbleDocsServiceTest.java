@@ -20,7 +20,9 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
 
 public class BubbleDocsServiceTest {
-
+	//protected Bubbledocs _bd = Bubbledocs.getInstance();
+	
+	
     @Before
     public void setUp() throws Exception {
 
@@ -207,4 +209,10 @@ public class BubbleDocsServiceTest {
 		}
 		return resultTemp;
     }
+    
+    public void removeSpreadsheet(Integer sheetId) {
+    	Bubbledocs bd = Bubbledocs.getInstance();
+    	FolhadeCalculo folha = bd.getFolhaOfId(sheetId);
+    	bd.removeFolhas(folha);
+	}
 }

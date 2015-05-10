@@ -239,6 +239,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 																// igual ao numero de celulas na folha
 		
 	}
+	
 	//3
 	@Test
 	public void successUserWriteExport () {
@@ -309,18 +310,6 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_NO_ACCESS);
 		exportDocument.execute();
 	}
-	//8
-	@Test(expected = InvalidTokenException.class)
-	public void emptyTokenExport () {
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, EMPTY_TOKEN);
-		exportDocument.execute();
-	}
-	 //7
-	@Test(expected = UserNotInSessionException.class)
-	public void invalidSessionExport () {
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_NOT_IN_SESSION);
-		exportDocument.execute();
-	}
 	
 	//5
 	@Test(expected = SpreadSheetDoesNotExistException.class)
@@ -332,6 +321,21 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 	@Test(expected = IdFolhaInvalidoException.class)
 	public void invalidIdExport() {
 		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID_NEGATIVE, USER_TOKEN);
+		exportDocument.execute();
+	}
+	
+	//7
+	@Test(expected = UserNotInSessionException.class)
+	public void invalidSessionExport () {
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_NOT_IN_SESSION);
+		exportDocument.execute();
+	}
+	
+	
+	//8
+	@Test(expected = InvalidTokenException.class)
+	public void emptyTokenExport () {
+		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, EMPTY_TOKEN);
 		exportDocument.execute();
 	}
 

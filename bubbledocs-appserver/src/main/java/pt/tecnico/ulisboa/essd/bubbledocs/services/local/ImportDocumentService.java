@@ -20,6 +20,7 @@ public class ImportDocumentService extends BubbleDocsService {
 	private Bubbledocs _bd = Bubbledocs.getInstance();
 	private byte[] _folha;
 	private String _userToken;
+	private Integer _result;
 	
 	public ImportDocumentService(byte[] folha, String userToken) {
 		_folha = folha;
@@ -60,8 +61,7 @@ public class ImportDocumentService extends BubbleDocsService {
 		 * chamar a funcao que importa o jdomDoc para a base de dados do programa
 		 */
 		
-		_bd.recoverFromBackup(_jdomDoc, _userToken);
-		
+		_result = _bd.recoverFromBackup(_jdomDoc, _userToken);
 	}
 	
 	public org.w3c.dom.Document loadXML(String xml) {
@@ -75,5 +75,9 @@ public class ImportDocumentService extends BubbleDocsService {
 			e.printStackTrace();
 		}
 		return doc;
+	}
+	
+	public Integer getResult() {
+		return _result;
 	}
 }

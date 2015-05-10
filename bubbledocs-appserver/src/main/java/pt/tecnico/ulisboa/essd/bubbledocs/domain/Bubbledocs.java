@@ -371,12 +371,12 @@ public class Bubbledocs extends Bubbledocs_Base {
 	}
 	
 	@Atomic
-    public void recoverFromBackup(org.jdom2.Document jdomDoc, String userToken) {
+    public Integer recoverFromBackup(org.jdom2.Document jdomDoc, String userToken) {
     	String nomeFolha = jdomDoc.getRootElement().getAttributeValue("nome");
     	int linhas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("linhas"));
     	int colunas = Integer.parseInt(jdomDoc.getRootElement().getAttributeValue("colunas"));
     	String data = jdomDoc.getRootElement().getAttributeValue("data");
-    	
+    	Integer sheetId = null;
     	  	
     	
     	//caso nao tenha encontrado a folha cria uma nova
@@ -388,8 +388,9 @@ public class Bubbledocs extends Bubbledocs_Base {
     			
     			folha.setDataCriacao(new LocalDate(data));
 	    		folha.importFromXML(jdomDoc.getRootElement());
+	    		sheetId = folha.getID();
     		}
-    	
+    	return sheetId;
     }
 	
 	public void addFolhaExportada4User (Integer id, String token) {
