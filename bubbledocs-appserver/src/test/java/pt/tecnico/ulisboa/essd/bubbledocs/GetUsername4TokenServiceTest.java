@@ -7,8 +7,6 @@ import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetUsername4TokenService;
 
 public class GetUsername4TokenServiceTest extends BubbleDocsServiceTest {
@@ -17,7 +15,6 @@ public class GetUsername4TokenServiceTest extends BubbleDocsServiceTest {
 	private String ars;
 
 	private static final String USERNAME = "ars";
-	private static final String TOKEN_INVALID = "no-one";
 	private static final String EMPTY_TOKEN = "";
 	private static final String EMAIL = "pedro@tecnico.ulisboa.pt";
 	private static final String NAME = "António Rito Silva";
@@ -39,15 +36,6 @@ public class GetUsername4TokenServiceTest extends BubbleDocsServiceTest {
 
 		assertEquals(user.getUsername(), userToken.getUsername());
 
-	}
-
-	//Utilizador fora da sessão
-
-	@Test(expected = UserNotInSessionException.class)
-	public void userOutOfSession() {
-
-		GetUsername4TokenService userToken = new GetUsername4TokenService(TOKEN_INVALID);
-		userToken.execute();
 	}
 
 
