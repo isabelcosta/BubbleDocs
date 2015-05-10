@@ -31,12 +31,12 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 		try {
 			remote.renewPassword(bd.getUsernameOfToken(_userToken));
 			
-			} catch (RemoteInvocationException rie) {
-				throw new UnavailableServiceException();
-		
-			} catch (LoginBubbleDocsException ex) {
-				throw new LoginBubbleDocsException();
-			}
+		} catch (RemoteInvocationException rie) {
+			throw new UnavailableServiceException();
+	
+		} catch (LoginBubbleDocsException ex) {
+			throw new LoginBubbleDocsException();
+		}
 		
 		
 		/*
@@ -48,9 +48,7 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 		_local = new RenewPasswordService(_userToken);
 		_local.execute();
 		
-		
-		
-			}
+	}
 	
 	
 }
