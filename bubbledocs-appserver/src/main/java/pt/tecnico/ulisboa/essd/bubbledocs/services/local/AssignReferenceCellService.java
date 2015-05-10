@@ -16,9 +16,9 @@ public class AssignReferenceCellService extends ReadAndWritePermissionsService {
 
     public AssignReferenceCellService(String userToken, int docId, String cellId, String reference) {
     	super(userToken, docId, true);
-        this._idFolha = docId;
-        this._idCelula = cellId;
-        this._referencia = reference;
+        _idFolha = docId;
+        _idCelula = cellId;
+        _referencia = reference;
 
     }
 

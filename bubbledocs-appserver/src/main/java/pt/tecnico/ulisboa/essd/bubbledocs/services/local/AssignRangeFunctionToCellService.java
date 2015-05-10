@@ -13,9 +13,9 @@ public class AssignRangeFunctionToCellService extends ValidSessionsService {
     public AssignRangeFunctionToCellService(String userToken, int docId, String idCelula, String rangeFunction) {
 	
     	super(userToken);
-    	this._functionToAssign = rangeFunction;
-        this._cellToFill = idCelula;
-        this._folhaId = docId;
+    	_functionToAssign = rangeFunction;
+        _cellToFill = idCelula;
+        _folhaId = docId;
     }
     
     @Override

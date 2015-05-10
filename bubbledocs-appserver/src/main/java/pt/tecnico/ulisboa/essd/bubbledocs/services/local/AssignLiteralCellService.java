@@ -15,9 +15,9 @@ public class AssignLiteralCellService extends ReadAndWritePermissionsService {
     public AssignLiteralCellService(String userToken, int docId, String cellId, String literal) {
 	
     	super(userToken, docId, true);
-    	this._literalToAssign = literal;
-        this._cellToFill = cellId;
-        this._folhaId = docId;
+    	_literalToAssign = literal;
+        _cellToFill = cellId;
+        _folhaId = docId;
     }
 
     @Override

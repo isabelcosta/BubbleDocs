@@ -14,9 +14,9 @@ public class AssignBinaryFunctionToCellService extends ReadAndWritePermissionsSe
     public AssignBinaryFunctionToCellService(String userToken, int docId, String cellId, String binaryFunction) {
 	
     	super(userToken, docId, true);
-    	this._functionToAssign = binaryFunction;
-        this._cellToFill = cellId;
-        this._folhaId = docId;
+    	_functionToAssign = binaryFunction;
+        _cellToFill = cellId;
+        _folhaId = docId;
     }
 
     @Override
@@ -24,7 +24,7 @@ public class AssignBinaryFunctionToCellService extends ReadAndWritePermissionsSe
     		
 		FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
 
-    	int[] linhaColuna = null;
+		int[] linhaColuna = null;
 
 		linhaColuna = Parser.parseEndereco(_cellToFill, folha);
 
