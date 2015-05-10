@@ -7,7 +7,8 @@ public class UpdateUserPasswordService extends BubbleDocsService {
 	
 	private String _username;
 	private String _password;
-	private Bubbledocs _bd; 
+	private Bubbledocs _bd;
+	private String _userToken;
 	
 	public UpdateUserPasswordService(String username, String password) {
 		_username = username;
@@ -19,7 +20,12 @@ public class UpdateUserPasswordService extends BubbleDocsService {
 		
 		_bd = Bubbledocs.getInstance();
 		_bd.setUserPassword(_username, _password);
+		_userToken = _bd.renewUserToken(_username, _password);
+	}
 
+	public String getUserToken() {
+
+		return _userToken;
 	}
 
 }

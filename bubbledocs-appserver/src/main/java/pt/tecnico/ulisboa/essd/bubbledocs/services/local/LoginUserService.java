@@ -15,7 +15,7 @@ public class LoginUserService extends BubbleDocsService {
     private String _result;
     private String _username;
     private String _password;
-    private Bubbledocs _bd;
+    private Bubbledocs _bd = Bubbledocs.getInstance();
     
 
     public LoginUserService(String username, String password) throws LoginBubbleDocsException, UnavailableServiceException {
@@ -36,7 +36,7 @@ public class LoginUserService extends BubbleDocsService {
 		}
  		
  		if (!_bd.checkLocalPassword(utilizador, _password)) {
- 			throw new LoginBubbleDocsException();
+ 			throw new UnavailableServiceException();
 		}
  		
 		_result = _bd.renewUserToken(_username, _password);

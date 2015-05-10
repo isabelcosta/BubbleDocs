@@ -13,6 +13,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
@@ -399,5 +400,18 @@ public class Bubbledocs extends Bubbledocs_Base {
 			}
 		}
 		return false;
+	}
+
+	public String getUserToken(String username) {
+		
+		if(username == null || username == ""){
+    		throw new InvalidUsernameException();
+    	}
+    	for(Token tokenObjecto : getTokensSet()){
+    		if (tokenObjecto.getUsername().equals(username))
+    			return tokenObjecto.getToken();
+    	}
+		
+		throw new UserNotInSessionException(username);
 	}
 }
