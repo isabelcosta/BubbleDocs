@@ -27,4 +27,12 @@ public class FuncaoBinaria extends FuncaoBinaria_Base {
 		 deleteDomainObject();
 		 
 	 }
+	 
+	 public String contentValue(){
+		 if(getValor() == null){
+			 return "#VALUE";
+		 } else {
+			 return getValor() + "";
+		 } 
+	 }
 }

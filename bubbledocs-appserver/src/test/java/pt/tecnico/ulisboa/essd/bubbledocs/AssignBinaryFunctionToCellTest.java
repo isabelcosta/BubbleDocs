@@ -64,6 +64,7 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
 		String conteudoAdd = "=ADD(2,3;2)";
 		folha1.modificarCelula(5,7,conteudoAdd);
 		
+		
 		//Protege celula 4;8
 		folha1.protegeCelula(4, 8, true);
 
@@ -123,13 +124,35 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
 		assertEquals(FUNCAO_BINARIA_COM_REFERENCIA_VAZIA, service.getResult());
     }    
     
-//    @Test
-//    public void successBinaryFunctionValue() {
-//    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID, FUNCAO_BINARIA_COM_LITERAIS_VALIDOS);
-//        service.execute();
-//
-//		assertEquals("12", cell.getConteudo().getValor().toString());
-//    } 
+    //Testa a funcao MUL com dois literais
+    @Test
+    public void successBinaryFunctionValue1() {
+    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID, FUNCAO_BINARIA_COM_LITERAIS_VALIDOS);
+        service.execute();
+
+		assertEquals("12", service.getBubbleDocs().getFolhaOfId(DOC_ID).getCell(3, 2).getConteudo().contentValue());
+    } 
+    
+    //Testa a funcao ADD com uma referencia invalida
+    @Test
+    public void successBinaryFunctionValue2() {
+    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID, "=ADD(3,4;4)");
+        service.execute();
+        
+		assertEquals("#VALUE", service.getBubbleDocs().getFolhaOfId(DOC_ID).getCell(3, 2).getConteudo().contentValue());
+    }    
+  
+    
+    //Testa a funcao SUB com uma referencia valida
+    @Test
+    public void successBinaryFunctionValue3() {
+    	//cell 3;2 tenho o literal 4
+    	// SUB 4,3 = 1
+    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID_VAZIA, "=SUB(3;2,3)");
+        service.execute();
+        
+		assertEquals("1", service.getBubbleDocs().getFolhaOfId(DOC_ID).getCell(1, 1).getConteudo().contentValue());
+    }   
     
     /*
      * Testes falhados limites da folha

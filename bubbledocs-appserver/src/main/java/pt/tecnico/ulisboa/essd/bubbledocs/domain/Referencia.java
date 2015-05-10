@@ -42,5 +42,13 @@ public class Referencia extends Referencia_Base {
 	    Integer res = getCelularef().getConteudo().getValor();
 	    	
 	    return res;
-	    }
+	  }
+	  
+	  public String contentValue(){
+		  if(getValor() == null){
+			  return "#VALUE";
+		  } else {
+			  return getValor() + "";
+		  }
+	  }
 }

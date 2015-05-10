@@ -208,18 +208,22 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	} else {
         	return "()";
     	}
-//    	for(Celula cell: getCelulaSet()){
-//    		
-//			int l = cell.getLinha();
-//			int c = cell.getColuna();
-//			
-//			if (linha==l && coluna==c){
-//				
-//			}
-//    	}
-//    	
-//    	return "()";
     }
+    /* 
+     * Devolver uma string com o valor do conteudo de uma celula 
+     * 
+     * Recebe: dois inteiros (linha:coluna)
+     **/  
+    public String getCellContentValue(int linha,int coluna){
+    	Celula cell = this.getCell(linha, coluna);
+    	
+    	if(cell.getConteudo() != null){
+    		return cell.getConteudo().contentValue();
+    	} else {
+        	return "()";
+    	}
+    }
+    
     
     
     // EXCEPCAO-CELULA

@@ -24,5 +24,8 @@ public class Conteudo extends Conteudo_Base {
 		return null;		
 	}
 
+	public String contentValue(){
+		return null;
+	}
    
 }

@@ -30,7 +30,7 @@ public class GetSpreadSheetContentService extends ReadAndWritePermissionsService
 			
 			for(int i=1; i < maxLinha; i++){
 				for(int k=1; k < maxColuna; k++){
-					result[i][k]= folha.getCellContentToString(i, k);
+					result[i][k]= folha.getCellContentValue(i, k);
 				}
 			}
 			
