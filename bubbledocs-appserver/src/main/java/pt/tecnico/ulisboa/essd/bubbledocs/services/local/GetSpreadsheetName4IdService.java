@@ -16,7 +16,7 @@ public class GetSpreadsheetName4IdService extends BubbleDocsService {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-		_bd.getSpreadsheetName4Id(_sheetId);
+		_result=_bd.getSpreadsheetName4Id(_sheetId);
 	}
 
 	public String getResult () {
