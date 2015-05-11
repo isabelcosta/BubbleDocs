@@ -2,7 +2,6 @@ package pt.tecnico.ulisboa.essd.bubbledocs;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 

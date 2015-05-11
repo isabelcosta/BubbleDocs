@@ -22,27 +22,36 @@ public abstract class ReadAndWritePermissionsService extends ValidSessionsServic
 
 	protected void dispatch_session() throws BubbleDocsException {
 		
-		if(_flag){ //pode ler
+	
+		
+		if(_flag){ //pode escrever
 			_bd.canWrite(_userToken,_docId);
 			
-		} else { //pode escrever ou ler
-			
+		} else { //pode ler
+
 			/* e é isso
 			 * como o canWrite lanca uma excecao quando o user nao tem premissao de escrita, e ainda queremos testar a de leitura, temos que fazer catch dessa excecao
 			 * para que possamos testar a leitura, so caso falhe a leitura é que a excessao entao é de facto lancada, dai so ter 1 try catch
 			 */
-			try {
+			/*try {
 				_bd.canWrite(_userToken,_docId);
 				// caso nao lance excessao quer dizer que pode ler, logo saimos do metodo
 				return;
 			}
 			catch (UnauthorizedOperationException ex) {
 			}
-
-			_bd.canRead(_userToken, _docId);
+		 */
+			try {
 				
-			}		
+			_bd.canRead(_userToken, _docId);
+			
+			} catch (UnauthorizedOperationException ex){
+				throw ex;
+			}	
+		}
+		
 		dispatch_read_and_write();
+		
 		}
 		
 	

@@ -1,8 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 
 public class GetUsername4TokenService extends BubbleDocsService {
 
@@ -19,7 +17,7 @@ public class GetUsername4TokenService extends BubbleDocsService {
 		
 	}
 
-	public String getUsername() {
+	public String getResult() {
 		return _result;
 	}
 	

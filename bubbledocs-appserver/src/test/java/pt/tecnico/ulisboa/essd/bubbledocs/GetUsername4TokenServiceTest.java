@@ -12,7 +12,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetUsername4TokenServic
 public class GetUsername4TokenServiceTest extends BubbleDocsServiceTest {
 
 	// the tokens
-	private String ars;
+	private String token;
 
 	private static final String USERNAME = "ars";
 	private static final String EMPTY_TOKEN = "";
@@ -25,16 +25,16 @@ public class GetUsername4TokenServiceTest extends BubbleDocsServiceTest {
 	public void populate4Test() {
 
 		user = createUser(USERNAME, EMAIL, NAME);
-		ars = addUserToSession(USERNAME);
+		token = addUserToSession(USERNAME);
 	}
 
 	@Test
 	public void success() {
 
-		GetUsername4TokenService userToken = new GetUsername4TokenService(ars);
+		GetUsername4TokenService userToken = new GetUsername4TokenService(token);
 		userToken.execute();
 
-		assertEquals(user.getUsername(), userToken.getUsername());
+		assertEquals(user.getUsername(), userToken.getResult());
 
 	}
 
@@ -47,4 +47,6 @@ public class GetUsername4TokenServiceTest extends BubbleDocsServiceTest {
 		GetUsername4TokenService userToken = new GetUsername4TokenService(EMPTY_TOKEN);
 		userToken.execute();
 	}
+	
+	
 }
