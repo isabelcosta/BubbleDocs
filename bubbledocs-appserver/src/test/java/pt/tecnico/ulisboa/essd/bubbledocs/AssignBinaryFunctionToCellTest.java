@@ -71,14 +71,14 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
 		//Preenche a folha (folha2) do user "pi"
 		DOC_ID_SEM_PERMISSAO = folha2.getID();
 		String conteudoRef = "=3;2";
-    	folha2.modificarCelula(2,7,conteudoRef);   			
-    	
-    	//"tep" da permissoes de escrita a "mit" para preencher a sua folha
-    	bd.darPermissoes("escrita", "tep", "mit", DOC_ID);
-    	
-    	bd.darPermissoes("leitura", "mit", "tep", DOC_ID_SEM_PERMISSAO);
-    	
-    }
+		folha2.modificarCelula(2, 7, conteudoRef);
+
+		// "tep" da permissoes de escrita a "mit" para preencher a sua folha
+		bd.darPermissoes("escrita", "tep", "mit", DOC_ID);
+
+		bd.darPermissoes("leitura", "mit", "tep", DOC_ID_SEM_PERMISSAO);
+
+	}
 
     /*
      * Testes de sucesso
