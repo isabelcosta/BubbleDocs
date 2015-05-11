@@ -202,7 +202,6 @@ public class BubbleDocsServiceTest {
 //ADICIONAR AO USER ID DA FOLHA QUE EXPORTOU
 				bd.addFolhaExportada4User(sheetId, userToken);
 				
-				
 	    	}
 		} catch (ReferenciaInvalidaException | OutOfBoundsException e) {
 			System.err.println("Couldn't export Sheet: " + e);

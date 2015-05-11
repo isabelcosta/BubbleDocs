@@ -12,6 +12,7 @@ public class CanImportDocumentService extends ValidSessionsService {
 	
 	public CanImportDocumentService(Integer sheetId, String userToken) {
 		super(userToken);
+		_sheetId = sheetId;
 	}
 
 	@Override

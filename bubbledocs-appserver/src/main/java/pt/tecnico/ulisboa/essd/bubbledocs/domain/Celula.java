@@ -64,8 +64,16 @@ public class Celula extends Celula_Base {
 					return;
 				}
 			}
-			
+
+			for(Celula c : getFolhadecalculoC().getCelulaSet()){
+				if (c.getColuna() == colunaRef && c.getLinha() == linhaRef) {
+					setConteudo(new Referencia(c));
+					getFolhadecalculoC().addCelula(c);
+					return;
+				}
+			}
 			cell = new Celula(linhaRef,colunaRef,null);
+			
 			setConteudo(new Referencia(cell));
 			getFolhadecalculoC().addCelula(cell);
 			
@@ -125,26 +133,47 @@ public class Celula extends Celula_Base {
 				//Célula com conteúdo nulo
 				//Solução pode ser usar o observer
 				if(encCelArg1==0){
-					cell = new Celula(linhaRefArg1,colunaRefArg1,null);
-					arg1 = new Referencia(cell);
-					getFolhadecalculoC().addCelula(cell);
+					Boolean found = false;
+					
+					for(Celula c : getFolhadecalculoC().getCelulaSet()){
+						if (c.getColuna() == linhaRefArg1 && c.getLinha() == colunaRefArg1) {
+							arg1 = new Referencia(c);
+							getFolhadecalculoC().addCelula(c);
+							found = true;
+						}
+					}
+					
+					if (!found) {
+						cell = new Celula(linhaRefArg1,colunaRefArg1,null);
+						arg1 = new Referencia(cell);
+						getFolhadecalculoC().addCelula(cell);
+					}
 				}
 			}
 			if (isRefArg2==1)
 			{
 				for (Celula cel : getFolhadecalculoC().getCelulaSet()){
-					if (cel.getColuna().equals(linhaRefArg2) && cel.getLinha().equals(colunaRefArg2)){
-								arg2 = new Referencia(cel);																// se celula nao existir, cria
+					if (cel.getColuna().equals(colunaRefArg2) && cel.getLinha().equals(linhaRefArg2)){
+								arg2 = new Referencia(cel);
+								encCelArg1 = 1;
+								// se celula nao existir, cria
 							}
 						}
-				//<WARNING>
-				//Referência não existe 
-				//Célula com conteúdo nulo
-				//Solução pode ser usar o observer
 				if(encCelArg2==0){
+					Boolean found = false;
+					for(Celula c : getFolhadecalculoC().getCelulaSet()){
+						if (c.getColuna() == colunaRefArg2 && c.getLinha() == linhaRefArg2) {
+							arg2 = new Referencia(c);
+							getFolhadecalculoC().addCelula(c);
+							found = true;
+						}
+					}
+					
+					if (!found) {
 					cell = new Celula(linhaRefArg2,colunaRefArg2,null);
 					arg2 = new Referencia(cell);
 					getFolhadecalculoC().addCelula(cell);
+					}
 				}
 			}
 			switch(c1.get(0).getName()) {

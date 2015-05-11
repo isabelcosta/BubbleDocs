@@ -52,26 +52,30 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     public void importFromXML(Element folhadecalculoElement) {
     	Element folhadecalculo = folhadecalculoElement.getChild("celulas");
     	
-
     	
-    	for (Element celula : folhadecalculo.getChildren("celula")) {
-
-    		Integer linha = Integer.parseInt(celula.getAttributeValue("linha"));
-    		Integer coluna = Integer.parseInt(celula.getAttributeValue("coluna"));
-    		Boolean entrou=false;
-			for (Celula cel : getCelulaSet()){
-				if (cel.getLinha().equals(linha) && cel.getColuna().equals(coluna)) {
-			    	 cel.importFromXML(celula, folhadecalculoElement);
-			    	 entrou = true;
+    	
+    	if (folhadecalculo != null)
+	    	for (Element celula : folhadecalculo.getChildren("celula")) {
+	
+	    		Integer linha = Integer.parseInt(celula.getAttributeValue("linha"));
+	    		Integer coluna = Integer.parseInt(celula.getAttributeValue("coluna"));
+	    		
+	    		Boolean entrou=false;
+	
+	    		
+	    		for (Celula cel : getCelulaSet()){
+					if (cel.getLinha().equals(linha) && cel.getColuna().equals(coluna)) {
+				    	 cel.importFromXML(celula, folhadecalculoElement);
+				    	 entrou = true;
+					}
 				}
-			}
-			if (!entrou) {
-				Celula c = new Celula(0, 0, null);
-	    	    addCelula(c);
-	    	    c.importFromXML(celula, folhadecalculoElement);
-			}
-    	
-    	}
+				if (!entrou) {
+					Celula c = new Celula(0, 0, null);
+		    	    addCelula(c);
+		    	    c.importFromXML(celula, folhadecalculoElement);
+				}
+	    	
+	    	}
     }
     
     //FOLHA

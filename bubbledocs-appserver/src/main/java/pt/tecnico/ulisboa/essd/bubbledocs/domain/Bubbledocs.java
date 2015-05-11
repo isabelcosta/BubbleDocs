@@ -1,6 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import org.joda.time.LocalDate;
@@ -260,20 +261,39 @@ public class Bubbledocs extends Bubbledocs_Base {
     	throw new SpreadSheetDoesNotExistException();
     }
     
-	 public String getSpreadsheetName4Id(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
+	 public String getExportedSpreadsheetName4Id(Integer id, String userToken) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
 	    	
 	    	if(id < 0 || id == null){
 				throw new IdFolhaInvalidoException();
 			}
 	    	
+	    	Utilizador user = getUserFromToken(userToken);
+	    	String nomeFolha = user.getFolhasExportadas().get(id);
+	    	
+	    	if (nomeFolha != null) {
+	    		return nomeFolha;
+	    	}
+	    	
+	    	throw new SpreadSheetDoesNotExistException();
+	    }
+    
+
+	 public String getSpreadsheetName4Id(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
+	    	
+	    	if(id < 0 || id == null){
+				throw new IdFolhaInvalidoException();
+			}
+
+	     	
 	    	for( FolhadeCalculo folhaIter : getFolhasSet()  ){
 	    		if(folhaIter.getID() == id){
 	    			return folhaIter.getNomeFolha();
 	    		}
 	    	}
+	    	
 	    	throw new SpreadSheetDoesNotExistException();
-	    }
-    
+	    } 
+	 
     public org.jdom2.Document exportSheet(FolhadeCalculo folha){
     	org.jdom2.Document jdomDoc = new org.jdom2.Document();
     	jdomDoc.setRootElement(folha.exportToXML());
@@ -384,7 +404,7 @@ public class Bubbledocs extends Bubbledocs_Base {
  		serviceFolha.execute();
     	
     	for (FolhadeCalculo folha : getFolhasSet())
-    		if(folha.getNomeFolha().equals(nomeFolha)){
+    		if(folha.getID() == serviceFolha.getResult()){
     			
     			folha.setDataCriacao(new LocalDate(data));
 	    		folha.importFromXML(jdomDoc.getRootElement());
@@ -394,20 +414,14 @@ public class Bubbledocs extends Bubbledocs_Base {
     }
 	
 	public void addFolhaExportada4User (Integer id, String token) {
+		String nomeFolha = getSpreadsheetName4Id(id);
 		
-		getUserFromToken(token).addFolhaExportada(id);
+		getUserFromToken(token).addFolhaExportada(id, nomeFolha);
 	}
 	
 	public Boolean checkFolhaExportada4User (Integer id, String token) {
-	
-		ArrayList<Integer> listaFolhasExportadas = getUserFromToken(token).getFolhasExportadas();
-		
-		for (Integer folhaExportadaId : listaFolhasExportadas) {
-			if (folhaExportadaId == id) {
-				return true;
-			}
-		}
-		return false;
+		HashMap<Integer, String> listaFolhasExportadas = getUserFromToken(token).getFolhasExportadas();
+		return listaFolhasExportadas.containsKey(id);
 	}
 
 	public String getUserToken(String username) {

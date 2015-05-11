@@ -4,7 +4,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CanImportDocumentService;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetSpreadsheetName4IdService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetExportedSpreadsheetName4IdService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetUsername4TokenService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.ImportDocumentService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
@@ -25,7 +25,6 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-
 	// verifica se o user exportou a folha, pois so assim pode importa-la.  E verifica se a sessao é valida
 		CanImportDocumentService permission = new CanImportDocumentService(_sheetId, _userToken);
 		permission.execute();
@@ -35,33 +34,25 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 		userNameService.execute();
 		
 		
-		_username = userNameService.getUsername();
+		_username = userNameService.getResult();
 		
-		
-		GetSpreadsheetName4IdService spreadsheetNameService = new GetSpreadsheetName4IdService(_sheetId);
+		GetExportedSpreadsheetName4IdService spreadsheetNameService = new GetExportedSpreadsheetName4IdService(_sheetId, _userToken);
 		spreadsheetNameService.execute();
 		
 		StoreRemoteServices remote = new StoreRemoteServices();
 		
-		/*
-		 *  <QUESTION>
-		 *  falta verificar se o username tem permissão para importar (se foi ele que exportou, atributo no user)
-		 */
 		
 		try {
 			
-		/*NULL*/
 			_doc = remote.loadDocument(_username, spreadsheetNameService.getResult());
-		/*NULL <QUESTION>*/
 			
 		} catch (RemoteInvocationException e) {
 			throw new UnavailableServiceException();
 		}
 		
 		
-														// _doc esta sempre a NULL
 		ImportDocumentService local = new ImportDocumentService(_doc, _userToken);
-		local.execute(); // se _doc Null lanca CannotLoad..
+		local.execute();
 		_result = local.getResult();
 	}
 	

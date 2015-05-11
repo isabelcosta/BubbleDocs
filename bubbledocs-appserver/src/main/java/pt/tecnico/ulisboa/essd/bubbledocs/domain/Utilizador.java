@@ -1,6 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
@@ -8,7 +9,8 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 
 public class Utilizador extends Utilizador_Base {
 	
-	private ArrayList<Integer> _folhasExportadas = new ArrayList<Integer>();
+	private HashMap<Integer, String> _folhasExportadas = new HashMap<Integer, String>();
+	
 	
     public Utilizador(String nomeUtilizador, String userName, String email) {
         
@@ -39,16 +41,17 @@ public class Utilizador extends Utilizador_Base {
     	}
     }
     
-    public void addFolhaExportada(Integer id) {
+    public void addFolhaExportada(Integer id, String nome) {
     	
     	if (id== null || id < 0) {
     		throw new IdFolhaInvalidoException();
     	}
     	
-    	_folhasExportadas.add(id);
+    	
+    	_folhasExportadas.put(id, nome);
     }
     
-    public ArrayList<Integer> getFolhasExportadas() {
+    public HashMap<Integer, String> getFolhasExportadas() {
     	return _folhasExportadas;
     }
     

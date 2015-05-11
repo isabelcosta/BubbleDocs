@@ -45,7 +45,6 @@ public class ExportDocumentService extends ValidSessionsService{
 				XMLOutputter xmlOutput = new XMLOutputter();
 				xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
 				String docString = xmlOutput.outputString(sheetDoc);
-				System.out.println(docString);
 				
 				try {
 					resultTemp = docString.getBytes("UTF-8");
@@ -54,7 +53,6 @@ public class ExportDocumentService extends ValidSessionsService{
 				}
 //ADICIONAR AO USER ID DA FOLHA QUE EXPORTOU
 				_bd.addFolhaExportada4User(_sheetId, _userToken);
-				
 				_result = resultTemp;
 	    	}
 		} catch (ReferenciaInvalidaException | OutOfBoundsException e) {

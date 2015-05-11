@@ -23,15 +23,12 @@ public class CreateSpreadSheetService extends ValidSessionsService {
     @Override
     protected void dispatch_session() throws BubbleDocsException {
     	
-		
     	String dono = _bd.getUsernameOfToken(_userToken);
-    	
     	FolhadeCalculo folha = new FolhadeCalculo(name, dono, rows, columns);
     	
     	_bd.addFolhas(folha);
     	
     	result = _bd.getIdOfFolha(name);
-		
     }
     
     public int getResult() {

@@ -28,7 +28,7 @@ public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 		GetUsername4TokenService userNameService = new GetUsername4TokenService(_userToken);
 		userNameService.execute();
 
-		String userName = userNameService.getUsername();
+		String userName = userNameService.getResult();
 		
 		StoreRemoteServices remote = new StoreRemoteServices();
 		

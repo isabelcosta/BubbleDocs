@@ -5,26 +5,27 @@ public class SpreadSheetDto implements java.io.Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
-	private int linhas;
-    private int colunas;
-    private String nomeFolha;    
+	private int _linhas;
+    private int _colunas;
+    private String _nomeFolha;    
+    
     public SpreadSheetDto(int linhas, int colunas, String nomeFolha){
     	
-    	this.linhas = linhas;
-    	this.colunas = colunas; 
-    	this.nomeFolha = nomeFolha;
+    	_linhas = linhas;
+    	_colunas = colunas; 
+    	_nomeFolha = nomeFolha;
     }
     
     public int getLinhas(){
-    	return linhas;
+    	return _linhas;
     }
     
     public int getColunas(){
-    	return colunas;
+    	return _colunas;
     }
 	
     public String getNome(){
-    	return nomeFolha;
+    	return _nomeFolha;
     }
-	
+    
 }
