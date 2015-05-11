@@ -43,7 +43,7 @@ public class GetSpreadSheetContentTest extends BubbleDocsServiceTest {
 			
 			//Preenche a folha (sheet) do user "tep"
 			DOC_ID = sheet.getID();
-			String conteudoLiteral = "4";
+			String conteudoLiteral = "1";
 			sheet.modificarCelula(3, 2, conteudoLiteral);
 			
 			String conteudoAdd = "=ADD(2,3;2)";
@@ -58,8 +58,8 @@ public class GetSpreadSheetContentTest extends BubbleDocsServiceTest {
 	        service.execute();            
 	    	
 	      
-	        assertEquals("4", service.getResult()[3][2]);
-	        assertEquals("6", service.getResult()[5][7]);
+	        assertEquals("3", service.getResult()[3][2]);
+	        assertEquals("5", service.getResult()[5][7]);
 	    }
 	   
 	   @Test
