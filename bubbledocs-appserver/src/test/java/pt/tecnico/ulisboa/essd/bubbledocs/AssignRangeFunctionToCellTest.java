@@ -90,23 +90,25 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
   			
     	
 		bd.darPermissoes("escrita", "mas", "jos", FOLHA_ID);
+		
+		bd.darPermissoes("leitura", "jos", "mas", FOLHA_ID_SEM_PERMISSAO);
     	
     }
 
     
     @Test
-    public void success() {
-    	
-    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN, FOLHA_ID, CELL_ID, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+    public void successAssignToFullCell() {
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID_PREENCHIDA, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
         service.execute();
     	
         assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
     }
     
+    
     @Test
     public void successCelulaComoIntervalo() {
     	
-    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN, FOLHA_ID, CELL_ID, FUNCAO_INTERVALO_COM_INTERVALO_CELULA);
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN, FOLHA_ID, CELL_ID_PREENCHIDA, FUNCAO_INTERVALO_COM_INTERVALO_CELULA);
         service.execute();
     	
         assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_CELULA, service.getResult());
@@ -121,13 +123,20 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     }   
     
     @Test
-    public void successAssignToFullCell() {
-    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID_PREENCHIDA, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+    public void successAssignOneIntToEmptyCell() {
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID_VAZIA, FUNCAO_INTERVALO_COM_INTERVALO_CELULA);
         service.execute();
     	
-        assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
-    }
+        assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_CELULA, service.getResult());
+    }  
     
+    @Test
+    public void successPodeEscrever() {
+    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+        service.execute();
+
+		assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
+    }
     
     
     @Test(expected = OutOfBoundsException.class)
