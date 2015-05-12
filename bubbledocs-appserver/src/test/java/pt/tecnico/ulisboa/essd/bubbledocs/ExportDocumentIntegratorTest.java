@@ -171,7 +171,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 			}
 			
 		}
-		assertEquals(folha.getCelulaSet().size(), cellCount/2); // Aqui tens a certeza que passaste por todas as celulas
+		assertEquals(cellCount, folha.getCelulaSet().size()); // Aqui tens a certeza que passaste por todas as celulas
 																// porque viste o numero de celulas iguais
 																// igual ao numero de celulas na folha
 		
@@ -234,7 +234,7 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 			}
 			
 		}
-		assertEquals(folha.getCelulaSet().size(), cellCount/2); // Aqui tens a certeza que passaste por todas as celulas
+		assertEquals(cellCount, folha.getCelulaSet().size()); // Aqui tens a certeza que passaste por todas as celulas
 																// porque viste o numero de celulas iguais
 																// igual ao numero de celulas na folha
 		
@@ -289,17 +289,18 @@ public class ExportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		folha.importFromXML(doc.getRootElement());
 		
 		int cellCount = 0;
+		
 		for(Celula cell : folha.getCelulaSet()){
 			for(Celula cell2 : folha1.getCelulaSet()){
 				if(cell.getLinha() == cell2.getLinha() && cell.getColuna() == cell2.getColuna()){
 					assertEquals(cell.getValor(), cell2.getValor());
 					assertEquals(cell.getConteudo().getClass(), cell2.getConteudo().getClass());
-					cellCount++;					
+					cellCount++;
 				}
 			}
 			
 		}
-		assertEquals(folha.getCelulaSet().size(), cellCount/2); // Aqui tens a certeza que passaste por todas as celulas
+		assertEquals(cellCount, folha.getCelulaSet().size()); // Aqui tens a certeza que passaste por todas as celulas
 																// porque viste o numero de celulas iguais
 																// igual ao numero de celulas na folha
 		

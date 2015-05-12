@@ -10,6 +10,7 @@ import org.joda.time.Minutes;
 
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotLoadDocumentException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
@@ -423,7 +424,20 @@ public class Bubbledocs extends Bubbledocs_Base {
 		HashMap<Integer, String> listaFolhasExportadas = getUserFromToken(token).getFolhasExportadas();
 		return listaFolhasExportadas.containsKey(id);
 	}
-
+	/*
+	public Boolean wasExported (Integer id) {
+		/*
+		 *  procura nos users se alguem exportou aquela folha
+		 *  para ver se o id existe
+		 * 
+		for (Utilizador user : getUtilizadoresSet()) {
+			if (user.getFolhasExportadas().containsKey(id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	 */
 	public String getUserToken(String username) {
 		
 		if(username == null || username == ""){

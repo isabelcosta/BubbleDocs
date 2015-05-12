@@ -1,6 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,6 +18,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Celula;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotLoadDocumentException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotStoreDocumentException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidTokenException;
@@ -37,24 +38,21 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
     private static String USER_TOKEN;
     private static String USER_TOKEN_MIG;
     private static String USER_TOKEN_NOT_IN_SESSION;
-    private static String EMPTY_TOKEN;
-    private static int FOLHA_ID_INEXISTENT = 100;
+    private static int FOLHA_ID_NONEXISTENT = 100;
     private static int FOLHA_ID_NEGATIVE = -100;
     
-    private static String USERNAME1;
-    private static String FOLHA_TESTE;
-    private static int FOLHA_TESTE_LINHAS;
-    private static int FOLHA_TESTE_COLUNAS;
     private static String FOLHA_TESTE_DATA;
-    private static String FOLHA2_TESTE_DATA;
-    private static String USER_TOKEN_LEITURA;
     private static String USER_TOKEN_ESCRITA;
-    private static byte[] _folha1Exportada;
-    private static byte[] _folha2Exportada;
-    private static String TESTE;
     private static String CONTEUDO_LITERAL = "4";
     private static String CONTEUDO_ADD = "=ADD(2,3;2)";
     private static String CONTEUDO_REFERENCIA = "=3;2";
+    
+	/*
+	 * --------------------------------------------------------
+	 *  Populate
+	 * --------------------------------------------------------
+	 */
+    
     
 	public void populate4Test() {
 
@@ -66,62 +64,45 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
     	//Cria users                  userna  pw     name
 		Utilizador user1 = createUser("ter", "te#", "Teresa Palhoto");
     	Utilizador user2 = createUser("mig", "mi#", "Miguel Torrado");
-    	Utilizador user3 = createUser("ree", "re#", "Isabel Costa");
-    	Utilizador user4 = createUser("faa", "fa#", "InÃªs Garcia");
-    	Utilizador user5 = createUser("doo", "do#", "FÃ¡bio Pedro");
+    	createUser("ree", "re#", "Isabel Costa");
+    	createUser("faa", "fa#", "InÃªs Garcia");
+    	createUser("doo", "do#", "FÃ¡bio Pedro");
     	    
     	//Faz o login dos users
     	
     	USER_TOKEN = addUserToSession("ter");
     	USER_TOKEN_MIG = addUserToSession("mig");
-    	USER_TOKEN_LEITURA = addUserToSession("faa");
     	USER_TOKEN_ESCRITA = addUserToSession("doo");
     	
-    	EMPTY_TOKEN = "";
     	USER_TOKEN_NOT_IN_SESSION = addUserToSession("ree");
     	turnTokenInvalid(USER_TOKEN_NOT_IN_SESSION);
     	
     	//cria duas folhas
     	FolhadeCalculo folha1 = createSpreadSheet(user1, "terFolha", 20, 30);
 		FolhadeCalculo folha2 = createSpreadSheet(user2, "migFolha", 40, 11);
-		FolhadeCalculo folhaTeste = createSpreadSheet(user1, "terFolha", 20, 30);
 		
 		FOLHA_ID = folha1.getID();
 		FOLHA2_ID = folha2.getID();
 
 		bd.darPermissoes("escrita", "ter", "doo", FOLHA_ID);
-		_folha1Exportada = exportFolhadeCalculo(FOLHA_ID, USER_TOKEN_ESCRITA);
+		exportFolhadeCalculo(FOLHA_ID, USER_TOKEN_ESCRITA);
 		
 		
 //		bd.darPermissoes("escrita", "mig", "doo", FOLHA2_ID);
 		
-		_folha2Exportada = exportFolhadeCalculo(FOLHA2_ID, USER_TOKEN_MIG);
+		exportFolhadeCalculo(FOLHA2_ID, USER_TOKEN_MIG);
 		
 		
 		
 		
-		//Preenche a folha (folha1) do user "ab"
-		
-		
-		
+		//Preenche a folha (folha1) do user "ter"
 		folha1.modificarCelula(3,2,CONTEUDO_LITERAL);
-		
-		
 		folha1.modificarCelula(5,7,CONTEUDO_ADD);
-		
-		
 		folha1.modificarCelula(1,1,CONTEUDO_REFERENCIA);
 		
 		
     	//SUCESSDONO
-    	USERNAME1 = user1.getUsername();
-    	FOLHA_TESTE = folhaTeste.getNomeFolha();
-    	FOLHA_TESTE_LINHAS = folhaTeste.getLinhas();
-    	FOLHA_TESTE_COLUNAS = folhaTeste.getColunas();
-    	
     	FOLHA_TESTE_DATA = folha1.getDataCriacao().toString();
-    	
-    	FOLHA2_TESTE_DATA = folha2.getDataCriacao().toString();
     	
     	
     	//da "ab" da permissoes de escrita a "pi" para preencher a sua folha
@@ -130,22 +111,37 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
     	
     }
 	
+	
+	/*
+	 * --------------------------------------------------------
+	 *  Funcoes auxiliares
+	 * --------------------------------------------------------
+	 */
+
+// transforma uma folha em bytes para ser usado no mock de uma folha importada
 	public byte[] folhaToByte4Mock(Integer sheetId, String userToken) {
-		Bubbledocs bd = Bubbledocs.getInstance();
-		FolhadeCalculo folha;
 		
+		Bubbledocs bd = Bubbledocs.getInstance();
+		
+		// Folha de calculo associada ao ID
+		FolhadeCalculo folha;
 		folha = bd.getFolhaOfId(sheetId);
 		
+		// userName associado ao Token
 		String userNameOfToken = bd.getUsernameOfToken(userToken);
-    	if(folha.podeEscrever(userNameOfToken) || folha.podeLer(userNameOfToken)){
+    	
+		// caso possa escrever ou ler passa á exportacao do doc
+		if(folha.podeLer(userNameOfToken) || folha.podeEscrever(userNameOfToken)){
     		
-//CONVERTER A FOLHA EM BYTES
+    		// transformar a folha no jdomDoc
 			org.jdom2.Document sheetDoc = bd.exportSheet(folha);
 			
+			// criar com a ajuda do XMLOutputter uma string apartir do jdomDoc
 			XMLOutputter xmlOutput = new XMLOutputter();
 			xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
 			String docString = xmlOutput.outputString(sheetDoc);
 			
+			// por fim transforma-la em bytes
 			try {
 				return docString.getBytes("UTF-8");
 			} catch (UnsupportedEncodingException e) {
@@ -156,12 +152,17 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		
 	}
 	
-	
+	/*
+	 * --------------------------------------------------------
+	 *  TESTES
+	 * --------------------------------------------------------
+	 */
+
 	@Mocked StoreRemoteServices remote;
 	 
 	//1
 	@Test
-	public void successImportWithContent () {
+	public void successImportWithContentTest () {
 		Bubbledocs _bd = Bubbledocs.getInstance();
 		byte[] folhaByte;
 		folhaByte = folhaToByte4Mock(FOLHA_ID, USER_TOKEN_ESCRITA); //guardar a folha em bytes para usar no mock do import
@@ -191,273 +192,115 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		assertEquals(CONTEUDO_ADD, folhaImportada.getCelulaEspecifica(5, 7).getConteudo().toString());
 		assertEquals(3, folhaImportada.getCelulaSet().size());
 		
-		
-		
-		
-		
-			
 	}
 	
 	//2
-		@Test
-		public void successImportEmpty () {
-			Bubbledocs _bd = Bubbledocs.getInstance();
-			byte[] folhaByte;
-			folhaByte = folhaToByte4Mock(FOLHA2_ID, USER_TOKEN_MIG);	//guardar a folha em bytes para usar no mock do import
-			removeSpreadsheet(FOLHA2_ID); 									//remover a folha para importar sem estar na bd
-			
-			new StrictExpectations() {
-		 		   
-	    		{
-	    			remote = new StoreRemoteServices();
-	    			remote.loadDocument("mig", "migFolha");
-	    			result = folhaByte;
-			    }
-			};
-			ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA2_ID, USER_TOKEN_MIG);
-			importDocument.execute();
-			
-			Integer newSheetId = importDocument.getResult();
-			FolhadeCalculo folhaImportada = _bd.getFolhaOfId(newSheetId);
-			
-			
-			assertEquals("mig", folhaImportada.getDono());
-			assertEquals("migFolha", folhaImportada.getNomeFolha());
-			assertEquals("40", folhaImportada.getLinhas().toString());
-			assertEquals("11", folhaImportada.getColunas().toString());
-			assertEquals(FOLHA_TESTE_DATA, folhaImportada.getDataCriacao().toString());
-			assertEquals(0, folhaImportada.getCelulaSet().size());
-			
-		}
-	
-	/*//2
 	@Test
-	public void successUserReadExport () {
+	public void successImportEmptyTest () {
+		Bubbledocs _bd = Bubbledocs.getInstance();
+		byte[] folhaByte;
+		folhaByte = folhaToByte4Mock(FOLHA2_ID, USER_TOKEN_MIG);	//guardar a folha em bytes para usar no mock do import
+		removeSpreadsheet(FOLHA2_ID); 									//remover a folha para importar sem estar na bd
 		
-		new StrictExpectations() {
-    		{
-    			remote = new StoreRemoteServices();
-    			remote.storeDocument("faa", "terFolha",(byte[]) any);
-		    }
-		};
-		
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_LEITURA);
-		exportDocument.execute();
-		
-		org.jdom2.Document doc = null;
-		
-		try {
-			doc = byteToJdomDoc(exportDocument);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
-		 
-		String donoFolha = doc.getRootElement().getAttributeValue("dono");
-		assertEquals(USERNAME1, donoFolha);
-		
-		String nomeFolha = doc.getRootElement().getAttributeValue("nome");
-		assertEquals(FOLHA_TESTE, nomeFolha);
-		
-		int linhas = Integer.parseInt(doc.getRootElement().getAttributeValue("linhas"));
-		assertEquals(FOLHA_TESTE_LINHAS, linhas);
-		
-		int colunas = Integer.parseInt(doc.getRootElement().getAttributeValue("colunas"));
-		assertEquals(FOLHA_TESTE_COLUNAS, colunas);
-		
-		int id = Integer.parseInt(doc.getRootElement().getAttributeValue("id"));
-		assertEquals(FOLHA_ID, id);
-		
-		String data = doc.getRootElement().getAttributeValue("data");
-		assertEquals(FOLHA_TESTE_DATA, data);
-		
-		FolhadeCalculo folha = getSpreadSheet(FOLHA_TESTE);
-		FolhadeCalculo folha1 = getSpreadSheet("terFolha");
-		
-		assertEquals(folha.getCelulaSet().size(), folha1.getCelulaSet().size());
-		
-		folha.importFromXML(doc.getRootElement());
-		
-		int cellCount = 0;
-		for(Celula cell : folha.getCelulaSet()){
-			for(Celula cell2 : folha1.getCelulaSet()){
-				if(cell.getLinha() == cell2.getLinha() && cell.getColuna() == cell2.getColuna()){
-					assertEquals(cell.getValor(), cell2.getValor());
-					assertEquals(cell.getConteudo().getClass(), cell2.getConteudo().getClass());
-					cellCount++;					
-				}
-			}
-			
-		}
-		assertEquals(folha.getCelulaSet().size(), cellCount/2); // Aqui tens a certeza que passaste por todas as celulas
-																// porque viste o numero de celulas iguais
-																// igual ao numero de celulas na folha
-		
-	}
-	//3
-	@Test
-	public void successUserWriteExport () {
 		new StrictExpectations() {
 	 		   
     		{
     			remote = new StoreRemoteServices();
-    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+    			remote.loadDocument("mig", "migFolha");
+    			result = folhaByte;
 		    }
 		};
+		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA2_ID, USER_TOKEN_MIG);
+		importDocument.execute();
+		
+		Integer newSheetId = importDocument.getResult();
+		FolhadeCalculo folhaImportada = _bd.getFolhaOfId(newSheetId);
 		
 		
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
-		exportDocument.execute();
+		assertEquals("mig", folhaImportada.getDono());
+		assertEquals("migFolha", folhaImportada.getNomeFolha());
+		assertEquals("40", folhaImportada.getLinhas().toString());
+		assertEquals("11", folhaImportada.getColunas().toString());
+		assertEquals(FOLHA_TESTE_DATA, folhaImportada.getDataCriacao().toString());
+		assertEquals(0, folhaImportada.getCelulaSet().size());
 		
-		org.jdom2.Document doc = null;
+	}
+		
+		
+	//3
+	@Test
+	public void failUserDidntExportedTest () {
+		
+		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA2_ID, USER_TOKEN);
 		
 		try {
-			doc = byteToJdomDoc(exportDocument);
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			importDocument.execute();
+			fail();
+		} catch (CannotLoadDocumentException e) {
+			assertNull("Verificar que a folha não foi importada ", importDocument.getResult());
 		}
-		 
-		String donoFolha = doc.getRootElement().getAttributeValue("dono");
-		assertEquals(USERNAME1, donoFolha);
-		
-		String nomeFolha = doc.getRootElement().getAttributeValue("nome");
-		assertEquals(FOLHA_TESTE, nomeFolha);
-		
-		int linhas = Integer.parseInt(doc.getRootElement().getAttributeValue("linhas"));
-		assertEquals(FOLHA_TESTE_LINHAS, linhas);
-		
-		int colunas = Integer.parseInt(doc.getRootElement().getAttributeValue("colunas"));
-		assertEquals(FOLHA_TESTE_COLUNAS, colunas);
-		
-		int id = Integer.parseInt(doc.getRootElement().getAttributeValue("id"));
-		assertEquals(FOLHA_ID, id);
-		
-		String data = doc.getRootElement().getAttributeValue("data");
-		assertEquals(FOLHA_TESTE_DATA, data);
-		
-		FolhadeCalculo folha = getSpreadSheet(FOLHA_TESTE);
-		FolhadeCalculo folha1 = getSpreadSheet("terFolha");
-		
-		assertEquals(folha.getCelulaSet().size(), folha1.getCelulaSet().size());
-		
-		folha.importFromXML(doc.getRootElement());
-		
-		int cellCount = 0;
-		for(Celula cell : folha.getCelulaSet()){
-			for(Celula cell2 : folha1.getCelulaSet()){
-				if(cell.getLinha() == cell2.getLinha() && cell.getColuna() == cell2.getColuna()){
-					assertEquals(cell.getValor(), cell2.getValor());
-					assertEquals(cell.getConteudo().getClass(), cell2.getConteudo().getClass());
-					cellCount++;					
-				}
-			}
-			
-		}
-		assertEquals(folha.getCelulaSet().size(), cellCount/2); // Aqui tens a certeza que passaste por todas as celulas
-																// porque viste o numero de celulas iguais
-																// igual ao numero de celulas na folha
-		
-	}
-	//4
-	@Test(expected = UnauthorizedOperationException.class)
-	public void unauthorizedExport() {
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_NO_ACCESS);
-		exportDocument.execute();
-	}
-	//8
-	@Test(expected = InvalidTokenException.class)
-	public void emptyTokenExport () {
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, EMPTY_TOKEN);
-		exportDocument.execute();
-	}
-	 //7
-	@Test(expected = UserNotInSessionException.class)
-	public void invalidSessionExport () {
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_NOT_IN_SESSION);
-		exportDocument.execute();
 	}
 	
+	//4
+	@Test
+	public void failInvalidSheetIDTest () {
+		
+		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_ID_NEGATIVE, USER_TOKEN);
+		
+		try {
+			importDocument.execute();
+			fail();
+		} catch (IdFolhaInvalidoException e) {
+			assertNull("Verificar que a folha não foi importada ", importDocument.getResult());
+		}
+		
+	}
+	
+	/*
+	 *  Com a implementacao que temos o user sabe que folhas exportou, logo o caso de folha invalida, inexistente ou existente mas nao exportou sao semelhantes
+	 *  
+	 */
+	
 	//5
-	@Test(expected = SpreadSheetDoesNotExistException.class)
-	public void idDoesNotExistExport() {
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID_INEXISTENT, USER_TOKEN);
-		exportDocument.execute();
+	@Test
+	public void failNonExistentSheetTest () {
+		
+		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_ID_NONEXISTENT, USER_TOKEN);
+		
+		try {
+			importDocument.execute();
+			fail();
+		} catch (CannotLoadDocumentException e) {
+			assertNull("Verificar que a folha não foi importada ", importDocument.getResult());
+		}
+		
 	}
+	
 	//6
-	@Test(expected = IdFolhaInvalidoException.class)
-	public void invalidIdExport() {
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID_NEGATIVE, USER_TOKEN);
-		exportDocument.execute();
-	}
-
-
-	//9
-	@Test(expected = UnavailableServiceException.class)
-	public void remoteCallFail () {
-    	
-    	new StrictExpectations() {
- 		   
+	@Test
+	public void failServiceUnavailableTest() {
+		
+		new StrictExpectations() {
+	 		   
     		{
     			remote = new StoreRemoteServices();
-    			remote.storeDocument("doo", "terFolha",(byte[]) any);
+    			remote.loadDocument("doo", "terFolha");
     			result = new RemoteInvocationException();
 		    }
 		};
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
-		exportDocument.execute();
-	
-	}
-	
-	//10
-		@Test(expected = CannotStoreDocumentException.class)
-		public void cannotStoreDocTest () {
-	    	
-	    	new StrictExpectations() {
-	 		   
-	    		{
-	    			remote = new StoreRemoteServices();
-	    			remote.storeDocument("doo", "terFolha",(byte[]) any);
-	    			result = new CannotStoreDocumentException("terFolha");
-			    }
-			};
-			ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
-			exportDocument.execute();
 		
-		}
-	
-	
-	//11
-	@Test(expected = CannotStoreDocumentException.class)
-	public void cannotStoreTest () {
-    	
-    	new StrictExpectations() {
- 		   
-    		{
-    			remote = new StoreRemoteServices();
-    			remote.storeDocument("doo", "terFolha",(byte[]) any);
-    			result = new CannotStoreDocumentException("terFolha");
-		    }
-		};
-		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
-		exportDocument.execute();
-	
-	}
-
-	public org.jdom2.Document byteToJdomDoc (ExportDocumentIntegrator service) throws UnsupportedEncodingException {  		// byte-> string -> outP -> doc
-
 		
-		org.jdom2.Document doc = null;
-		SAXBuilder saxBuilder = new SAXBuilder();
-		saxBuilder.setIgnoringElementContentWhitespace(true);
+		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_ID, USER_TOKEN_ESCRITA);
+		
 		try {
-			doc = saxBuilder.build(new ByteArrayInputStream(service.getResult()));
-		} catch (JDOMException | IOException e) {
-			System.out.println("falhou a conversao de byte[] para jdom2 Doc: " + e);
+			importDocument.execute();
+			fail();
+		} catch (UnavailableServiceException e) {
+			assertNull("Verificar que a folha não foi importada ", importDocument.getResult());
 		}
 		
-		return doc;
-		
 	}
-	
-	
-*/
+				
+		
+		
 }
