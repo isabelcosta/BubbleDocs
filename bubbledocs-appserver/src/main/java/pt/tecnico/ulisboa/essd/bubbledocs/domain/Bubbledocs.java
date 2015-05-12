@@ -1,6 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -10,7 +9,6 @@ import org.joda.time.Minutes;
 
 import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.CannotLoadDocumentException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
@@ -25,6 +23,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CreateSpreadSheetServic
 
 public class Bubbledocs extends Bubbledocs_Base {
     
+	private HashMap<Integer,String> _folhasExportadas = new HashMap<Integer, String>();
 	
 	public static Bubbledocs getInstance() {
 		Bubbledocs bd = FenixFramework.getDomainRoot().getBubbledocs();
@@ -51,6 +50,16 @@ public class Bubbledocs extends Bubbledocs_Base {
     	FenixFramework.getDomainRoot().setBubbledocs(this);
     }
     
+    private void addFolhasExportadasPriv(Integer id, String nome) {
+    	
+    	Bubbledocs.getInstance()._folhasExportadas.put(id, nome);
+    }
+    
+    private HashMap<Integer, String> getFolhasExportadasPriv() {
+    	return Bubbledocs.getInstance()._folhasExportadas;
+    }
+    
+    
     public void criaFolha(String nomeFolha, String username, int linhas, int colunas){
         
         FolhadeCalculo folha = new FolhadeCalculo(nomeFolha, username, linhas, colunas);
@@ -68,7 +77,18 @@ public class Bubbledocs extends Bubbledocs_Base {
         }
     }
     
-   
+    public void addFolhaExportada(Integer id, String nome) {
+    	
+    	if (id== null || id < 0) {
+    		throw new IdFolhaInvalidoException();
+    	}
+    	Bubbledocs.getInstance().addFolhasExportadasPriv(id, nome);
+    }
+    
+    public HashMap<Integer, String> getFolhasExportadas() {
+    	return Bubbledocs.getInstance().getFolhasExportadasPriv();
+    } 
+    
     public void apagaFolhas(String nomeUtilizador){
         
         for(FolhadeCalculo folha : getFolhasSet()){
@@ -261,14 +281,13 @@ public class Bubbledocs extends Bubbledocs_Base {
     	throw new SpreadSheetDoesNotExistException();
     }
     
-	 public String getExportedSpreadsheetName4Id(Integer id, String userToken) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
+	 public String getExportedSpreadsheetName4Id(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
 	    	
 	    	if(id < 0 || id == null){
 				throw new IdFolhaInvalidoException();
 			}
 	    	
-	    	Utilizador user = getUserFromToken(userToken);
-	    	String nomeFolha = user.getFolhasExportadas().get(id);
+	    	String nomeFolha = getFolhasExportadas().get(id);
 	    	
 	    	if (nomeFolha != null) {
 	    		return nomeFolha;
@@ -413,16 +432,16 @@ public class Bubbledocs extends Bubbledocs_Base {
     	return sheetId;
     }
 	
-	public void addFolhaExportada4User (Integer id, String token) {
+	public void addFolhaExportadas (Integer id) {
 		String nomeFolha = getSpreadsheetName4Id(id);
 		
-		getUserFromToken(token).addFolhaExportada(id, nomeFolha);
+		addFolhaExportada(id, nomeFolha);
 	}
 	
-	public Boolean checkFolhaExportada4User (Integer id, String token) {
-		HashMap<Integer, String> listaFolhasExportadas = getUserFromToken(token).getFolhasExportadas();
-		return listaFolhasExportadas.containsKey(id);
-	}
+//	public Boolean checkFolhaExportada4User (Integer id, String token) {
+//		HashMap<Integer, String> listaFolhasExportadas = getUserFromToken(token).getFolhasExportadas();
+//		return listaFolhasExportadas.containsKey(id);
+//	}
 	/*
 	public Boolean wasExported (Integer id) {
 		/*

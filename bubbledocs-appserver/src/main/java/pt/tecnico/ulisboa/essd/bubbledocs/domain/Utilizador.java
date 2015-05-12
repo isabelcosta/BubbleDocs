@@ -9,8 +9,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 
 public class Utilizador extends Utilizador_Base {
 	
-	private HashMap<Integer, String> _folhasExportadas = new HashMap<Integer, String>();
-	
 	
     public Utilizador(String nomeUtilizador, String userName, String email) {
         
@@ -39,20 +37,6 @@ public class Utilizador extends Utilizador_Base {
     	if (nameIsValid(username)) {
     		super.setUsername(username);
     	}
-    }
-    
-    public void addFolhaExportada(Integer id, String nome) {
-    	
-    	if (id== null || id < 0) {
-    		throw new IdFolhaInvalidoException();
-    	}
-    	
-    	
-    	_folhasExportadas.put(id, nome);
-    }
-    
-    public HashMap<Integer, String> getFolhasExportadas() {
-    	return _folhasExportadas;
     }
     
 }

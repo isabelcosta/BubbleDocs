@@ -19,7 +19,7 @@ public class GetExportedSpreadsheetName4IdService extends BubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
-		_result=_bd.getExportedSpreadsheetName4Id(_sheetId, _userToken);
+		_result=_bd.getExportedSpreadsheetName4Id(_sheetId);
 	}
 
 	public String getResult () {

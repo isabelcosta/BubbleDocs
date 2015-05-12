@@ -3,7 +3,6 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services.integrator;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CanImportDocumentService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetExportedSpreadsheetName4IdService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetUsername4TokenService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.ImportDocumentService;
@@ -25,9 +24,9 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
-	// verifica se o user exportou a folha, pois so assim pode importa-la.  E verifica se a sessao é valida
-		CanImportDocumentService permission = new CanImportDocumentService(_sheetId, _userToken);
-		permission.execute();
+		// verifica se o user exportou a folha, pois so assim pode importa-la.  E verifica se a sessao é valida
+		//CanImportDocumentService permission = new CanImportDocumentService(_sheetId, _userToken);
+		//permission.execute();
 		
 	//  vai buscar username associado ao token
 		GetUsername4TokenService userNameService = new GetUsername4TokenService(_userToken);

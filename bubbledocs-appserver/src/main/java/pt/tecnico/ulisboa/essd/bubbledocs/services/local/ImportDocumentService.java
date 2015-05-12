@@ -58,15 +58,6 @@ public class ImportDocumentService extends BubbleDocsService {
 	// 4. chamar o metodo build para converter o doc
 		_jdomDoc = 	domBuilder.build(folhaXMLDoc);
 
-		/* print de teste
-		XMLOutputter xmlOutput = new XMLOutputter();
-		xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
-		String docString = xmlOutput.outputString(_jdomDoc);
-
-		System.out.println("-----------------------------------------");
-		System.out.println(docString);
-		System.out.println("-----------------------------------------");
-		*/
 
 		/*
 		 * chamar a funcao que importa o jdomDoc para a base de dados do programa

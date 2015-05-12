@@ -200,7 +200,7 @@ public class BubbleDocsServiceTest {
 					System.out.println("export falhou: " + e);
 				}
 //ADICIONAR AO USER ID DA FOLHA QUE EXPORTOU
-				bd.addFolhaExportada4User(sheetId, userToken);
+				bd.addFolhaExportadas(sheetId);
 				
 	    	}
 		} catch (ReferenciaInvalidaException | OutOfBoundsException e) {

@@ -52,7 +52,7 @@ public class ExportDocumentService extends ValidSessionsService{
 					System.out.println("export falhou: " + e);
 				}
 //ADICIONAR AO USER ID DA FOLHA QUE EXPORTOU
-				_bd.addFolhaExportada4User(_sheetId, _userToken);
+				_bd.addFolhaExportadas(_sheetId);
 				_result = resultTemp;
 	    	}
 		} catch (ReferenciaInvalidaException | OutOfBoundsException e) {

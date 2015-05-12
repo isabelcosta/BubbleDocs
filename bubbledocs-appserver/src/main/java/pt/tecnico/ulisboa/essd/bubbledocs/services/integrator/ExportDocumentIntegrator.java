@@ -9,14 +9,14 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
 
 public class ExportDocumentIntegrator extends BubbleDocsIntegrator {
 
-	    private int _sheetId;
-	    private String _userToken;
-	    private byte[] _result;
-	    
-	    public ExportDocumentIntegrator(int sheetId, String userToken) {
-	    	_sheetId = sheetId;
-	    	_userToken = userToken;
-	    }
+    private int _sheetId;
+    private String _userToken;
+    private byte[] _result;
+    
+    public ExportDocumentIntegrator(int sheetId, String userToken) {
+    	_sheetId = sheetId;
+    	_userToken = userToken;
+    }
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
