@@ -11,7 +11,7 @@ public class Literal extends Literal_Base {
      public Literal(Integer literal) {
 		this.setLiteral(literal);
 	} 
-    
+
     @Override
     public Integer getValor(){
     	return getLiteral();
@@ -32,7 +32,6 @@ public class Literal extends Literal_Base {
 		
 	}
 	
-	
 	public void delete() {
     	setCelula(null);
     	setLiteral(null);
@@ -41,9 +40,11 @@ public class Literal extends Literal_Base {
     	setValor(null);
     	deleteDomainObject();
     }
-	
-	public String toString(){
-		return this.getLiteral().toString();	
-	}
-	
+
+   
+    @Override
+    public String toString(){
+    	return getContentValue();
+    }
+    
 }

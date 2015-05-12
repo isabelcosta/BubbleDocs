@@ -19,11 +19,4 @@ public class FuncaoIntervalo extends FuncaoIntervalo_Base {
 		
 	}
 	
-	 public String contentValue(){
-		 if(getValor() == null){
-			 return "#VALUE";
-		 } else {
-			 return getValor() + "";
-		 } 
-	 }
 }

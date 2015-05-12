@@ -18,4 +18,9 @@ public class Funcao extends Funcao_Base {
 		// TODO Auto-generated method stub
 		
 	}
+	
+    public Integer getValor(){
+    	return null;
+    }
+
 }

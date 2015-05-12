@@ -24,8 +24,12 @@ public class Conteudo extends Conteudo_Base {
 		return null;		
 	}
 
-	public String contentValue(){
-		return null;
+    public String getContentValue(){
+    	if (getValor() !=null) {
+    		return Integer.toString(getValor());
+    	}
+    	return "#VALUE";
 	}
-   
+		
+
 }

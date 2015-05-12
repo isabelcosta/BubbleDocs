@@ -130,7 +130,7 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
     	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID, FUNCAO_BINARIA_COM_LITERAIS_VALIDOS);
         service.execute();
 
-		assertEquals("12", service.getBubbleDocs().getFolhaOfId(DOC_ID).getCell(3, 2).getConteudo().contentValue());
+		assertEquals("12", service.getBubbleDocs().getFolhaOfId(DOC_ID).getCell(3, 2).getConteudo().getContentValue());
     } 
     
     //Testa a funcao ADD com uma referencia invalida
@@ -139,7 +139,7 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
     	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID, "=ADD(3,4;4)");
         service.execute();
         
-		assertEquals("#VALUE", service.getBubbleDocs().getFolhaOfId(DOC_ID).getCell(3, 2).getConteudo().contentValue());
+		assertEquals("#VALUE", service.getBubbleDocs().getFolhaOfId(DOC_ID).getCell(3, 2).getConteudo().getContentValue());
     }    
   
     
@@ -151,7 +151,7 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
     	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID_VAZIA, "=SUB(3;2,3)");
         service.execute();
         
-		assertEquals("1", service.getBubbleDocs().getFolhaOfId(DOC_ID).getCell(1, 1).getConteudo().contentValue());
+		assertEquals("1", service.getBubbleDocs().getFolhaOfId(DOC_ID).getCell(1, 1).getConteudo().getContentValue());
     }   
     
     /*

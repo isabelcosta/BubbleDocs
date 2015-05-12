@@ -8,7 +8,6 @@ public class MUL extends MUL_Base {
         this.setArgumento1(arg1);
         this.setArgumento2(arg2);
     }
-
     
     @Override
     public Element exportToXML() {
@@ -27,15 +26,16 @@ public class MUL extends MUL_Base {
 		return element;
 	}
     
+    @Override
     public String toString(){
     	String arg1 = getArgumento1().toString();
     	String arg2 = getArgumento2().toString();
     			
-    	if(getArgumento1().toString().contains("=")){
-    		arg1 =  getArgumento1().toString().substring(1);
+    	if(arg1.contains("=")){
+    		arg1 =  arg1.substring(1);
     	}
-    	if(getArgumento2().toString().contains("=")){
-    		arg2 =  getArgumento2().toString().substring(1);
+    	if(arg2.contains("=")){
+    		arg2 =  arg2.substring(1);
     	}
     			
 		return "=" + "MUL" + "(" + arg1 + "," + arg2 + ")";

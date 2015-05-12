@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class PRD extends PRD_Base {
     
     public PRD(Intervalo intervalo) {
-        this.setIntervalo(intervalo);
+        setIntervalo(intervalo);
     }
 
     
@@ -25,8 +25,9 @@ public class PRD extends PRD_Base {
     	return sum;
     	
     }
-    
-	public String toString(){
+
+    @Override
+    public String toString(){
 		String res = "=PRD(" + getIntervalo().toString() + ")";
 		
 		return res;

@@ -28,11 +28,4 @@ public class FuncaoBinaria extends FuncaoBinaria_Base {
 		 
 	 }
 	 
-	 public String contentValue(){
-		 if(getValor() == null){
-			 return "#VALUE";
-		 } else {
-			 return getValor() + "";
-		 } 
-	 }
 }

@@ -222,7 +222,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     	Celula cell = this.getCell(linha, coluna);
     	
     	if(cell.getConteudo() != null){
-    		return cell.getConteudo().getValor().toString();
+    		return cell.getConteudo().getContentValue();
     	} else {
         	return "()";
     	}

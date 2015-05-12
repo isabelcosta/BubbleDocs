@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class AVG extends AVG_Base {
     
     public AVG(Intervalo intervalo) {
-        this.setIntervalo(intervalo);
+        setIntervalo(intervalo);
     }
     
     
@@ -26,7 +26,8 @@ public class AVG extends AVG_Base {
     	
     }
     
-	public String toString(){
+    @Override
+	public String toString() {
 		String res = "=AVG(" + getIntervalo().toString() + ")";
 		
 		return res;
