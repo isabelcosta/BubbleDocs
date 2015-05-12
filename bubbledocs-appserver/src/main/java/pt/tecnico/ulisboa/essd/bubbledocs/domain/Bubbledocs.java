@@ -23,14 +23,17 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CreateSpreadSheetServic
 
 public class Bubbledocs extends Bubbledocs_Base {
     
-	private HashMap<Integer,String> _folhasExportadas = new HashMap<Integer, String>();
+	private static HashMap<Integer,String> _folhasExportadas = new HashMap<Integer, String>();
 	
 	public static Bubbledocs getInstance() {
 		Bubbledocs bd = FenixFramework.getDomainRoot().getBubbledocs();
 		
 		if (bd==null){
+			_folhasExportadas = new HashMap<Integer, String>();
 			bd = new Bubbledocs();
 		}
+		
+		
 		
 		boolean existe = false;
 		for (Utilizador u : bd.getUtilizadoresSet()){
