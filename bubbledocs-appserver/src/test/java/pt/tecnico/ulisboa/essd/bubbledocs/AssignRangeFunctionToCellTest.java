@@ -29,6 +29,7 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     
     // CELULAS
     private static final String CELL_ID = "4;1";
+    private static final String CELL_ID_PREENCHIDA = "3;6";
     private static final String CELL_ID_VAZIA = "1;1";
     private static final String CELL_ID_PROTEGIDA = "4;8";
     
@@ -74,6 +75,9 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     	
     	String conteudoLiteral3 = "4";
     	folha1.modificarCelula(3, 9, conteudoLiteral3);
+    	
+    	String conteudoAdd = "=ADD(2,3;2)";
+    	folha1.modificarCelula(4,1,conteudoAdd);
     			
     	folha1.protegeCelula(4, 8, true);
 		
@@ -117,12 +121,13 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     }   
     
     @Test
-    public void successPodeEscrever() {
-    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+    public void successAssignToFullCell() {
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID_PREENCHIDA, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
         service.execute();
-
-		assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
+    	
+        assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
     }
+    
     
     
     @Test(expected = OutOfBoundsException.class)
