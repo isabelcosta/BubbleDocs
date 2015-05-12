@@ -293,7 +293,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    		return nomeFolha;
 	    	}
 	    	
-	    	throw new SpreadSheetDoesNotExistException();
+	    	throw new IdFolhaInvalidoException();
 	    }
     
 

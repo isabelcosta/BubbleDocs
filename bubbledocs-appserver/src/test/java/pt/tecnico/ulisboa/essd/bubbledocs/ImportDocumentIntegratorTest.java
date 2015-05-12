@@ -38,6 +38,7 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
     private static String USER_TOKEN;
     private static String USER_TOKEN_MIG;
     private static String USER_TOKEN_NOT_IN_SESSION;
+    private static String USER_TOKEN_INVALID = null;
     private static int FOLHA_ID_NONEXISTENT = 100;
     private static int FOLHA_ID_NEGATIVE = -100;
     
@@ -199,7 +200,7 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
 	public void successImportEmptyTest () {
 		Bubbledocs _bd = Bubbledocs.getInstance();
 		byte[] folhaByte;
-		folhaByte = folhaToByte4Mock(FOLHA2_ID, USER_TOKEN_MIG);	//guardar a folha em bytes para usar no mock do import
+		folhaByte = folhaToByte4Mock(FOLHA2_ID, USER_TOKEN_MIG);		//guardar a folha em bytes para usar no mock do import
 		removeSpreadsheet(FOLHA2_ID); 									//remover a folha para importar sem estar na bd
 		
 		new StrictExpectations() {
@@ -229,9 +230,18 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		
 	//3
 	@Test
-	public void failUserDidntExportedTest () {
+	public void NoPermissionsDidntExportTest () {
 		
-		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA2_ID, USER_TOKEN);
+		new StrictExpectations() {
+	 		   
+    		{
+    			remote = new StoreRemoteServices();
+    			remote.loadDocument("mig", "migFolha");
+    			result = new CannotLoadDocumentException("migFolha");
+		    }
+		};
+		
+		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA2_ID, USER_TOKEN_MIG);
 		
 		try {
 			importDocument.execute();
@@ -244,6 +254,7 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
 	//4
 	@Test
 	public void failInvalidSheetIDTest () {
+		
 		
 		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_ID_NEGATIVE, USER_TOKEN);
 		
@@ -270,7 +281,7 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		try {
 			importDocument.execute();
 			fail();
-		} catch (CannotLoadDocumentException e) {
+		} catch (IdFolhaInvalidoException e) {
 			assertNull("Verificar que a folha não foi importada ", importDocument.getResult());
 		}
 		
@@ -300,7 +311,36 @@ public class ImportDocumentIntegratorTest extends BubbleDocsServiceTest{
 		}
 		
 	}
-				
+	
+	//7
+	@Test
+	public void failTokenInvalidoTest() {
+		
+		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_ID, USER_TOKEN_INVALID);
+		
+		try {
+			importDocument.execute();
+			fail();
+		} catch (InvalidTokenException e) {
+			assertNull("Verificar que a folha não foi importada ", importDocument.getResult());
+		}
+		
+	}
+	
+	//8
+	@Test
+	public void failUserNotInSessionTest() {
+		
+		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_ID, USER_TOKEN_NOT_IN_SESSION);
+		
+		try {
+			importDocument.execute();
+			fail();
+		} catch (UserNotInSessionException e) {
+			assertNull("Verificar que a folha não foi importada ", importDocument.getResult());
+		}
+		
+	}
 		
 		
 }

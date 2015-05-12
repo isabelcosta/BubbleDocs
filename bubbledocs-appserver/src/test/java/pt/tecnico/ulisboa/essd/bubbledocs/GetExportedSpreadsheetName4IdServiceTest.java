@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetExportedSpreadsheetName4IdService;
@@ -49,7 +50,7 @@ public class GetExportedSpreadsheetName4IdServiceTest extends BubbleDocsServiceT
 	
 	@Test
     public void successTest() {
-        GetExportedSpreadsheetName4IdService service = new GetExportedSpreadsheetName4IdService(DOC_ID, USER_TOKEN);
+        GetExportedSpreadsheetName4IdService service = new GetExportedSpreadsheetName4IdService(DOC_ID);
         service.execute();
       
         assertEquals(SPREADSHEET_NAME, service.getResult());
@@ -60,16 +61,9 @@ public class GetExportedSpreadsheetName4IdServiceTest extends BubbleDocsServiceT
 	  * 
 	  */
 	  
-	@Test(expected = SpreadSheetDoesNotExistException.class)
+	@Test(expected = IdFolhaInvalidoException.class)
     public void folhaInexistenteTeste() {
-        GetExportedSpreadsheetName4IdService service = new GetExportedSpreadsheetName4IdService(SHEET_DOES_NOT_EXISTS, USER_TOKEN);
-        service.execute();
-    } 
-	 
-	@Test(expected = UserNotInSessionException.class)
-    public void tokenInvalidoTeste() {
-        
-        GetExportedSpreadsheetName4IdService service = new GetExportedSpreadsheetName4IdService(DOC_ID, USER_TOKEN_INVALID);
+        GetExportedSpreadsheetName4IdService service = new GetExportedSpreadsheetName4IdService(SHEET_DOES_NOT_EXISTS);
         service.execute();
     } 
 }

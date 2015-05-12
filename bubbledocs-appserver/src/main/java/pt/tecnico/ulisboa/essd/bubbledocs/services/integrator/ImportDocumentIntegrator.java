@@ -35,7 +35,7 @@ public class ImportDocumentIntegrator extends BubbleDocsIntegrator {
 		
 		_username = userNameService.getResult();
 		
-		GetExportedSpreadsheetName4IdService spreadsheetNameService = new GetExportedSpreadsheetName4IdService(_sheetId, _userToken);
+		GetExportedSpreadsheetName4IdService spreadsheetNameService = new GetExportedSpreadsheetName4IdService(_sheetId);
 		spreadsheetNameService.execute();
 		
 		StoreRemoteServices remote = new StoreRemoteServices();

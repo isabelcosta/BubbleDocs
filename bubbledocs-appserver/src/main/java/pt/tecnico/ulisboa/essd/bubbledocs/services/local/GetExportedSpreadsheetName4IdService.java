@@ -9,10 +9,8 @@ public class GetExportedSpreadsheetName4IdService extends BubbleDocsService {
 	private Bubbledocs _bd = Bubbledocs.getInstance();
 	private int _sheetId;
 	private String _result;
-	private String _userToken;
 	
-	public GetExportedSpreadsheetName4IdService(int sheetId, String userToken) {
-		_userToken = userToken;
+	public GetExportedSpreadsheetName4IdService(int sheetId) {
 		_sheetId = sheetId;
 	}
 

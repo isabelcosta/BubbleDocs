@@ -71,7 +71,9 @@ public class ImportDocumentService extends BubbleDocsService {
 		org.w3c.dom.Document doc = null;
 		try {
 			builder = factory.newDocumentBuilder();
-			doc = builder.parse(new InputSource(new StringReader(xml)));
+			StringReader stream = new StringReader(xml);
+			doc = builder.parse(new InputSource(stream));
+//			stream.reset();
 		} catch (Exception e){
 			e.printStackTrace();
 		}
