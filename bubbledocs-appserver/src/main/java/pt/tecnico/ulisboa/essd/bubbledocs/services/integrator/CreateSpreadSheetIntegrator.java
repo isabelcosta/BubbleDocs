@@ -10,7 +10,7 @@ public class CreateSpreadSheetIntegrator extends BubbleDocsIntegrator {
 	private int columns;
 	private String name;
 	private CreateSpreadSheetService local;
-	
+	private Integer result;
 	
 	public CreateSpreadSheetIntegrator(String userToken,String name,int rows,int columns){
 		
@@ -29,7 +29,11 @@ public class CreateSpreadSheetIntegrator extends BubbleDocsIntegrator {
 
 		local = new CreateSpreadSheetService(this.userToken, this.name, this.rows, this.columns);
 		local.execute();
+		result = local.getResult();
 		
-		
+	}
+	
+	public Integer getResult() {
+		return result;
 	}
 }
