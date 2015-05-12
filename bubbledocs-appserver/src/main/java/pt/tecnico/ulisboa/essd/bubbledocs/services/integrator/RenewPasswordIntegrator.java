@@ -5,6 +5,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetUsername4TokenService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.RenewPasswordService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
@@ -27,9 +28,11 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 		
 		IDRemoteServices remote = new IDRemoteServices();
 		Bubbledocs bd = getBubbleDocs();
+		GetUsername4TokenService username = new GetUsername4TokenService(_userToken);
+		username.execute();
 		
 		try {
-			remote.renewPassword(bd.getUsernameOfToken(_userToken));
+			remote.renewPassword(username.getResult());
 			
 		} catch (RemoteInvocationException rie) {
 			throw new UnavailableServiceException();

@@ -49,6 +49,8 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	@Mocked
 	IDRemoteServices remote;
 	
+	
+	//1
     @Test
     public void success() {
     	
@@ -60,8 +62,8 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    	}
 	    };
     
-	    RenewPasswordIntegrator local = new RenewPasswordIntegrator(USER_TOKEN);
-	    local.execute();
+	    RenewPasswordIntegrator service = new RenewPasswordIntegrator(USER_TOKEN);
+	    service.execute();
     	
 
 	    Utilizador user = getUserFromSession(USER_TOKEN);
@@ -71,6 +73,26 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
     	
     }
     
+    //2
+    @Test(expected = UserNotInSessionException.class)
+    public void userNotLogged() {
+    	    
+    	removeUserFromSession(USER_TOKEN);	   	    
+	    
+	    RenewPasswordIntegrator service = new RenewPasswordIntegrator(USER_TOKEN);
+	    service.execute();
+    	
+    }    
+    
+    //3
+    @Test(expected = InvalidTokenException.class)
+    public void userTokenInvalid() {
+    	
+    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(USER_TOKEN_INVALID);
+    	service.execute();
+    }
+    
+    //4
 	@Test
 	public void remoteFails() {
 
@@ -83,12 +105,12 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    };
 	    
 	    Utilizador user = getUserFromSession(USER_TOKEN);
-	    
+	    user.setPassword("asdfasdf");
 	    String oldPassword = user.getPassword();
 	    String newPassword;
 
+	    RenewPasswordIntegrator service = new RenewPasswordIntegrator(USER_TOKEN);
 	    try {
-	    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(USER_TOKEN);
 	    	service.execute();
 	    	fail();
 	    } catch(UnavailableServiceException exs) {
@@ -99,24 +121,8 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	}
  
    
-    @Test(expected = UserNotInSessionException.class)
-    public void userNotLogged() {
-    	    
-    	removeUserFromSession(USER_TOKEN);	   	    
-	    
-	    RenewPasswordIntegrator local = new RenewPasswordIntegrator(USER_TOKEN);
-	    local.execute();
-    	
-    }    
     
- 
-    @Test(expected = InvalidTokenException.class)
-    public void userTokenInvalid() {
-    	
-    	RenewPasswordIntegrator local = new RenewPasswordIntegrator(USER_TOKEN_INVALID);
-	    local.execute();
-    }
-    
+    //5
     @Test
     public void userNotFoundInRemoteService() {
     
@@ -129,11 +135,18 @@ public class RenewPasswordIntegratorTest extends BubbleDocsServiceTest {
 	    	}
 	    };
 	    
+	    Utilizador user = getUserFromSession(USER_LOCAL_TOKEN);
+	    user.setPassword("asdfasdf");
+	    String oldPassword = user.getPassword();
+	    String newPassword;
+	    
 	    try {
-	    	RenewPasswordIntegrator local = new RenewPasswordIntegrator(USER_LOCAL_TOKEN);
-	    	local.execute();
+	    	RenewPasswordIntegrator service = new RenewPasswordIntegrator(USER_LOCAL_TOKEN);
+	    	service.execute();
 	    	fail();
 	    } catch (LoginBubbleDocsException e) {
+	    	newPassword = user.getPassword();
+	    	assertEquals(oldPassword, newPassword);	 
 	    }
 	    
     }
