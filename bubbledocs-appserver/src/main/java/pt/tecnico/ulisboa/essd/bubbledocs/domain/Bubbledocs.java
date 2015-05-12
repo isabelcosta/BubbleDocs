@@ -149,7 +149,6 @@ public class Bubbledocs extends Bubbledocs_Base {
     	if (token == null || token == ""){
     		throw new InvalidTokenException("Token is invalid");
     	}
-    	
     	for(Token token2 : getTokensSet()){
     		if(token2.getToken().equals(token)){
     			int minutes = Minutes.minutesBetween(token2.getTime(), new LocalTime()).getMinutes();
@@ -336,7 +335,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 		return getUserFromToken(userToken).getPassword();
 	}
 
-	public Utilizador getUserfromUsername(String username) throws UserNotInSessionException{
+	public Utilizador getUserfromUsername(String username) throws LoginBubbleDocsException{
 		
 		//Verifica primeiro se é vazio
 		emptyUsername(username);
@@ -346,7 +345,7 @@ public class Bubbledocs extends Bubbledocs_Base {
 				return user;
 			}
     	}
-		throw new UserNotInSessionException(username);
+		throw new LoginBubbleDocsException(username);
 	}
 	
 	/*

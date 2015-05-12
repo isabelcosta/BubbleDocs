@@ -1,7 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 
@@ -10,6 +9,7 @@ import org.junit.Test;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
@@ -77,22 +77,36 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
         success();
 	assertNull("Removed user but not removed from session", getUserFromSession(token));
     }
+  
     
-   /*
-    * remote invocation fails for some reason: connection, etc
-    * 
-    */
-    @Test(expected = UnavailableServiceException.class)
-    public void remoteInvocationFails() throws Exception{
-  	
-     	new StrictExpectations() {{
-    		remote = new IDRemoteServices();
-    		remote.removeUser(USERNAME_TO_DELETE);
-    		result = new RemoteInvocationException();
-    	}};
-    
-    	new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();	
-    }
+    /*
+     * remote user doesn't not exist
+     * 
+     */
+     @Test
+     public void remoteUserDoesntExist() throws Exception{
+   	
+      	new StrictExpectations() {{
+     		remote = new IDRemoteServices();
+     		remote.removeUser(USERNAME_TO_DELETE);
+     		result = new LoginBubbleDocsException();
+     	}};
+     
+
+     	//backup of user
+     	Bubbledocs bd = Bubbledocs.getInstance();
+     	Utilizador user = bd.getUserfromUsername(USERNAME_TO_DELETE);
+     	
+     	
+     	try{
+     		new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();
+     		fail();
+     	} catch (LoginBubbleDocsException ue) {
+     		
+     		Utilizador userRestored = bd.getUserfromUsername(USERNAME_TO_DELETE);
+     		assertEquals(user.getNome() , userRestored.getNome());
+     	}
+     }
     
     /*
      * remote invocation fails for some reason: connection, etc
@@ -100,7 +114,7 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
      * 
      */
      @Test
-     public void restoreUserSucess() throws Exception{
+     public void unavaliableServiceRestore() throws Exception{
    	
       	new StrictExpectations() {{
      		remote = new IDRemoteServices();
@@ -114,7 +128,7 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
      	
      	try{
      		new DeleteUserIntegrator(root, USERNAME_TO_DELETE).execute();
-     		
+     		fail();
      	} catch (UnavailableServiceException ue) {
      		
      		Utilizador userRestored = bd.getUserfromUsername(USERNAME_TO_DELETE);
@@ -126,7 +140,7 @@ public class DeleteUserIntegratorTest extends BubbleDocsServiceTest {
     /*
      * the user that we want delete doesn't exist 
      */
-    @Test(expected = UserNotInSessionException.class)
+    @Test(expected = LoginBubbleDocsException.class)
     public void userToDeleteDoesNotExist() {
    
         new DeleteUserIntegrator(root, USERNAME_DOES_NOT_EXIST).execute();

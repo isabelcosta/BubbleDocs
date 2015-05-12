@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
+import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.dtos.UserDto;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetUserInfoService;
@@ -39,7 +40,7 @@ public class GetUserInfoTest extends BubbleDocsServiceTest {
 	    }
 	 
 	 
-	 @Test(expected = UserNotInSessionException.class)
+	 @Test(expected = LoginBubbleDocsException.class)
 	    public void userDoesNotExist() {
 		 
 		 GetUserInfoService userInfo = new GetUserInfoService(USERNAME_DOES_NOT_EXISTS);
