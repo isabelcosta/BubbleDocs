@@ -1,7 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs;
 
-import static org.junit.Assert.*;
-import junit.framework.Assert;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import mockit.Mocked;
 import mockit.StrictExpectations;
 
@@ -10,7 +10,6 @@ import org.junit.Test;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateEmailException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateUsernameException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.EmptyUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidEmailException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidUsernameException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;

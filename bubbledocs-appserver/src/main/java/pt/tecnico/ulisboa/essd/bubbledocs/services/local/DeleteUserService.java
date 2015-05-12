@@ -4,11 +4,11 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
 public class DeleteUserService extends IsRootService {
 
-	private String toDeleteUsername;
+	private String _toDeleteUsername;
 
 	public DeleteUserService(String userToken, String toDeleteUsername) {
 		super(userToken);
-		this.toDeleteUsername = toDeleteUsername;
+		_toDeleteUsername = toDeleteUsername;
 
 	}
 
@@ -16,7 +16,7 @@ public class DeleteUserService extends IsRootService {
 	protected void dispatch_root() throws BubbleDocsException {
 				
 		//invoke same method locally, supposing no exceptions caught
-		_bd.removeUtilizadores(_bd.getUserOfName(toDeleteUsername));
+		_bd.removeUtilizadores(_bd.getUserOfName(_toDeleteUsername));
 	}
 	
 }

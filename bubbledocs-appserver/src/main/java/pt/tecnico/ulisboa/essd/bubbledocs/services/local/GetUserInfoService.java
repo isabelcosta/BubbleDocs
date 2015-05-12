@@ -7,8 +7,8 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.dtos.UserDto;
 
 public class GetUserInfoService extends BubbleDocsService {
 
-	private Bubbledocs bd = getBubbleDocs();
-	private UserDto result;
+	private Bubbledocs _bd = getBubbleDocs();
+	private UserDto _result;
 	private String _username;
 	
 	
@@ -19,14 +19,14 @@ public class GetUserInfoService extends BubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
-		Utilizador user = bd.getUserfromUsername(_username);
+		Utilizador user = _bd.getUserfromUsername(_username);
 		
-		result = new UserDto(user.getUsername(), user.getEmail(), user.getNome());
+		_result = new UserDto(user.getUsername(), user.getEmail(), user.getNome());
 		
 	}
 	
 	 public final UserDto getResult() {
-	        return result;
+	        return _result;
 	    }
 
 

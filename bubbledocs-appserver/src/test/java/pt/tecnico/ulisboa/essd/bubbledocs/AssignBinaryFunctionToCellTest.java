@@ -217,6 +217,7 @@ public class AssignBinaryFunctionToCellTest extends BubbleDocsServiceTest {
     	 AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService( USER_TOKEN, DOC_ID, CELL_ID, FUNCAO_BINARIA_COM_LITERAIS_VALIDOS);
          service.execute();
     }
+    
     /*
      * Teste de folha inexistente
      */

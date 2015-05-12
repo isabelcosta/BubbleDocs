@@ -34,6 +34,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.local.AssignLiteralCellServic
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.AssignRangeFunctionToCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.AssignReferenceCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CreateUserService;
+import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetSpreadSheetContentService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetUserInfoService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
@@ -105,7 +106,34 @@ public class LocalSystemTest {
  *
  */
 
-// transforma uma folha em bytes para ser usado no mock de uma folha importada
+    // Mostra o conteudo da folha
+    public String showFancySpreadSheet(Integer sheetId, String userToken){
+    	
+		Bubbledocs bd = Bubbledocs.getInstance();
+		
+		// Folha de calculo associada ao ID
+		FolhadeCalculo folha;
+		folha = bd.getFolhaOfId(sheetId);
+		Integer maxLinha = folha.getLinhas();
+		Integer maxColuna = folha.getColunas();
+		GetSpreadSheetContentService service = new GetSpreadSheetContentService(userToken, sheetId);
+		String[][] matriz = service.getResult();
+		String top = "";
+		String linha = "";
+		for (int u = 1; u < maxColuna; u++){
+			top += "| " + u;
+		}
+		System.out.println(top + " |");
+		for(int i=1; i < maxLinha; i++){
+			for(int k=1; k < maxColuna; k++){
+				linha += matriz[i][k] + " | ";
+			}
+			System.out.println("| " + i + " | " + linha);
+		}
+		return "/n";
+    }
+    
+    // transforma uma folha em bytes para ser usado no mock de uma folha importada
 	public byte[] folhaToByte4Mock(Integer sheetId, String userToken) {
 		
 		Bubbledocs bd = Bubbledocs.getInstance();
@@ -318,7 +346,7 @@ public class LocalSystemTest {
      * 		- Referencia para a celula 3,2 na celula 13,5
      * 
      */
-        
+
 		AssignLiteralCellIntegrator serviceLiteralJoao1 = new AssignLiteralCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "3;2", "78");
 		serviceLiteralJoao1.execute();
 		AssignLiteralCellIntegrator serviceLiteralJoao2 = new AssignLiteralCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "3;4", "3564");
@@ -327,6 +355,10 @@ public class LocalSystemTest {
 		serviceRangeJoao1.execute();
     	AssignReferenceCellIntegrator serviceReferenceJoao1 = new AssignReferenceCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "13;5", "=3;2");
     	serviceReferenceJoao1.execute();
+
+        System.out.println("Joao preenche a sua folha....");
+        
+    	showFancySpreadSheet(FOLHA_JOAO_ID, TOKEN_JOAO);
     	
     /*
      * 
@@ -350,13 +382,7 @@ public class LocalSystemTest {
     	AssignReferenceCellIntegrator serviceReferenceTiana1 = new AssignReferenceCellIntegrator( TOKEN_TIANA, FOLHA_TIANA_ID, "13;5", "=3;2");
     	serviceReferenceTiana1.execute();
     	
-        
-//        AssignLiteralCellIntegrator
-//        AssignReferenceCellIntegrator
-//        AssignBinaryFunctionToCellIntegrator
-//        AssignRangeFunctionToCellIntegrator
-//        ExportDocumentIntegrator
-//        ImportDocumentIntegrator
+        System.out.println("Tiana preenche a sua folha....");
         
         //O UTILIZADOR1 DA PERMISSOES AO UTILIZADOR2 PARA MEXER NA FOLHA
         

@@ -4,16 +4,10 @@ import java.io.UnsupportedEncodingException;
 
 import org.jdom2.output.XMLOutputter;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.StoreRemoteServices;
 
 public class ExportDocumentService extends ValidSessionsService{
     private byte[] _result;
@@ -30,16 +24,16 @@ public class ExportDocumentService extends ValidSessionsService{
 	protected void dispatch_session() throws UserNotInSessionException {
 
 		byte[] resultTemp = null;
+		
 		try {
-
 				
-//VERIFICAR SE O USER TEM PERMISSÃ•ES PARA EXPORTAR		
+			//VERIFICAR SE O USER TEM PERMISSÃ•ES PARA EXPORTAR		
 			_folha = _bd.getFolhaOfId(_sheetId);
 			
 			String userNameOfToken = _bd.getUsernameOfToken(_userToken);
 	    	if(_folha.podeLer(userNameOfToken) || _folha.podeEscrever(userNameOfToken)){
 	    		
-//CONVERTER A FOLHA EM BYTES
+	    		//CONVERTER A FOLHA EM BYTES
 				org.jdom2.Document sheetDoc = _bd.exportSheet(_folha);
 				
 				XMLOutputter xmlOutput = new XMLOutputter();
@@ -51,10 +45,12 @@ public class ExportDocumentService extends ValidSessionsService{
 				} catch (UnsupportedEncodingException e) {
 					System.out.println("export falhou: " + e);
 				}
-//ADICIONAR AO USER ID DA FOLHA QUE EXPORTOU
+				
+				//ADICIONAR AO USER ID DA FOLHA QUE EXPORTOU
 				_bd.addFolhaExportadas(_sheetId);
 				_result = resultTemp;
 	    	}
+	    	
 		} catch (ReferenciaInvalidaException | OutOfBoundsException e) {
 			System.err.println("Couldn't export Sheet: " + e);
 		}

@@ -5,19 +5,19 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.local.CreateSpreadSheetServic
 
 public class CreateSpreadSheetIntegrator extends BubbleDocsIntegrator {
 	
-	private String userToken;
-	private int rows;
-	private int columns;
-	private String name;
-	private CreateSpreadSheetService local;
-	private Integer result;
+	private String _userToken;
+	private int _rows;
+	private int _columns;
+	private String _name;
+	private CreateSpreadSheetService _local;
+	private Integer _result;
 	
 	public CreateSpreadSheetIntegrator(String userToken,String name,int rows,int columns){
 		
-		this.userToken = userToken;
-		this.name = name;
-		this.rows = rows;
-		this.columns = columns;
+		_userToken = userToken;
+		_name = name;
+		_rows = rows;
+		_columns = columns;
 	
 		
 	}
@@ -27,13 +27,13 @@ public class CreateSpreadSheetIntegrator extends BubbleDocsIntegrator {
 		
 		/*Instancia local*/
 
-		local = new CreateSpreadSheetService(this.userToken, this.name, this.rows, this.columns);
-		local.execute();
-		result = local.getResult();
+		_local = new CreateSpreadSheetService(_userToken, _name, _rows, _columns);
+		_local.execute();
+		_result = _local.getResult();
 		
 	}
 	
 	public Integer getResult() {
-		return result;
+		return _result;
 	}
 }
