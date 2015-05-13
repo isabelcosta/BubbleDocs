@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
@@ -16,7 +17,7 @@ public class GetSpreadSheetContentService extends ReadAndWritePermissionsService
 	
 	@Override
     protected void dispatch_read_and_write() throws BubbleDocsException {   
-			
+		Bubbledocs _bd = getBubbleDocs();
 		FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);  
 			
 		/* 

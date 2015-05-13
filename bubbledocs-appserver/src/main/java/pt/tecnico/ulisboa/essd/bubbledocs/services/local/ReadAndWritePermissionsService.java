@@ -6,7 +6,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationExcepti
 
 public abstract class ReadAndWritePermissionsService extends ValidSessionsService {
 	
-	protected Bubbledocs _bd = getBubbleDocs();
 	protected String _userToken;
 	protected int _docId;
 	protected boolean _flag;
@@ -22,7 +21,7 @@ public abstract class ReadAndWritePermissionsService extends ValidSessionsServic
 
 	protected void dispatch_session() throws BubbleDocsException {
 		
-	
+		Bubbledocs _bd = getBubbleDocs();
 		
 		if(_flag){ //pode escrever
 			_bd.canWrite(_userToken,_docId);

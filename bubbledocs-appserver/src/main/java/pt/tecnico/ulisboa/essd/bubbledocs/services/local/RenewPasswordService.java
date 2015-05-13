@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
 public class RenewPasswordService extends ValidSessionsService {
@@ -10,7 +11,7 @@ public class RenewPasswordService extends ValidSessionsService {
  
     @Override
     protected void dispatch_session() throws BubbleDocsException {
-    	
+    	Bubbledocs _bd = getBubbleDocs();
 			_bd.invalidateUserPassword(_userToken);
 		 
     }

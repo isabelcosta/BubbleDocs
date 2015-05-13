@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
@@ -24,7 +25,7 @@ public class AssignReferenceCellService extends ReadAndWritePermissionsService {
 
     @Override
     protected void dispatch_read_and_write() throws OutOfBoundsException, UnauthorizedOperationException  {
-
+    	Bubbledocs _bd = getBubbleDocs();
     		
 			FolhadeCalculo folha = _bd.getFolhaOfId(_idFolha);
 			

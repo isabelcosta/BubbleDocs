@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.DuplicateEmailException;
@@ -26,6 +27,7 @@ public class CreateUserService extends IsRootService {
 	@Override
 	protected void dispatch_root() throws BubbleDocsException {
 		
+		Bubbledocs _bd = getBubbleDocs();
 		if(_newUsername == null || _newUsername.equals("")){
 			throw new InvalidUsernameException() ;	
 		}

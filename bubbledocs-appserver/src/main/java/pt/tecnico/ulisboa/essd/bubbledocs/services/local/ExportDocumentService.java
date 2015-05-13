@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 
 import org.jdom2.output.XMLOutputter;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.ReferenciaInvalidaException;
@@ -24,7 +25,7 @@ public class ExportDocumentService extends ValidSessionsService{
 	protected void dispatch_session() throws UserNotInSessionException {
 
 		byte[] resultTemp = null;
-		
+		Bubbledocs _bd = getBubbleDocs();
 		try {
 				
 			//VERIFICAR SE O USER TEM PERMISSÃ•ES PARA EXPORTAR		

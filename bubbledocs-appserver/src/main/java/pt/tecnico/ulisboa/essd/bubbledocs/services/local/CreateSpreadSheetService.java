@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
@@ -23,6 +24,7 @@ public class CreateSpreadSheetService extends ValidSessionsService {
     @Override
     protected void dispatch_session() throws BubbleDocsException {
     	
+    	Bubbledocs _bd = getBubbleDocs();
     	String dono = _bd.getUsernameOfToken(_userToken);
     	FolhadeCalculo folha = new FolhadeCalculo(_name, dono, _rows, _columns);
     	

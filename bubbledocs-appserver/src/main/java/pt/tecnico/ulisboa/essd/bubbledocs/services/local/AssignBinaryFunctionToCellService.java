@@ -1,5 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 
+import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Parser;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
@@ -22,6 +23,7 @@ public class AssignBinaryFunctionToCellService extends ReadAndWritePermissionsSe
     @Override
     protected void dispatch_read_and_write() throws BubbleDocsException {
     		
+    	Bubbledocs _bd = getBubbleDocs();
 		FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
 
 		int[] linhaColuna = null;

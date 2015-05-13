@@ -5,7 +5,7 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
 public abstract class ValidSessionsService extends BubbleDocsService {
 	
-	protected Bubbledocs _bd = getBubbleDocs();
+//	protected Bubbledocs _bd = getBubbleDocs();
 	protected String _userToken;
 	
 	public ValidSessionsService(String userToken) {
@@ -13,6 +13,7 @@ public abstract class ValidSessionsService extends BubbleDocsService {
 	}
 
 	protected void dispatch() throws BubbleDocsException {
+		Bubbledocs _bd = getBubbleDocs();
 		if(_bd.validSession(_userToken)){
 			refreshToken(_userToken);
 		}

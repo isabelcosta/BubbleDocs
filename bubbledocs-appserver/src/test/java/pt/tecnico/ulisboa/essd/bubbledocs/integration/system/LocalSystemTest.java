@@ -15,6 +15,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import pt.ist.fenixframework.Atomic;
 import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
@@ -76,14 +77,15 @@ public class LocalSystemTest {
 
     @Before
     public void setUp(){
-    	//unPopulate4Test();
+//    	unPopulate4Test();
     }
     
     @After
     public void tearDown() {
-        //unPopulate4Test();
+        unPopulate4Test();
     }
     
+    @Atomic
     public void unPopulate4Test(){
     	Bubbledocs bd = Bubbledocs.getInstance();
 		for (FolhadeCalculo folha : bd.getFolhasSet()){
@@ -232,7 +234,7 @@ public class LocalSystemTest {
     	
 		System.out.println("---------------------------------------------------------------------------------");
 		
-		System.out.println("Joao e Tiana fizeram login...");
+		
     	LoginUserIntegrator serviceLogin = new LoginUserIntegrator(ROOT_USERNAME, ROOT_PASSWORD);
     	serviceLogin.execute();
     	
@@ -251,7 +253,7 @@ public class LocalSystemTest {
 //    		}
 //    	};
 		
-        CreateUserIntegrator serviceCreateUser1 = new CreateUserIntegrator(ROOT_USERNAME, USER_JOAO, MAIL_JOAO,
+        CreateUserIntegrator serviceCreateUser1 = new CreateUserIntegrator(serviceLogin.getUserToken(), USER_JOAO, MAIL_JOAO,
                 NOME_JOAO);
         serviceCreateUser1.execute();
 
@@ -261,7 +263,7 @@ public class LocalSystemTest {
 //    	};
         
         
-        CreateUserIntegrator serviceCreateUser2 = new CreateUserIntegrator(ROOT_USERNAME, USER_TIANA, MAIL_TIANA,
+        CreateUserIntegrator serviceCreateUser2 = new CreateUserIntegrator(serviceLogin.getUserToken(), USER_TIANA, MAIL_TIANA,
                 NOME_TIANA);
         serviceCreateUser2.execute();
         System.out.println("A Root criou os users Joao e Tiana...");

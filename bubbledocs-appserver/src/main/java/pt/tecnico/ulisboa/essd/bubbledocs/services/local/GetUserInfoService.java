@@ -7,7 +7,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.services.dtos.UserDto;
 
 public class GetUserInfoService extends BubbleDocsService {
 
-	private Bubbledocs _bd = getBubbleDocs();
 	private UserDto _result;
 	private String _username;
 	
@@ -18,6 +17,8 @@ public class GetUserInfoService extends BubbleDocsService {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
+		
+		Bubbledocs _bd = getBubbleDocs();
 		
 		Utilizador user = _bd.getUserfromUsername(_username);
 		
