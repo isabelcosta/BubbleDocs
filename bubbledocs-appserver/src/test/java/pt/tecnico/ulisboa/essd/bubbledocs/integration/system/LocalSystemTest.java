@@ -360,7 +360,7 @@ public class LocalSystemTest {
 		serviceLiteralJoao1.execute();
 		AssignLiteralCellIntegrator serviceLiteralJoao2 = new AssignLiteralCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "3;4", "3564");
 		serviceLiteralJoao2.execute();
-		AssignRangeFunctionToCellIntegrator serviceRangeJoao1 = new AssignRangeFunctionToCellIntegrator(TOKEN_JOAO, FOLHA_JOAO_ID, "5;7", "=AVG(3;2:5;6)");
+		AssignRangeFunctionToCellIntegrator serviceRangeJoao1 = new AssignRangeFunctionToCellIntegrator(TOKEN_JOAO, FOLHA_JOAO_ID, "5;7", "=AVG(3;4:3;4)");
 		serviceRangeJoao1.execute();
     	AssignReferenceCellIntegrator serviceReferenceJoao1 = new AssignReferenceCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "13;5", "=3;2");
     	serviceReferenceJoao1.execute();

@@ -5,9 +5,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 
 public abstract class BubbleDocsIntegrator {
-
-	
-	// por como os servicos locais em que o dispatch esta interligado
 	
 	public BubbleDocsIntegrator() {
 	}

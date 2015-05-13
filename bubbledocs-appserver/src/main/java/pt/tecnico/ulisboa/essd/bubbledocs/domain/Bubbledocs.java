@@ -31,10 +31,19 @@ public class Bubbledocs extends Bubbledocs_Base {
 		if (bd==null){
 			_folhasExportadas = new HashMap<Integer, String>();
 			bd = new Bubbledocs();
-			Utilizador user =new Utilizador("Super User", "root", "root");
-			bd.addUtilizadores(user);
+//			Utilizador user =new Utilizador("Super User", "root", "root");
+//			bd.addUtilizadores(user);
 		}
-
+				boolean existe = false;
+				for (Utilizador u : bd.getUtilizadoresSet()){
+				if(u.getUsername().equals("root"))
+						existe = true;
+			}
+				
+				if (!existe){
+		 			Utilizador user =new Utilizador("Super User", "root", "root");
+		 			bd.addUtilizadores(user);
+		 		}
 		return bd;
 	}
 	
