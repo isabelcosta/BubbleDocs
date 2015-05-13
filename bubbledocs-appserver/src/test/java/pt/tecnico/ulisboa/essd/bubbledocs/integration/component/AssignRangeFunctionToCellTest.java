@@ -64,20 +64,20 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     	//Adiciona conteudo a folha da ms
     	FOLHA_ID = folha1.getID();
     			
-    	String conteudoLiteral = "2";
-    	folha1.modificarCelula(3, 3, conteudoLiteral);
+    	String conteudoLiteral1 = "2";
+    	folha1.modificarCelula(3, 3, conteudoLiteral1);
     	
-    	String conteudoLiteral1 = "4";
-    	folha1.modificarCelula(3, 7, conteudoLiteral1);
+    	String conteudoAdd = "=ADD(2,3;2)";
+    	folha1.modificarCelula(3, 7, conteudoAdd);
     	
-    	String conteudoLiteral2 = "10";
-    	folha1.modificarCelula(3, 8, conteudoLiteral2);
+    	String conteudoRef = "=4;5";
+    	folha1.modificarCelula(3, 8, conteudoRef);
     	
     	String conteudoLiteral3 = "4";
     	folha1.modificarCelula(3, 9, conteudoLiteral3);
     	
-    	String conteudoAdd = "=ADD(2,3;2)";
-    	folha1.modificarCelula(4,1,conteudoAdd);
+    	String conteudoLiteral4 = "79";
+    	folha1.modificarCelula(4,1,conteudoLiteral4);
     			
     	folha1.protegeCelula(4, 8, true);
 		
