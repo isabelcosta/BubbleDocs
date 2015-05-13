@@ -1,4 +1,4 @@
-package pt.tecnico.ulisboa.essd.bubbledocs;
+package pt.tecnico.ulisboa.essd.bubbledocs.integration.component;
 
 import static org.junit.Assert.*;
 import mockit.*;

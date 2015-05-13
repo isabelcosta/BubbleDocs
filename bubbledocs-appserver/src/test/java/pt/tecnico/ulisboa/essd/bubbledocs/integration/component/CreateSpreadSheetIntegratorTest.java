@@ -1,6 +1,7 @@
-package pt.tecnico.ulisboa.essd.bubbledocs;
+package pt.tecnico.ulisboa.essd.bubbledocs.integration.component;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;

@@ -1,4 +1,4 @@
-package pt.tecnico.ulisboa.essd.bubbledocs;
+package pt.tecnico.ulisboa.essd.bubbledocs.integration.component;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Random;

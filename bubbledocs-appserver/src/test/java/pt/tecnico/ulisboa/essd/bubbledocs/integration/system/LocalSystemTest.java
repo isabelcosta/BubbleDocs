@@ -76,12 +76,12 @@ public class LocalSystemTest {
 
     @Before
     public void setUp(){
-    	unPopulate4Test();
+    	//unPopulate4Test();
     }
     
     @After
     public void tearDown() {
-            unPopulate4Test();
+        //unPopulate4Test();
     }
     
     public void unPopulate4Test(){
@@ -195,7 +195,7 @@ public class LocalSystemTest {
 	
 	
 	@Test
-    public void finalLocalSystemTest() {
+    public void finalLocalSystemIT() {
     
 		
 		System.out.println("Welcome to Bubble application!!");
@@ -207,11 +207,26 @@ public class LocalSystemTest {
      * 
      * 
      */
+	
     	new StrictExpectations() {
  		   
     		{
     			remoteID = new IDRemoteServices();
     			remoteID.loginUser(ROOT_USERNAME, ROOT_PASSWORD);
+    			remoteID = new IDRemoteServices();
+    			remoteID.createUser(USER_JOAO, MAIL_JOAO);
+    			remoteID = new IDRemoteServices();
+    			remoteID.createUser(USER_TIANA, MAIL_TIANA);
+    			remoteID = new IDRemoteServices();
+    			remoteID.loginUser(USER_JOAO, PASS_JOAO);
+    			remoteID = new IDRemoteServices();
+    			remoteID.loginUser(USER_TIANA, PASS_TIANA);
+    			remoteStore = new StoreRemoteServices();
+    			remoteStore.storeDocument(USER_JOAO, FOLHA_JOAO, (byte[]) any);
+    			remoteStore = new StoreRemoteServices();
+    			remoteStore.loadDocument(USER_JOAO, FOLHA_JOAO);
+//    			result = folhaByte;
+    		
 		    }
 		};
     	
@@ -231,23 +246,19 @@ public class LocalSystemTest {
      * 		- JOAO
      * 
      */
-    	new StrictExpectations() {
-    		{
-    			remoteID = new IDRemoteServices();
-    			remoteID.createUser(USER_JOAO, MAIL_JOAO);
-    		}
-    	};
+//    	new StrictExpectations() {
+//    		{
+//    		}
+//    	};
 		
         CreateUserIntegrator serviceCreateUser1 = new CreateUserIntegrator(ROOT_USERNAME, USER_JOAO, MAIL_JOAO,
                 NOME_JOAO);
         serviceCreateUser1.execute();
 
-        new StrictExpectations() {
-    		{
-    			remoteID = new IDRemoteServices();
-    			remoteID.createUser(USER_TIANA, MAIL_TIANA);
-    		}
-    	};
+//        new StrictExpectations() {
+//    		{
+//    		}
+//    	};
         
         
         CreateUserIntegrator serviceCreateUser2 = new CreateUserIntegrator(ROOT_USERNAME, USER_TIANA, MAIL_TIANA,
@@ -280,26 +291,22 @@ public class LocalSystemTest {
      * 
      */
 	    
-    	new StrictExpectations() {
-  		   
-    		{
-    			remoteID = new IDRemoteServices();
-    			remoteID.loginUser(USER_JOAO, PASS_JOAO);
-		    }
-		};
+//    	new StrictExpectations() {
+//  		   
+//    		{
+//		    }
+//		};
     	
     	LoginUserIntegrator loginService1 = new LoginUserIntegrator(USER_JOAO, PASS_JOAO);
     	loginService1.execute();
 
     	TOKEN_JOAO =  loginService1.getUserToken();
     	
-    	new StrictExpectations() {
-   		   
-    		{
-    			remoteID = new IDRemoteServices();
-    			remoteID.loginUser(USER_TIANA, PASS_TIANA);
-		    }
-		};
+//    	new StrictExpectations() {
+//   		   
+//    		{
+//		    }
+//		};
 		
     	LoginUserIntegrator loginService2 = new LoginUserIntegrator(USER_TIANA, PASS_TIANA);
     	loginService2.execute();
@@ -398,13 +405,11 @@ public class LocalSystemTest {
     	 * 
     	 */
 
-    	new StrictExpectations() {
-	 		   
-    		{
-    			remoteStore = new StoreRemoteServices();
-    			remoteStore.storeDocument(USER_JOAO, FOLHA_JOAO, (byte[]) any);
-		    }
-		};
+//    	new StrictExpectations() {
+//	 		   
+//    		{
+//		    }
+//		};
     	
 		
 		
@@ -416,14 +421,11 @@ public class LocalSystemTest {
 		removeSpreadsheet(FOLHA_JOAO_ID); 						//remover a folha para importar sem estar na bd
 		
 		
-		new StrictExpectations() {
-	 		   
-    		{
-    			remoteStore = new StoreRemoteServices();
-    			remoteStore.loadDocument(USER_JOAO, FOLHA_JOAO);
-    			result = folhaByte;
-		    }
-		};
+//		new StrictExpectations() {
+//	 		   
+//    		{
+//		    }
+//		};
 		
         //O UTLIZADOR2 IMPORTA A FOLHA1
 		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_JOAO_ID, TOKEN_JOAO);
