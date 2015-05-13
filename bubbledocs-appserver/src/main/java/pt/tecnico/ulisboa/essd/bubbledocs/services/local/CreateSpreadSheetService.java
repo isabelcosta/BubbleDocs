@@ -29,8 +29,8 @@ public class CreateSpreadSheetService extends ValidSessionsService {
     	FolhadeCalculo folha = new FolhadeCalculo(_name, dono, _rows, _columns);
     	
     	_bd.addFolhas(folha);
-    	
-    	_result = _bd.getIdOfFolha(_name);
+    	_result = folha.getID();
+    	//_result = _bd.getIdOfFolha(_name);
     }
     
     public int getResult() {

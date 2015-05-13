@@ -77,7 +77,7 @@ public class LocalSystemTest {
 
     @Before
     public void setUp(){
-    	unPopulate4Test();
+//    	unPopulate4Test();
     }
     
     @After
@@ -225,7 +225,7 @@ public class LocalSystemTest {
     			remoteID = new IDRemoteServices();
     			remoteID.loginUser(USER_TIANA, PASS_TIANA);
     			remoteStore = new StoreRemoteServices();
-    			remoteStore.storeDocument(USER_JOAO, FOLHA_JOAO, (byte[]) any);		
+    			remoteStore.storeDocument(USER_JOAO, Integer.toString(FOLHA_JOAO_ID), (byte[]) any);		
 		    }
 		};
     	
@@ -307,7 +307,7 @@ public class LocalSystemTest {
         createSpreadsheetService1.execute();
         
         FOLHA_JOAO_ID = createSpreadsheetService1.getResult();
-        
+        System.out.println(FOLHA_JOAO_ID);
         
         CreateSpreadSheetIntegrator createSpreadsheetService2 = new CreateSpreadSheetIntegrator(TOKEN_TIANA, FOLHA_TIANA , FOLHA_TIANA_LINHAS, FOLHA_TIANA_COLUNAS);
         createSpreadsheetService2.execute();
@@ -331,13 +331,13 @@ public class LocalSystemTest {
      * 
      */
 
-		AssignLiteralCellIntegrator serviceLiteralJoao1 = new AssignLiteralCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "3;2", "78");
+		AssignLiteralCellIntegrator serviceLiteralJoao1 = new AssignLiteralCellIntegrator(TOKEN_JOAO, FOLHA_JOAO_ID, "3;2", "78");
 		serviceLiteralJoao1.execute();
-		AssignLiteralCellIntegrator serviceLiteralJoao2 = new AssignLiteralCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "3;4", "3564");
+		AssignLiteralCellIntegrator serviceLiteralJoao2 = new AssignLiteralCellIntegrator(TOKEN_JOAO, FOLHA_JOAO_ID, "3;4", "3564");
 		serviceLiteralJoao2.execute();
-		AssignRangeFunctionToCellIntegrator serviceRangeJoao1 = new AssignRangeFunctionToCellIntegrator(TOKEN_JOAO, FOLHA_JOAO_ID, "5;7", "=AVG(3;4:3;10)");
-		serviceRangeJoao1.execute();
-    	AssignReferenceCellIntegrator serviceReferenceJoao1 = new AssignReferenceCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "13;5", "=3;2");
+//		AssignRangeFunctionToCellIntegrator serviceRangeJoao1 = new AssignRangeFunctionToCellIntegrator(TOKEN_JOAO, FOLHA_JOAO_ID, "5;7", "=AVG(3;4:3;10)");
+//		serviceRangeJoao1.execute();
+    	AssignReferenceCellIntegrator serviceReferenceJoao1 = new AssignReferenceCellIntegrator(TOKEN_JOAO, FOLHA_JOAO_ID, "13;5", "=3;2");
     	serviceReferenceJoao1.execute();
 
         System.out.println("Joao preenche a sua folha....");
@@ -361,8 +361,8 @@ public class LocalSystemTest {
 		serviceLiteralTiana1.execute();
 		AssignLiteralCellIntegrator serviceLiteralTiana2 = new AssignLiteralCellIntegrator( TOKEN_TIANA, FOLHA_TIANA_ID, "3;4", "3564");
 		serviceLiteralTiana2.execute();
-		AssignRangeFunctionToCellIntegrator serviceRangeTiana1 = new AssignRangeFunctionToCellIntegrator(TOKEN_TIANA, FOLHA_TIANA_ID, "5;6", "=AVG(3;2:5;6)");
-		serviceRangeTiana1.execute();
+//		AssignRangeFunctionToCellIntegrator serviceRangeTiana1 = new AssignRangeFunctionToCellIntegrator(TOKEN_TIANA, FOLHA_TIANA_ID, "5;6", "=AVG(3;2:5;6)");
+//		serviceRangeTiana1.execute();
     	AssignReferenceCellIntegrator serviceReferenceTiana1 = new AssignReferenceCellIntegrator( TOKEN_TIANA, FOLHA_TIANA_ID, "13;5", "=3;2");
     	serviceReferenceTiana1.execute();
     	
