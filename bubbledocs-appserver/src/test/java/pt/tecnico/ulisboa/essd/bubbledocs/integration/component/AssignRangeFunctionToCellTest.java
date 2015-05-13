@@ -23,6 +23,7 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     private static final String FUNCAO_INTERVALO_COM_INTERVALO_INVALIDO = "=PRD(100000000;1:2;3)";
     private static final String FUNCAO_INTERVALO_INCOMPLETA = "=PRD(3;6:)";
     private static final String FUNCAO_INTERVALO_COM_INTERVALO_CELULA = "=AVG(3;6:3;6)";
+    private static final String FUNCAO_INTERVALO_COM_CELULAS_VAZIAS = "=AVG(3;3:3;8)";
     private static final String FUNCAO_INTERVALO_INEXISTENTE = "=ABB(3;3:3;5)"; 
     private static final String FUNCAO_INTERVALO_BINARIA = "=MUL(3;3:3;5)"; 
     
@@ -63,8 +64,8 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     	//Adiciona conteudo a folha da ms
     	FOLHA_ID = folha1.getID();
     			
-//    	String conteudoLiteral = "2";
-//    	folha1.modificarCelula(3, 6, conteudoLiteral);
+    	String conteudoLiteral = "2";
+    	folha1.modificarCelula(3, 3, conteudoLiteral);
     	
     	String conteudoLiteral1 = "4";
     	folha1.modificarCelula(3, 7, conteudoLiteral1);
@@ -128,6 +129,15 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     	
         assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_CELULA, service.getResult());
     }  
+    
+    
+    @Test
+    public void successAssignRangeToEmptyCells() {
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID_VAZIA, FUNCAO_INTERVALO_COM_CELULAS_VAZIAS);
+        service.execute();
+    	
+        assertEquals(FUNCAO_INTERVALO_COM_CELULAS_VAZIAS, service.getResult());
+    } 
     
     @Test
     public void successPodeEscrever() {
