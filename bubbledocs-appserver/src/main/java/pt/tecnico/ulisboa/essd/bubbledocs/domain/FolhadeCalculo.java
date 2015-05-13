@@ -233,7 +233,7 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     // EXCEPCAO-CELULA
 	/* Verifica se a celula respeita os limites da folha */
     public Boolean verificaLimite(int linha, int coluna) throws OutOfBoundsException{
-    	if (linha > this.getLinhas() || coluna > this.getColunas())
+    	if (linha > this.getLinhas() || coluna > this.getColunas() || linha < 0 || coluna < 0)
     		throw new OutOfBoundsException(linha, coluna);
     	return true;
     }
@@ -241,18 +241,23 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     
     public Celula getCelulaEspecifica(int linha, int coluna) throws OutOfBoundsException{
     	
-    	
-    	for(Celula cell: getCelulaSet()){
-    		
-    		int l = cell.getLinha();
-			int c = cell.getColuna();
-			
-			if(linha==l && coluna==c ){
-			return cell;
-			}
+    	if(verificaLimite(linha, coluna)){
+	    	for(Celula cell: getCelulaSet()){
+	    		
+	    		int l = cell.getLinha();
+				int c = cell.getColuna();
+				
+				if(linha==l && coluna==c ){
+					return cell;
+				}
+	    	}
+	    	
+	    	Conteudo conteudo = this.criaConteudo(null);
+			Celula novaCelula = new Celula(linha, coluna, conteudo);
+			this.addCelula(novaCelula);
+			return novaCelula;
+    	} else{
+    		throw new OutOfBoundsException(linha, coluna);
     	}
-    	
-    	throw new OutOfBoundsException(linha, coluna);
     }
-    
 }

@@ -62,13 +62,9 @@ public class Parser {
 		    return parseLiteral(conteudo); 
     }
 
-    
-    
     private static String parseNomeFuncao(String funcao) {
     	return funcao.substring(0, funcao.indexOf("("));
-    }
-
-    
+    }    
     
     
     private static String parseOperandoFuncao(String funcao) {

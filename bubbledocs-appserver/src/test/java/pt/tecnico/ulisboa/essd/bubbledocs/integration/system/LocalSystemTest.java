@@ -109,25 +109,27 @@ public class LocalSystemTest {
  */
 
     // Mostra o conteudo da folha
+//    @Atomic
     public String showFancySpreadSheet(Integer sheetId, String userToken){
     	
-		Bubbledocs bd = Bubbledocs.getInstance();
-		
 		// Folha de calculo associada ao ID
-		FolhadeCalculo folha;
-		folha = bd.getFolhaOfId(sheetId);
-		Integer maxLinha = folha.getLinhas();
-		Integer maxColuna = folha.getColunas();
+//		FolhadeCalculo folha;
+//		Integer maxLinha = folha.getLinhas();
+//		Integer maxColuna = folha.getColunas();
 		GetSpreadSheetContentService service = new GetSpreadSheetContentService(userToken, sheetId);
 		String[][] matriz = service.getResult();
+		if (matriz ==null){
+			System.out.println("ESTOU VAZIA");
+			return "";
+		}
 		String top = "";
 		String linha = "";
-		for (int u = 1; u < maxColuna; u++){
+		for (int u = 1; u < matriz[0].length; u++){
 			top += "| " + u;
 		}
 		System.out.println(top + " |");
-		for(int i=1; i < maxLinha; i++){
-			for(int k=1; k < maxColuna; k++){
+		for(int i=1; i < matriz.length; i++){
+			for(int k=1; k < matriz[0].length; k++){
 				linha += matriz[i][k] + " | ";
 			}
 			System.out.println("| " + i + " | " + linha);
@@ -136,6 +138,7 @@ public class LocalSystemTest {
     }
     
     // transforma uma folha em bytes para ser usado no mock de uma folha importada
+    @Atomic
 	public byte[] folhaToByte4Mock(Integer sheetId, String userToken) {
 		
 		Bubbledocs bd = Bubbledocs.getInstance();
@@ -364,14 +367,12 @@ public class LocalSystemTest {
 		serviceLiteralTiana1.execute();
 		AssignLiteralCellIntegrator serviceLiteralTiana2 = new AssignLiteralCellIntegrator( TOKEN_TIANA, FOLHA_TIANA_ID, "3;4", "3564");
 		serviceLiteralTiana2.execute();
-		AssignRangeFunctionToCellIntegrator serviceRangeTiana1 = new AssignRangeFunctionToCellIntegrator(TOKEN_TIANA, FOLHA_TIANA_ID, "5;6", "=AVG(3;2:5;6)");
-		serviceRangeTiana1.execute();
+//		AssignRangeFunctionToCellIntegrator serviceRangeTiana1 = new AssignRangeFunctionToCellIntegrator(TOKEN_TIANA, FOLHA_TIANA_ID, "5;6", "=AVG(3;2:5;6)");
+//		serviceRangeTiana1.execute();
     	AssignReferenceCellIntegrator serviceReferenceTiana1 = new AssignReferenceCellIntegrator( TOKEN_TIANA, FOLHA_TIANA_ID, "13;5", "=3;2");
     	serviceReferenceTiana1.execute();
     	
         System.out.println("Tiana preenche a sua folha....");
-        
-        //O UTILIZADOR1 DA PERMISSOES AO UTILIZADOR2 PARA MEXER NA FOLHA
         
         //O UTILIZADOR1 E REMOVIDO PELA ROOT (NAO TENHO A CERTEZA)
         
