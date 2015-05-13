@@ -102,8 +102,7 @@ public class Parser {
 			case "AVG":
 			    return new AVG(intervalo);
 			}
-		
-		return null;
+		throw new InvalidFunctionException();
     } 
 
     

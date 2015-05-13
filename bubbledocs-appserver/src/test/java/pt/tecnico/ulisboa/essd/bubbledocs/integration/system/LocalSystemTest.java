@@ -108,8 +108,6 @@ public class LocalSystemTest {
  *
  */
 
-    // Mostra o conteudo da folha
-//    @Atomic
     public String showFancySpreadSheet(Integer sheetId, String userToken){
     	
 		// Folha de calculo associada ao ID
@@ -228,9 +226,9 @@ public class LocalSystemTest {
     			remoteID.loginUser(USER_TIANA, PASS_TIANA);
     			remoteStore = new StoreRemoteServices();
     			remoteStore.storeDocument(USER_JOAO, FOLHA_JOAO, (byte[]) any);
-    			remoteStore = new StoreRemoteServices();
-    			remoteStore.loadDocument(USER_JOAO, FOLHA_JOAO);
-//    			result = folhaByte;
+//    			remoteStore = new StoreRemoteServices();
+//    			remoteStore.loadDocument(USER_JOAO, FOLHA_JOAO);
+////    			result = folhaByte;
     		
 		    }
 		};
@@ -341,7 +339,7 @@ public class LocalSystemTest {
 		serviceLiteralJoao1.execute();
 		AssignLiteralCellIntegrator serviceLiteralJoao2 = new AssignLiteralCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "3;4", "3564");
 		serviceLiteralJoao2.execute();
-		AssignRangeFunctionToCellIntegrator serviceRangeJoao1 = new AssignRangeFunctionToCellIntegrator(TOKEN_JOAO, FOLHA_JOAO_ID, "5;7", "=AVG(3;4:3;4)");
+		AssignRangeFunctionToCellIntegrator serviceRangeJoao1 = new AssignRangeFunctionToCellIntegrator(TOKEN_JOAO, FOLHA_JOAO_ID, "5;7", "=AVG(3;4:3;10)");
 		serviceRangeJoao1.execute();
     	AssignReferenceCellIntegrator serviceReferenceJoao1 = new AssignReferenceCellIntegrator( TOKEN_JOAO, FOLHA_JOAO_ID, "13;5", "=3;2");
     	serviceReferenceJoao1.execute();
@@ -367,8 +365,8 @@ public class LocalSystemTest {
 		serviceLiteralTiana1.execute();
 		AssignLiteralCellIntegrator serviceLiteralTiana2 = new AssignLiteralCellIntegrator( TOKEN_TIANA, FOLHA_TIANA_ID, "3;4", "3564");
 		serviceLiteralTiana2.execute();
-//		AssignRangeFunctionToCellIntegrator serviceRangeTiana1 = new AssignRangeFunctionToCellIntegrator(TOKEN_TIANA, FOLHA_TIANA_ID, "5;6", "=AVG(3;2:5;6)");
-//		serviceRangeTiana1.execute();
+		AssignRangeFunctionToCellIntegrator serviceRangeTiana1 = new AssignRangeFunctionToCellIntegrator(TOKEN_TIANA, FOLHA_TIANA_ID, "5;6", "=AVG(3;2:5;6)");
+		serviceRangeTiana1.execute();
     	AssignReferenceCellIntegrator serviceReferenceTiana1 = new AssignReferenceCellIntegrator( TOKEN_TIANA, FOLHA_TIANA_ID, "13;5", "=3;2");
     	serviceReferenceTiana1.execute();
     	
@@ -389,16 +387,30 @@ public class LocalSystemTest {
 		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_JOAO_ID, TOKEN_JOAO);
 		exportDocument.execute();
 		
+        System.out.println("Joao exporta a sua folha....");
+		
 		byte[] folhaByte;
 		folhaByte = folhaToByte4Mock(FOLHA_JOAO_ID, TOKEN_JOAO); //guardar a folha em bytes para usar no mock do import
 		removeSpreadsheet(FOLHA_JOAO_ID); 						//remover a folha para importar sem estar na bd
 		
+		System.out.println("Joao apaga a sua folha....");	
+		new StrictExpectations() {
+	 		   
+    		{
+    			remoteStore = new StoreRemoteServices();
+    			remoteStore.loadDocument(USER_JOAO, FOLHA_JOAO);
+    			result = folhaByte;
+		    }
+		};
 		
         //O UTLIZADOR2 IMPORTA A FOLHA1
 		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_JOAO_ID, TOKEN_JOAO);
 		importDocument.execute();
-        
-		//IDEM IDEM
+		
+		System.out.println("Joao importa a sua folha....");        
+    	showFancySpreadSheet(FOLHA_JOAO_ID, TOKEN_JOAO);
+		
+    	//IDEM IDEM
     }
 	 
     

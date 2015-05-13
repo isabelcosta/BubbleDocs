@@ -182,7 +182,9 @@ public class FolhadeCalculo extends FolhadeCalculo_Base {
     private Conteudo criaConteudo(String conteudoAcriar) {
     	Conteudo c = null;
     	
-		c= Parser.parseConteudo(this, conteudoAcriar);
+    	if(conteudoAcriar != null){
+    		c= Parser.parseConteudo(this, conteudoAcriar);    		
+    	}
     	
     	return c;
     

@@ -13,7 +13,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.ProtectedCellException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnauthorizedOperationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.local.AssignBinaryFunctionToCellService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.AssignRangeFunctionToCellService;
 
 
@@ -64,8 +63,8 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     	//Adiciona conteudo a folha da ms
     	FOLHA_ID = folha1.getID();
     			
-    	String conteudoLiteral = "2";
-    	folha1.modificarCelula(3, 6, conteudoLiteral);
+//    	String conteudoLiteral = "2";
+//    	folha1.modificarCelula(3, 6, conteudoLiteral);
     	
     	String conteudoLiteral1 = "4";
     	folha1.modificarCelula(3, 7, conteudoLiteral1);
@@ -132,7 +131,7 @@ public class AssignRangeFunctionToCellTest extends BubbleDocsServiceTest {
     
     @Test
     public void successPodeEscrever() {
-    	AssignBinaryFunctionToCellService service = new AssignBinaryFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
+    	AssignRangeFunctionToCellService service = new AssignRangeFunctionToCellService(USER_TOKEN_PODE_ESCREVER, FOLHA_ID, CELL_ID, FUNCAO_INTERVALO_COM_INTERVALO_VALIDO);
         service.execute();
 
 		assertEquals(FUNCAO_INTERVALO_COM_INTERVALO_VALIDO, service.getResult());
