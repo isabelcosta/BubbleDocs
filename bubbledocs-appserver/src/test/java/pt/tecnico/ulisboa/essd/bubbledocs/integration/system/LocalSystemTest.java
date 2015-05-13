@@ -77,7 +77,7 @@ public class LocalSystemTest {
 
     @Before
     public void setUp(){
-//    	unPopulate4Test();
+    	unPopulate4Test();
     }
     
     @After
@@ -225,11 +225,7 @@ public class LocalSystemTest {
     			remoteID = new IDRemoteServices();
     			remoteID.loginUser(USER_TIANA, PASS_TIANA);
     			remoteStore = new StoreRemoteServices();
-    			remoteStore.storeDocument(USER_JOAO, FOLHA_JOAO, (byte[]) any);
-//    			remoteStore = new StoreRemoteServices();
-//    			remoteStore.loadDocument(USER_JOAO, FOLHA_JOAO);
-////    			result = folhaByte;
-    		
+    			remoteStore.storeDocument(USER_JOAO, FOLHA_JOAO, (byte[]) any);		
 		    }
 		};
     	
@@ -394,6 +390,7 @@ public class LocalSystemTest {
 		removeSpreadsheet(FOLHA_JOAO_ID); 						//remover a folha para importar sem estar na bd
 		
 		System.out.println("Joao apaga a sua folha....");	
+
 		new StrictExpectations() {
 	 		   
     		{
