@@ -27,17 +27,9 @@ public class AssignBinaryFunctionToCellIntegrator extends BubbleDocsIntegrator{
 		 * 
 		 * 
 		 */
-
-//ter atencao as excepcoes ???
 		
 		_local = new AssignBinaryFunctionToCellService(_userToken, _folhaId, _cellToFill, _binaryFunctionToAssign);
 		_local.execute();
-		
-		/*
-		 * 
-		 * Nao existe metodo Remoto
-		 * 
-		 */
 		
 	}
 }

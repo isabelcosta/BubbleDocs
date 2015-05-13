@@ -248,20 +248,10 @@ public class LocalSystemTest {
      * 		- JOAO
      * 
      */
-//    	new StrictExpectations() {
-//    		{
-//    		}
-//    	};
 		
         CreateUserIntegrator serviceCreateUser1 = new CreateUserIntegrator(serviceLogin.getUserToken(), USER_JOAO, MAIL_JOAO,
                 NOME_JOAO);
-        serviceCreateUser1.execute();
-
-//        new StrictExpectations() {
-//    		{
-//    		}
-//    	};
-        
+        serviceCreateUser1.execute();        
         
         CreateUserIntegrator serviceCreateUser2 = new CreateUserIntegrator(serviceLogin.getUserToken(), USER_TIANA, MAIL_TIANA,
                 NOME_TIANA);
@@ -269,14 +259,12 @@ public class LocalSystemTest {
         System.out.println("A Root criou os users Joao e Tiana...");
         
         
-   // <QUESTION> - nao é integrator, so se devem usar integrator
 	    GetUserInfoService userInfo1 = new GetUserInfoService(USER_JOAO);
 	    userInfo1.execute();
 	    UserDto user1 = userInfo1.getResult();
 	    GetUserInfoService userInfo2 = new GetUserInfoService(USER_TIANA);
 	    userInfo2.execute();
 	    UserDto user2 = userInfo2.getResult();
-  // ate aqui
 	    
 	    System.out.println("---------------------------------------------------------------------------------");
 	    System.out.println("Lista de Utilizadores:");
@@ -293,23 +281,13 @@ public class LocalSystemTest {
      * 
      */
 	    
-//    	new StrictExpectations() {
-//  		   
-//    		{
-//		    }
-//		};
-    	
+
     	LoginUserIntegrator loginService1 = new LoginUserIntegrator(USER_JOAO, PASS_JOAO);
     	loginService1.execute();
 
     	TOKEN_JOAO =  loginService1.getUserToken();
     	
-//    	new StrictExpectations() {
-//   		   
-//    		{
-//		    }
-//		};
-		
+	
     	LoginUserIntegrator loginService2 = new LoginUserIntegrator(USER_TIANA, PASS_TIANA);
     	loginService2.execute();
     	
@@ -398,7 +376,6 @@ public class LocalSystemTest {
         //O UTILIZADOR1 E REMOVIDO PELA ROOT (NAO TENHO A CERTEZA)
         
     	/*
-    	 * 
     	 *  --------------------------------------------
     	 * | JOAO EXPORTA A SUA FOLHA						|
     	 *  --------------------------------------------
@@ -407,14 +384,7 @@ public class LocalSystemTest {
     	 * 
     	 */
 
-//    	new StrictExpectations() {
-//	 		   
-//    		{
-//		    }
-//		};
-    	
-		
-		
+
 		ExportDocumentIntegrator exportDocument = new ExportDocumentIntegrator(FOLHA_JOAO_ID, TOKEN_JOAO);
 		exportDocument.execute();
 		
@@ -422,12 +392,6 @@ public class LocalSystemTest {
 		folhaByte = folhaToByte4Mock(FOLHA_JOAO_ID, TOKEN_JOAO); //guardar a folha em bytes para usar no mock do import
 		removeSpreadsheet(FOLHA_JOAO_ID); 						//remover a folha para importar sem estar na bd
 		
-		
-//		new StrictExpectations() {
-//	 		   
-//    		{
-//		    }
-//		};
 		
         //O UTLIZADOR2 IMPORTA A FOLHA1
 		ImportDocumentIntegrator importDocument = new ImportDocumentIntegrator(FOLHA_JOAO_ID, TOKEN_JOAO);

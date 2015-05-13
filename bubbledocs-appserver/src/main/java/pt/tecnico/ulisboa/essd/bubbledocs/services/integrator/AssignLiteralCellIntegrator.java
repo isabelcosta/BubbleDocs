@@ -27,17 +27,9 @@ public class AssignLiteralCellIntegrator extends BubbleDocsIntegrator{
 		 * 
 		 * 
 		 */
-
-//ter atencao as excepcoes ???
 		
 		_local = new AssignLiteralCellService(_userToken, _folhaId, _cellToFill, _literalToAssign);
 		_local.execute();
-		
-		/*
-		 * 
-		 * Nao existe Instância Remota
-		 * 
-		 */
-		
+	
 	}
 }

@@ -25,12 +25,6 @@ public class AssignRangeFunctionToCellIntegrator extends BubbleDocsIntegrator {
 		_local = new AssignRangeFunctionToCellService(_userToken, _folhaId, _cellToFill, _functionToAssign);
 		_local.execute();
 		
-		/*
-		 * 
-		 * Nao existe metodo Remoto
-		 * 
-		 */
-		
 	}
 
 }
