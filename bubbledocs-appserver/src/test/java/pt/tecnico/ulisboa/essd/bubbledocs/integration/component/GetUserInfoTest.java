@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.dtos.UserDto;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetUserInfoService;
 

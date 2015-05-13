@@ -21,10 +21,10 @@ public abstract class ReadAndWritePermissionsService extends ValidSessionsServic
 
 	protected void dispatch_session() throws BubbleDocsException {
 		
-		Bubbledocs _bd = getBubbleDocs();
+		Bubbledocs bd = getBubbleDocs();
 		
 		if(_flag){ //pode escrever
-			_bd.canWrite(_userToken,_docId);
+			bd.canWrite(_userToken,_docId);
 			
 		} else { //pode escrever ou ler
 
@@ -33,7 +33,7 @@ public abstract class ReadAndWritePermissionsService extends ValidSessionsServic
 			 * para que possamos testar a leitura, so caso falhe a leitura é que a excessao entao é de facto lancada, dai so ter 1 try catch
 			 */
 			try {
-				_bd.canWrite(_userToken,_docId);
+				bd.canWrite(_userToken,_docId);
 				dispatch_read_and_write();
 				// caso nao lance excessao quer dizer que pode ler, logo saimos do metodo
 				return;
@@ -41,13 +41,13 @@ public abstract class ReadAndWritePermissionsService extends ValidSessionsServic
 			catch (UnauthorizedOperationException ex) {
 			}
 			
-			_bd.canRead(_userToken, _docId);
+			bd.canRead(_userToken, _docId);
 				
 			}	
 
 		dispatch_read_and_write();
 		
-		}
+	}
 		
 	
 	protected abstract void dispatch_read_and_write() throws BubbleDocsException;

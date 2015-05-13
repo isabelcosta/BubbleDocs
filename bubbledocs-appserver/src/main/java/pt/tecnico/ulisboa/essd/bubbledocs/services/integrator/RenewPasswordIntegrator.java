@@ -1,6 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.integrator;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
@@ -27,7 +26,6 @@ public class RenewPasswordIntegrator extends BubbleDocsIntegrator{
 		 */
 		
 		IDRemoteServices remote = new IDRemoteServices();
-		Bubbledocs bd = getBubbleDocs();
 		GetUsername4TokenService username = new GetUsername4TokenService(_userToken);
 		username.execute();
 		

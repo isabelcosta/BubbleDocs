@@ -25,28 +25,29 @@ public class AssignReferenceCellService extends ReadAndWritePermissionsService {
 
     @Override
     protected void dispatch_read_and_write() throws OutOfBoundsException, UnauthorizedOperationException  {
-    	Bubbledocs _bd = getBubbleDocs();
-    		
-			FolhadeCalculo folha = _bd.getFolhaOfId(_idFolha);
-			
-	    	int[] linhaEcoluna = null;
-	    	
-    		linhaEcoluna = Parser.parseEndereco(_idCelula, folha);	// lanca OutOfBounds
-			
-    		try{
-    			if(_referencia.contains("=")){
-    				Parser.parseConteudo(folha, _referencia);
-    			} else {
-    				throw new ReferenciaInvalidaException(folha,_referencia);
-    			}
-    		} catch(Exception e){
-				throw new ReferenciaInvalidaException(folha, _referencia);
+    	
+    	Bubbledocs bd = getBubbleDocs();
+		
+		FolhadeCalculo folha = bd.getFolhaOfId(_idFolha);
+		
+    	int[] linhaEcoluna = null;
+    	
+		linhaEcoluna = Parser.parseEndereco(_idCelula, folha);	// lanca OutOfBounds
+		
+		try{
+			if(_referencia.contains("=")){
+				Parser.parseConteudo(folha, _referencia);
+			} else {
+				throw new ReferenciaInvalidaException(folha,_referencia);
 			}
-    		
-			folha.modificarCelula( linhaEcoluna[0], linhaEcoluna[1], _referencia);
-			
-			_result = folha.getCellContentToString(linhaEcoluna[0], linhaEcoluna[1]);
-	}
+		} catch(Exception e){
+			throw new ReferenciaInvalidaException(folha, _referencia);
+		}
+		
+		folha.modificarCelula( linhaEcoluna[0], linhaEcoluna[1], _referencia);
+		
+		_result = folha.getCellContentToString(linhaEcoluna[0], linhaEcoluna[1]);
+    }
   
 
     public final String getResult() {

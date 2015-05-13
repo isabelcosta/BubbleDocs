@@ -27,7 +27,8 @@ public class CreateUserService extends IsRootService {
 	@Override
 	protected void dispatch_root() throws BubbleDocsException {
 		
-		Bubbledocs _bd = getBubbleDocs();
+		Bubbledocs bd = getBubbleDocs();
+		
 		if(_newUsername == null || _newUsername.equals("")){
 			throw new InvalidUsernameException() ;	
 		}
@@ -36,7 +37,7 @@ public class CreateUserService extends IsRootService {
 			throw new InvalidEmailException();
 		}
 		
-		for(Utilizador user : _bd.getUtilizadoresSet()){
+		for(Utilizador user : bd.getUtilizadoresSet()){
 			
 			if(user.getEmail().equals(_email)){
 				throw new DuplicateEmailException();
@@ -52,6 +53,6 @@ public class CreateUserService extends IsRootService {
 		}
 		
 		Utilizador user = new Utilizador(_name, _newUsername, _email);
-		_bd.addUtilizadores(user);
+		bd.addUtilizadores(user);
 	}
 }

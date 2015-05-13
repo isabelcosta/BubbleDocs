@@ -15,7 +15,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
 public class ImportDocumentService extends BubbleDocsService {
 
 	private org.jdom2.Document _jdomDoc;
-	private Bubbledocs _bd = Bubbledocs.getInstance();
 	private byte[] _folha;
 	private String _userToken;
 	private Integer _result;
@@ -27,6 +26,8 @@ public class ImportDocumentService extends BubbleDocsService {
 
 	@Override
 	protected void dispatch() throws BubbleDocsException {
+		
+		Bubbledocs bd = getBubbleDocs();
 		
 		/*
 		 *  converter de byte[] para jdomDoc
@@ -52,7 +53,7 @@ public class ImportDocumentService extends BubbleDocsService {
 		/*
 		 * chamar a funcao que importa o jdomDoc para a base de dados do programa
 		 */
-		_result = _bd.recoverFromBackup(_jdomDoc, _userToken);
+		_result = bd.recoverFromBackup(_jdomDoc, _userToken);
 	}
 	
 	public org.w3c.dom.Document loadXML(String xml) {

@@ -13,10 +13,13 @@ public abstract class ValidSessionsService extends BubbleDocsService {
 	}
 
 	protected void dispatch() throws BubbleDocsException {
-		Bubbledocs _bd = getBubbleDocs();
-		if(_bd.validSession(_userToken)){
+		
+		Bubbledocs bd = getBubbleDocs();
+		
+		if(bd.validSession(_userToken)){
 			refreshToken(_userToken);
 		}
+		
 		dispatch_session();
 	}
 	

@@ -1,11 +1,7 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.services.integrator;
 
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.LoginBubbleDocsException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.LoginUserService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.UpdateUserPasswordService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;

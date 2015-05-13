@@ -3,7 +3,6 @@ package pt.tecnico.ulisboa.essd.bubbledocs.services.local;
 import org.joda.time.LocalTime;
 
 import pt.ist.fenixframework.Atomic;
-import pt.ist.fenixframework.FenixFramework;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Bubbledocs;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Token;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.BubbleDocsException;

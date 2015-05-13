@@ -25,17 +25,17 @@ public class ExportDocumentService extends ValidSessionsService{
 	protected void dispatch_session() throws UserNotInSessionException {
 
 		byte[] resultTemp = null;
-		Bubbledocs _bd = getBubbleDocs();
+		Bubbledocs bd = getBubbleDocs();
 		try {
 				
 			//VERIFICAR SE O USER TEM PERMISSÃ•ES PARA EXPORTAR		
-			_folha = _bd.getFolhaOfId(_sheetId);
+			_folha = bd.getFolhaOfId(_sheetId);
 			
-			String userNameOfToken = _bd.getUsernameOfToken(_userToken);
+			String userNameOfToken = bd.getUsernameOfToken(_userToken);
 	    	if(_folha.podeLer(userNameOfToken) || _folha.podeEscrever(userNameOfToken)){
 	    		
 	    		//CONVERTER A FOLHA EM BYTES
-				org.jdom2.Document sheetDoc = _bd.exportSheet(_folha);
+				org.jdom2.Document sheetDoc = bd.exportSheet(_folha);
 				
 				XMLOutputter xmlOutput = new XMLOutputter();
 				xmlOutput.setFormat(org.jdom2.output.Format.getPrettyFormat());
@@ -48,7 +48,7 @@ public class ExportDocumentService extends ValidSessionsService{
 				}
 				
 				//ADICIONAR AO USER ID DA FOLHA QUE EXPORTOU
-				_bd.addFolhaExportadas(_sheetId);
+				bd.addFolhaExportadas(_sheetId);
 				_result = resultTemp;
 	    	}
 	    	

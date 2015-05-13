@@ -1,7 +1,6 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class Intervalo extends Intervalo_Base {
     
@@ -12,8 +11,6 @@ public class Intervalo extends Intervalo_Base {
     public Intervalo(Celula upperLeftCell, Celula lowerRightCell, FolhadeCalculo folha) {
     
     	//se a celula pertence ao intervalo mas nao esta no getcelulaset, cria se a celula vazia e adicionas a lista
-    	
-    	//_folha = upperLeftCell.getFolhadecalculoC();
     	
     	setLowerRightCell(lowerRightCell);
     	setUpperLeftCell(upperLeftCell);
@@ -36,9 +33,7 @@ public class Intervalo extends Intervalo_Base {
     
     
     public ArrayList<Celula> getListaCelulas() {
-    	
     	return _listaCelulas;
-    	
     }
     
     public ArrayList<Integer> getValorListaCelulas() {		

@@ -24,24 +24,25 @@ public class AssignLiteralCellService extends ReadAndWritePermissionsService {
     @Override
     protected void dispatch_read_and_write() throws BubbleDocsException {
     		
-    	Bubbledocs _bd = getBubbleDocs();
-			FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
-
-	    	int[] linhaColuna = null;
+		Bubbledocs bd = getBubbleDocs();
+		
+		FolhadeCalculo folha = bd.getFolhaOfId(_folhaId);
 	
-			linhaColuna = Parser.parseEndereco(_cellToFill, folha);
-			
-			//Verifica se o literal e um inteiro
-			try{
-				Integer.parseInt(_literalToAssign);
-			}catch(Exception e){
-				throw new NotLiteralException(_literalToAssign);
-			}
-			
-	    	folha.modificarCelula( linhaColuna[0], linhaColuna[1], _literalToAssign);
-			
-			_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
-		  
+		int[] linhaColuna = null;
+	
+		linhaColuna = Parser.parseEndereco(_cellToFill, folha);
+		
+		//Verifica se o literal e um inteiro
+		try{
+			Integer.parseInt(_literalToAssign);
+		}catch(Exception e){
+			throw new NotLiteralException(_literalToAssign);
+		}
+		
+		folha.modificarCelula( linhaColuna[0], linhaColuna[1], _literalToAssign);
+		
+		_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
+	  
     }
 
     public String getResult() {

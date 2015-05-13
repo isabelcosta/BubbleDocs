@@ -3,7 +3,6 @@ package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.InvalidFunctionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.NotLiteralException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.OutOfBoundsException;
-import pt.tecnico.ulisboa.essd.bubbledocs.domain.Intervalo;
 
 public class Parser {
 

@@ -11,8 +11,11 @@ public abstract class IsRootService extends ValidSessionsService {
 	}
 
 	protected final void dispatch_session() throws BubbleDocsException {
-		Bubbledocs _bd = getBubbleDocs();
-		_bd.isRoot(_userToken);
+		
+		Bubbledocs bd = getBubbleDocs();
+		
+		bd.isRoot(_userToken);
+		
 		dispatch_root();
 	}
 	

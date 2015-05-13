@@ -1,9 +1,5 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.domain;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UtilizadorInvalidoException;
 
 

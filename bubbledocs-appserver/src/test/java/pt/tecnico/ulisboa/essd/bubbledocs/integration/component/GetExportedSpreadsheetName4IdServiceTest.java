@@ -7,8 +7,6 @@ import org.junit.Test;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.FolhadeCalculo;
 import pt.tecnico.ulisboa.essd.bubbledocs.domain.Utilizador;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.IdFolhaInvalidoException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.SpreadSheetDoesNotExistException;
-import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.local.GetExportedSpreadsheetName4IdService;
 
 public class GetExportedSpreadsheetName4IdServiceTest extends BubbleDocsServiceTest{
@@ -22,7 +20,7 @@ public class GetExportedSpreadsheetName4IdServiceTest extends BubbleDocsServiceT
 	private static String NAME = "Pedro";
 	private static String SPREADSHEET_NAME = "folha";
 	private static String USER_TOKEN;
-	private static String USER_TOKEN_INVALID = "nada";
+//	private static String USER_TOKEN_INVALID = "nada";
 	
 	private FolhadeCalculo sheet;
 

@@ -17,9 +17,11 @@ public class UpdateUserPasswordService extends BubbleDocsService {
 	@Override
 	protected void dispatch() throws BubbleDocsException {
 		
-		Bubbledocs _bd = getBubbleDocs();
-		_bd.setUserPassword(_username, _password);
-		_userToken = _bd.renewUserToken(_username, _password);
+		Bubbledocs bd = getBubbleDocs();
+		
+		bd.setUserPassword(_username, _password);
+		
+		_userToken = bd.renewUserToken(_username, _password);
 	}
 
 	public String getUserToken() {

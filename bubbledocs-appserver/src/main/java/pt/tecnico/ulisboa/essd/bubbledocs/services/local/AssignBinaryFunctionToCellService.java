@@ -23,8 +23,9 @@ public class AssignBinaryFunctionToCellService extends ReadAndWritePermissionsSe
     @Override
     protected void dispatch_read_and_write() throws BubbleDocsException {
     		
-    	Bubbledocs _bd = getBubbleDocs();
-		FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
+    	Bubbledocs bd = getBubbleDocs();
+    	
+		FolhadeCalculo folha = bd.getFolhaOfId(_folhaId);
 
 		int[] linhaColuna = null;
 

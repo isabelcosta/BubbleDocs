@@ -44,13 +44,16 @@ public class Bubbledocs extends Bubbledocs_Base {
     
     private void addFolhasExportadasPriv(Integer id, String nome) {
     	
-    	Bubbledocs.getInstance()._folhasExportadas.put(id, nome);
+    	Bubbledocs.getInstance().getThisFolhasExportadas().put(id, nome);
     }
     
     private HashMap<Integer, String> getFolhasExportadasPriv() {
-    	return Bubbledocs.getInstance()._folhasExportadas;
+    	return Bubbledocs.getInstance().getThisFolhasExportadas();
     }
     
+    private HashMap<Integer,String> getThisFolhasExportadas(){
+    	return _folhasExportadas;
+    }
     
     public void criaFolha(String nomeFolha, String username, int linhas, int colunas){
         
@@ -289,21 +292,21 @@ public class Bubbledocs extends Bubbledocs_Base {
 	    }
     
 
-	 public String getSpreadsheetName4Id(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
+	public String getSpreadsheetName4Id(Integer id) throws IdFolhaInvalidoException, SpreadSheetDoesNotExistException{
 	    	
-	    	if(id < 0 || id == null){
-				throw new IdFolhaInvalidoException();
-			}
+    	if(id < 0 || id == null){
+			throw new IdFolhaInvalidoException();
+		}
 
-	     	
-	    	for( FolhadeCalculo folhaIter : getFolhasSet()  ){
-	    		if(folhaIter.getID() == id){
-	    			return folhaIter.getNomeFolha();
-	    		}
-	    	}
-	    	
-	    	throw new SpreadSheetDoesNotExistException();
-	    } 
+     	
+    	for( FolhadeCalculo folhaIter : getFolhasSet()  ){
+    		if(folhaIter.getID() == id){
+    			return folhaIter.getNomeFolha();
+    		}
+    	}
+    	
+    	throw new SpreadSheetDoesNotExistException();
+	} 
 	 
     public org.jdom2.Document exportSheet(FolhadeCalculo folha){
     	org.jdom2.Document jdomDoc = new org.jdom2.Document();
@@ -430,24 +433,6 @@ public class Bubbledocs extends Bubbledocs_Base {
 		addFolhaExportada(id, nomeFolha);
 	}
 	
-//	public Boolean checkFolhaExportada4User (Integer id, String token) {
-//		HashMap<Integer, String> listaFolhasExportadas = getUserFromToken(token).getFolhasExportadas();
-//		return listaFolhasExportadas.containsKey(id);
-//	}
-	/*
-	public Boolean wasExported (Integer id) {
-		/*
-		 *  procura nos users se alguem exportou aquela folha
-		 *  para ver se o id existe
-		 * 
-		for (Utilizador user : getUtilizadoresSet()) {
-			if (user.getFolhasExportadas().containsKey(id)) {
-				return true;
-			}
-		}
-		return false;
-	}
-	 */
 	public String getUserToken(String username) {
 		
 		if(username == null || username == ""){

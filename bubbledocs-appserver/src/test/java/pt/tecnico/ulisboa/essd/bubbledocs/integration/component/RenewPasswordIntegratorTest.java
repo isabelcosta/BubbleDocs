@@ -1,7 +1,10 @@
 package pt.tecnico.ulisboa.essd.bubbledocs.integration.component;
 
-import static org.junit.Assert.*;
-import mockit.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+import mockit.Mocked;
+import mockit.StrictExpectations;
 
 import org.junit.Test;
 
@@ -12,7 +15,6 @@ import pt.tecnico.ulisboa.essd.bubbledocs.exception.RemoteInvocationException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UnavailableServiceException;
 import pt.tecnico.ulisboa.essd.bubbledocs.exception.UserNotInSessionException;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.integrator.RenewPasswordIntegrator;
-import pt.tecnico.ulisboa.essd.bubbledocs.services.local.RenewPasswordService;
 import pt.tecnico.ulisboa.essd.bubbledocs.services.remote.IDRemoteServices;
 
 

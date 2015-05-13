@@ -11,8 +11,10 @@ public class RenewPasswordService extends ValidSessionsService {
  
     @Override
     protected void dispatch_session() throws BubbleDocsException {
-    	Bubbledocs _bd = getBubbleDocs();
-			_bd.invalidateUserPassword(_userToken);
+    	
+    	Bubbledocs bd = getBubbleDocs();
+		
+    	bd.invalidateUserPassword(_userToken);
 		 
     }
 

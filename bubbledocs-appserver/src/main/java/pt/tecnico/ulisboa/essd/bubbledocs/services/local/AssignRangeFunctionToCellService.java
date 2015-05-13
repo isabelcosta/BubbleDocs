@@ -22,20 +22,21 @@ public class AssignRangeFunctionToCellService extends ValidSessionsService {
     @Override
     protected void dispatch_session() throws BubbleDocsException {
     		
-    	Bubbledocs _bd = getBubbleDocs();
-			FolhadeCalculo folha = _bd.getFolhaOfId(_folhaId);
-			
-			if(folha.podeEscrever(_bd.getUsernameOfToken(_userToken))){
-		    	int[] linhaColuna = null;
+    	Bubbledocs bd = getBubbleDocs();
+    	
+		FolhadeCalculo folha = bd.getFolhaOfId(_folhaId);
 		
-				linhaColuna = Parser.parseEndereco(_cellToFill, folha);
-				
-				folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);
-				
-				_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
-		    }
+		if(folha.podeEscrever(bd.getUsernameOfToken(_userToken))){
+	    	int[] linhaColuna = null;
+	
+			linhaColuna = Parser.parseEndereco(_cellToFill, folha);
+			
+			folha.modificarCelula( linhaColuna[0], linhaColuna[1], _functionToAssign);
+			
+			_result = folha.getCellContentToString(linhaColuna[0], linhaColuna[1]);
+	    }
 								
-		}
+	}
 
     public String getResult() {
     	return _result;

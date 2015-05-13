@@ -26,9 +26,9 @@ public class GetUserInfoService extends BubbleDocsService {
 		
 	}
 	
-	 public final UserDto getResult() {
-	        return _result;
-	    }
+	public final UserDto getResult() {
+		 return _result;
+	}
 
 
 }
